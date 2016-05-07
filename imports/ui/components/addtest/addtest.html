@@ -1,0 +1,95 @@
+<div ng-cloak>
+  <md-content>
+    <md-tabs md-dynamic-height md-border-bottom>
+
+      <!-- Add question tab -->
+      <md-tab label="one">
+        <md-content id="questionSet" class="md-padding">
+          <h1 class="md-display-2">Thêm câu hỏi</h1>
+            <!-- Tiêu đề câu hỏi -->
+            <md-input-container class="md-block" flex-gt-sm>
+             <label>Tiêu đề câu hỏi</label>
+             <input ng-model="addtest.data.title">
+            <!-- Nội dung câu hỏi -->
+            </md-input-container>
+            <md-content id="question0" class="md-padding" style="background-color: rgb(209, 223, 227)">
+              <md-input-container id="a" class="md-block" flex-gt-sm>
+                <label>Câu hỏi thứ nhất</label>
+                <input ng-model="addtest.data.questionSet[0].question">
+              </md-input-container>
+              <br>
+              <div id="answer0" layout-gt-sm="column">
+                <div id="answer0_0">
+                  <md-input-container class="md-block" flex-gt-sm>
+                    <label>Câu trả lời 1</label>
+                    <input ng-model="addtest.data.questionSet[0].answerSet[0]">
+                    <br>
+                    <button id="#answer0_0" ng-click="addtest.removeAnswer($event)">X</button>
+                  </md-input-container>
+                </div>
+              </div>
+              <button id="#answer0" class="md-primary md-hue-1" ng-click="addtest.appendAnswer($event)">Thêm câu trả lời</button>
+              <button id="#question0" class="md-primary md-hue-1" ng-click="addtest.removeQuestion($event)">Xóa câu hỏi</button>
+            </md-content>
+        </md-content>
+        <div layout="row" layout-align="center">
+          <md-button class="md-primary md-hue-1" ng-click="addtest.appendQuestion()">Thêm câu hỏi</md-button>
+          <md-button class="md-primary md-hue-1" ng-click="addtest.addTest()">Tạo đề</md-button>
+        </div>
+      </md-tab>
+
+      <!-- Custom question score tab -->
+      <md-tab label="two">
+        <md-content class="md-padding">
+          <h1 class="md-display-2">Thêm câu trả lời</h1>
+          <!-- <div style="position: absolute; z-index: 1;">
+            <h3 id="answerWaring" class="md-display-2">Bạn cần thêm câu hỏi trước khi chọn đáp án</h3>
+          </div> -->
+          <div id="correctAnswer" ng-repeat="ques in addtest.data.questionSet">
+              <md-button style="width: 300px; background-color: rgb(30, 73, 224)" class="md-raised md-primary">{{ques.question}}</md-button>
+                  <div ng-repeat="answer in ques.answerSet" >
+                    <md-checkbox ng-click="addtest.updateCorrectAnswer(answer, ques.corectAnswerSet)"><md-button class="md-raised">{{answer}}</md-button></md-checkbox>
+                  </div>
+              <md-input-container class="md-block" flex-gt-sm>
+                <label>First name</label>
+                <input style="width: 120px;" type="number" step="0.25" ng-model="ques.score">
+              </md-input-container>
+          </div>
+        </md-content>
+      </md-tab>
+
+      <!-- Setting tab -->
+      <md-tab label="three">
+        <md-content class="md-padding">
+          <h1 class="md-display-2">Cài đặt</h1>
+
+          <!-- Chỉnh thời gian -->
+          <div layout>
+            <div flex="10" layout layout-align="center center">
+              <span class="md-body-1">Thời gian cho mỗi câu hỏi</span>
+            </div>
+            <md-slider flex min="0" max="60" ng-model="addtest.data.deadline" aria-label="red" id="red-slider" class>
+            </md-slider>
+            <br>
+            <div flex="20" layout layout-align="center center">
+              <input stle="margin-left: 50px" flex type="number" ng-model="addtest.data.deadline" aria-label="red" aria-controls="red-slider">
+            </div>
+          </div>
+
+          <!-- có cho phép trở lại câu hỏi trước đó -->
+          <md-switch ng-model="addtest.data.redo" aria-label="Switch 1">
+            cho phép làm lại {{addtest.data.redo}}
+          </md-switch>
+
+          <!-- cho phép xáo câu hỏi -->
+          <md-switch ng-model="addtest.data.random" aria-label="Switch 1">
+            cho phép xáo câu
+          </md-switch>
+        </md-content>
+      </md-tab>
+    </md-tabs>
+  </md-content>
+  <div layout="row" layout-align="center">
+    <md-button class="md-raised md-primary" ng-click="addtest.buildTest()">Hoàn Thành</md-button>
+  </div>
+</div>
