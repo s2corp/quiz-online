@@ -5,7 +5,6 @@ import { Email } from 'meteor/email';
 import { Session } from 'meteor/session';
 import { Meteor } from 'meteor/meteor'
 
-import { Users } from '../../../api/lists/user.js';
 import './registerStudent.html';
 import '../template/vertificateMail.html';
 
@@ -56,8 +55,11 @@ class RegisterStudent{
   //gửi mail
   sendMail()
   {
+    //khởi tạo đối tượng mã hóa
     var Cryptr = require('cryptr'),
     cryptr = new Cryptr('ntuquiz123');
+
+    //mã hóa mật khẩu
     this.user.password = cryptr.encrypt(this.user.password);
     var content = '{"mail":'+ '"' + this.user.mail + '"';
         content = content + ',"lastname":' + '"' + this.user.lastName + '"';
@@ -69,8 +71,10 @@ class RegisterStudent{
         content = content + ',"phone":' + '"' + this.user.phone + '"';
         content = content + ',"password":' + '"' + this.user.password + '"' + '}';
 
+    //nội dung sau khi mã hóa
     var encryptedString = cryptr.encrypt(content);
 
+    //gửi mail bằng methods phía server
     Meteor.call('sendEmail', this.user.mail, encryptedString);
   }
 
