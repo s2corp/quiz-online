@@ -6,23 +6,23 @@
       <md-tab label="one">
         <md-content id="questionSet" class="md-padding">
           <h1 class="md-display-2">Tab One</h1>
-            <md-content id="question1" class="md-padding" style="background-color: rgb(209, 223, 227)">
+            <md-content id="question0" class="md-padding" style="background-color: rgb(209, 223, 227)">
               <md-input-container id="a" class="md-block" flex-gt-sm>
                 <label>Câu hỏi thứ nhất</label>
                 <input ng-model="addtest.data.questionSet[0].question">
               </md-input-container>
               <br>
-              <div id="answer1" layout-gt-sm="column">
-                <div id="answer0_1">
+              <div id="answer0" layout-gt-sm="column">
+                <div id="answer0_0">
                   <md-input-container class="md-block" flex-gt-sm>
                     <label>Câu trả lời 1</label>
-                    <input ng-model="addtest.data.questionSet[0].answerSet.answer[1]">
+                    <input ng-model="addtest.data.questionSet[0].answerSet[0]">
                     <br>
-                    <button id="#answer0_1" ng-click="addtest.removeAnswer($event)">X</button>
+                    <button id="#answer0_0" ng-click="addtest.removeAnswer($event)">X</button>
                   </md-input-container>
                 </div>
               </div>
-              <button id="#answer1" class="md-primary md-hue-1" ng-click="addtest.appendAnswer($event)">Thêm câu trả lời</button>
+              <button id="#answer0" class="md-primary md-hue-1" ng-click="addtest.appendAnswer($event)">Thêm câu trả lời</button>
               <button id="#question0" class="md-primary md-hue-1" ng-click="addtest.removeQuestion($event)">Xóa câu hỏi</button>
             </md-content>
         </md-content>
@@ -34,9 +34,16 @@
       <md-tab label="two">
         <md-content class="md-padding">
           <h1 class="md-display-2">Tab Two</h1>
-          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla venenatis ante augue. Phasellus volutpat neque ac dui mattis vulputate. Etiam consequat aliquam cursus. In sodales pretium ultrices. Maecenas lectus est, sollicitudin consectetur felis nec, feugiat ultricies mi. Aliquam erat volutpat. Nam placerat, tortor in ultrices porttitor, orci enim rutrum enim, vel tempor sapien arcu a tellus. Vivamus convallis sodales ante varius gravida. Curabitur a purus vel augue ultrices ultricies id a nisl. Nullam malesuada consequat diam, a facilisis tortor volutpat et. Sed urna dolor, aliquet vitae posuere vulputate, euismod ac lorem. Sed felis risus, pulvinar at interdum quis, vehicula sed odio. Phasellus in enim venenatis, iaculis tortor eu, bibendum ante. Donec ac tellus dictum neque volutpat blandit. Praesent efficitur faucibus risus, ac auctor purus porttitor vitae. Phasellus ornare dui nec orci posuere, nec luctus mauris semper.</p>
-          <p>Morbi viverra, ante vel aliquet tincidunt, leo dolor pharetra quam, at semper massa orci nec magna. Donec posuere nec sapien sed laoreet. Etiam cursus nunc in condimentum facilisis. Etiam in tempor tortor. Vivamus faucibus egestas enim, at convallis diam pulvinar vel. Cras ac orci eget nisi maximus cursus. Nunc urna libero, viverra sit amet nisl at, hendrerit tempor turpis. Maecenas facilisis convallis mi vel tempor. Nullam vitae nunc leo. Cras sed nisl consectetur, rhoncus sapien sit amet, tempus sapien.</p>
-          <p>Integer turpis erat, porttitor vitae mi faucibus, laoreet interdum tellus. Curabitur posuere molestie dictum. Morbi eget congue risus, quis rhoncus quam. Suspendisse vitae hendrerit erat, at posuere mi. Cras eu fermentum nunc. Sed id ante eu orci commodo volutpat non ac est. Praesent ligula diam, congue eu enim scelerisque, finibus commodo lectus.</p>
+          <div id="correctAnswer" ng-repeat="ques in addtest.data.questionSet">
+              <md-button style="width: 300px; background-color: rgb(30, 73, 224)" class="md-raised md-primary">{{ques.question}}</md-button>
+                  <div ng-repeat="answer in ques.answerSet" >
+                    <md-checkbox ng-click="addtest.updateCorrectAnswer(answer, ques.corectAnswerSet)"><md-button class="md-raised">{{answer}}</md-button></md-checkbox>
+                  </div>
+              <md-input-container class="md-block" flex-gt-sm>
+                <label>First name</label>
+                <input style="width: 120px;" type="number" step="0.25" ng-model="ques.score">
+              </md-input-container>
+          </div>
         </md-content>
       </md-tab>
 
@@ -44,7 +51,29 @@
       <md-tab label="three">
         <md-content class="md-padding">
           <h1 class="md-display-2">Tab Three</h1>
-          <p>Integer turpis erat, porttitor vitae mi faucibus, laoreet interdum tellus. Curabitur posuere molestie dictum. Morbi eget congue risus, quis rhoncus quam. Suspendisse vitae hendrerit erat, at posuere mi. Cras eu fermentum nunc. Sed id ante eu orci commodo volutpat non ac est. Praesent ligula diam, congue eu enim scelerisque, finibus commodo lectus.</p>
+
+          <!-- Chỉnh thời gian -->
+          <div layout>
+            <div flex="10" layout layout-align="center center">
+              <span class="md-body-1">Thời gian cho mỗi câu hỏi</span>
+            </div>
+            <md-slider flex min="0" max="60" ng-model="addtest.data.deadline" aria-label="red" id="red-slider" class>
+            </md-slider>
+            <br>
+            <div flex="20" layout layout-align="center center">
+              <input stle="margin-left: 50px" flex type="number" ng-model="addtest.data.deadline" aria-label="red" aria-controls="red-slider">
+            </div>
+          </div>
+
+          <!-- có cho phép trở lại câu hỏi trước đó -->
+          <md-switch ng-model="addtest.data.redo" aria-label="Switch 1">
+            cho phép làm lại {{addtest.data.redo}}
+          </md-switch>
+
+          <!-- cho phép xáo câu hỏi -->
+          <md-switch ng-model="addtest.data.random" aria-label="Switch 1">
+            cho phép xáo câu
+          </md-switch>
         </md-content>
       </md-tab>
     </md-tabs>
