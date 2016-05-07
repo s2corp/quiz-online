@@ -124,12 +124,6 @@ class AddTest {
   //thêm đề
   addTest()
   {
-    //thêm id của user đang đăng nhập
-    if(Meteor.userId() != null)
-      this.data.userId = Meteor.userId();
-
-    //thêm ngày
-    this.data.date = new Date();
 
     this.data.questionSet.forEach((elem) => {
       if(elem == null){
@@ -144,12 +138,18 @@ class AddTest {
       });
     });
     document.getElementById('answerWaring').style.visibility = 'hidden';
-    document.getElementById('correctAnswer').style.visibility = 'visible';
+    //document.getElementById('correctAnswer').style.visibility = 'visible';
   }
-  
-  //thêm vào cơ sở dữ liệu
+
   buildTest()
   {
+    //thêm id của user đang đăng nhập
+    if(Meteor.userId() != null)
+      this.data.userId = Meteor.userId();
+
+    //thêm ngày
+    this.data.date = new Date();
+    
     //clean up data to remove $$hashkey
     data = angular.copy(this.data);
     this.cleanupAngularObject(data);
