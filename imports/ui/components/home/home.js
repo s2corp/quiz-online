@@ -10,6 +10,7 @@ const name = 'home';
 
 export default  angular.module(name, [
     angularMeteor,
+    'accounts.ui',
     Login,
   ]
 )
