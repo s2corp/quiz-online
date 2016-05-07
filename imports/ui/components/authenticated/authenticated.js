@@ -9,11 +9,15 @@ class Authenticated{
   constructor($stateParams) {
     'ngInject';
 
+    //khởi tạo đối tượng giải mã
     var Cryptr = require('cryptr'),
     cryptr = new Cryptr('ntuquiz123');
 
+    //giải mã thông tin user được chứa trong đường link
     var decryptedString = cryptr.decrypt($stateParams.info);
     var user = JSON.parse(decryptedString);
+
+    //gọi method thêm user ở phía server
     Meteor.call('insertUser', user);
   }
 }
