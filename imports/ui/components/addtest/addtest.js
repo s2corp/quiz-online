@@ -7,69 +7,71 @@ import { Question } from '../../../api/lists/question';
 import './addtest.html';
 //import { Users } from '../../../api/lists/user.js';
 
+
 class AddTest {
   constructor($scope, $reactive, $compile, $sce) {
     'ngInject';
+
     $reactive(this).attach($scope);
     this.data = {
-      questionSet: [{
-        question: "",
-        answerSet: []
-      }]
+      questionSet: [
+        {
+          question: '',
+          answerSet: [],
+          corectAnswerSet: [],
+          score: 0,
+        }
+      ],
+      deadline: 30,
+      redo: false,
+      random: false
     };
-    //this.data.questionSet.question = [];
-    this.index = 1;
+    //this.data.date = new Date();
+    //this.data.deadline = 30;
     this.answer = 0;
     this.question = 0;
     this.compile = $compile;
     this.scope = $scope;
-    this.inputList = [
-      '<md-input-container class="md-block" flex-gt-sm><label>câu hỏi thứ 1</label><input ng-model="user.firstName"></md-input-container>',
-    ];
-
-    //this.addHtmlElement();
-
-    // this.helpers({
-    //   parties() {
-    //     return this.inputListHtml;
-    //   }
-    // });
   }
 
+  //thêm đáp án
   appendAnswer(event)
   {
-    console.log(this.data.questionSet);
-    this.answer ++;
+    var answer = this.data.questionSet[this.question].answerSet.length;
     var anString =
-    '<div id=answer'+ this.question + '_' + this.answer + '>' +
+    '<div id=answer'+ this.question + '_' + answer + '>' +
       '<md-input-container class="md-block" flex-gt-sm>' +
-        '<label>câu trả lời ' + this.answer + '</label>' +
-        '<input ng-model="addtest.data.questionSet[' + this.question + '].answerSet.answer[' + this.answer + ']">' +
+        '<label>câu trả lời ' + answer + '</label>' +
+        '<input ng-model="addtest.data.questionSet[' + this.question + '].answerSet[' + answer + ']">' +
       '</md-input-container>' +
-      '<button id="#answer' + this.question + '_' + this.answer + '" ng-click="addtest.removeAnswer($event)">X</button>' +
+      '<button id="#answer' + this.question + '_' + answer + '" ng-click="addtest.removeAnswer($event)">X</button>' +
     '</div>';
-    this.inputList.push(anString);
-    //alert('#answer' + obj.target.id)
     var myEl = angular.element( document.querySelector( event.target.id) );
     myEl.append(this.compile(anString)(this.scope));
   }
 
+  //xóa đáp án
   removeAnswer(event)
   {
     var answerIndex = parseInt(event.target.id.charAt(9));
     var questionIndex = parseInt(event.target.id.charAt(7));
-    this.data.questionSet[questionIndex].answerSet.splice(answerIndex, 1);
-    console.log(this.data.questionSet);
-    var id = event.target.id.substring(1);
-    //document.getElementById(id).value = '';
-    //alert(event.target.id);
     var myEl = angular.element( document.querySelector( event.target.id) );
+
     myEl.remove();
-    //this.data.questionSet = {};
+    this.data.questionSet[questionIndex].answerSet[answerIndex] = '';
   }
 
+  //thêm câu hỏi
   appendQuestion()
   {
+    var question = {
+        question: '',
+        answerSet: [],
+        corectAnswerSet: [],
+        score: 0,
+    }
+
+    this.data.questionSet.push(question);
     this.question ++;
     this.answer = 0;
     var quesString = '<br><md-content id="question' + this.question + '" class="md-padding" style="background-color: rgb(209, 223, 227)">' +
@@ -82,7 +84,7 @@ class AddTest {
                                   '<div id=answer'+ this.question + '_' + this.answer + '>' +
                                     '<md-input-container class="md-block" flex-gt-sm>' +
                                           '<label>Câu trả lời 1</label>' +
-                                          '<input ng-model="addtest.data.questionSet[' + this.question + '].answerSet.answer[' + this.answer +']">' +
+                                          '<input ng-model="addtest.data.questionSet[' + this.question + '].answerSet[0]">' +
                                     '</md-input-container>' +
                                     '<button id="#answer' + this.question + '_' + this.answer + '" ng-click="addtest.removeAnswer($event)">X</button>' +
                                   '</div>' +
@@ -90,22 +92,83 @@ class AddTest {
                                 '<button id="#answer'+ this.question + '" class="md-primary md-hue-1" ng-click="addtest.appendAnswer($event)">Thêm câu trả lời</button>' +
                                 '<button id="#question' + this.question + '" class="md-primary md-hue-1" ng-click="addtest.removeQuestion($event)">Xóa câu hỏi</button>' +
                           '</md-content>';
-    //this.inputList.push(anString);
     var myEl = angular.element( document.querySelector( '#questionSet' ) );
     myEl.append(this.compile(quesString)(this.scope));
   }
 
+  //xóa câu hỏi
   removeQuestion(event)
   {
-    console.log(event.target.id);
+    var questionIndex = parseInt(event.target.id.charAt(9));
     var myEl = angular.element( document.querySelector( event.target.id) );
+
     myEl.remove();
+    this.data.questionSet[questionIndex] = null;
   }
 
+  //thêm đáp án
+  updateCorrectAnswer(answer, correctAnswerSet)
+  {
+    var index = -1
+    correctAnswerSet.forEach((elem) => {
+      if(elem == answer){
+        index = correctAnswerSet.indexOf(elem);
+      }
+    });
+    if(index != -1)
+      correctAnswerSet.splice(index, 1);
+    else
+      correctAnswerSet.push(answer);
+  }
+
+  //thêm đề
   addTest()
   {
-    Question.insert(this.data);
+    //thêm id của user đang đăng nhập
+    if(Meteor.userId() != null)
+      this.data.userId = Meteor.userId();
+
+    //thêm ngày
+    this.data.date = new Date();
+
+    //clean up data to remove $$hashkey
+    data = angular.copy(this.data);
+    this.cleanupAngularObject(data);
+
+    data.questionSet.forEach((elem) => {
+      if(elem == null){
+        var index = data.questionSet.indexOf(elem);
+        data.questionSet.splice(index, 1)
+      }
+      elem.answerSet.forEach((answer) => {
+        if(answer == ''){
+          var index = elem.answerSet.indexOf(answer);
+          elem.answerSet.splice(index, 1);
+        }
+      });
+    });
+    Question.insert(data);
   }
+
+  //clean up data
+  cleanupAngularObject(value)
+  {
+    if (value instanceof Array) {
+        for (var i = 0; i < value.length; i++) {
+              this.cleanupAngularObject(value[i]);
+         }
+    }
+    else if (value instanceof Object) {
+         for (property in value) {
+             if (/^\$+/.test(property)) {
+                 delete value[property];
+             }
+             else {
+                 this.cleanupAngularObject(value[property]);
+             }
+         }
+     }
+ }
 }
 
 const name = 'addtest';
