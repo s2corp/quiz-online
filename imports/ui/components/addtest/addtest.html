@@ -42,10 +42,10 @@
       <md-tab label="two">
         <md-content class="md-padding">
           <h1 class="md-display-2">Thêm câu trả lời</h1>
-          <div style="position: absolute; z-index: 1;">
+          <!-- <div style="position: absolute; z-index: 1;">
             <h3 id="answerWaring" class="md-display-2">Bạn cần thêm câu hỏi trước khi chọn đáp án</h3>
-          </div>
-          <div style="visibility: hidden;" id="correctAnswer" ng-repeat="ques in addtest.data.questionSet">
+          </div> -->
+          <div id="correctAnswer" ng-repeat="ques in addtest.data.questionSet">
               <md-button style="width: 300px; background-color: rgb(30, 73, 224)" class="md-raised md-primary">{{ques.question}}</md-button>
                   <div ng-repeat="answer in ques.answerSet" >
                     <md-checkbox ng-click="addtest.updateCorrectAnswer(answer, ques.corectAnswerSet)"><md-button class="md-raised">{{answer}}</md-button></md-checkbox>
