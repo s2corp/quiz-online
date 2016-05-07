@@ -131,14 +131,10 @@ class AddTest {
     //thêm ngày
     this.data.date = new Date();
 
-    //clean up data to remove $$hashkey
-    data = angular.copy(this.data);
-    this.cleanupAngularObject(data);
-
-    data.questionSet.forEach((elem) => {
+    this.data.questionSet.forEach((elem) => {
       if(elem == null){
-        var index = data.questionSet.indexOf(elem);
-        data.questionSet.splice(index, 1)
+        var index = this.data.questionSet.indexOf(elem);
+        this.data.questionSet.splice(index, 1)
       }
       elem.answerSet.forEach((answer) => {
         if(answer == ''){
@@ -147,6 +143,16 @@ class AddTest {
         }
       });
     });
+    document.getElementById('answerWaring').style.visibility = 'hidden';
+    document.getElementById('correctAnswer').style.visibility = 'visible';
+  }
+  
+  //thêm vào cơ sở dữ liệu
+  buildTest()
+  {
+    //clean up data to remove $$hashkey
+    data = angular.copy(this.data);
+    this.cleanupAngularObject(data);
     Question.insert(data);
   }
 
