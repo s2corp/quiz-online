@@ -1,0 +1,103 @@
+<div ng-cloak>
+  <md-content>
+    <md-tabs md-dynamic-height md-border-bottom md-selected="addtest.selectedTab">
+
+      <!-- Add question tab -->
+      <md-tab label="Thêm nội dung">
+
+        <form name="addtest.myForm">
+          <md-content id="questionSet" class="md-padding">
+            <h1 class="md-display-2">Thêm câu hỏi</h1>
+              <p id="correctError" class="error" role="alert" style="color: red; display: none;">
+                  bạn cần chọn câu trả lời đúng cho mỗi câu hỏi
+              </p>
+              <br>
+              <p id="answerError" class="error" role="alert" style="color: red; display: none;">
+                  bạn cần thêm ít nhất 2 câu trả lời cho mỗi câu hỏi
+              </p>
+              <!-- Tiêu đề câu hỏi -->
+              <md-input-container class="md-block" flex-gt-sm>
+               <label>Tiêu đề câu hỏi</label>
+               <input name="questionTitle" ng-model="addtest.data.title" required>
+               <br>
+               <p class="error" role="alert" ng-show="addtest.myForm.questionTitle.$error.required" style="color: red;">
+                   Tiêu đề câu hỏi là bắt buộc
+               </p>
+              </md-input-container>
+
+              <!-- Nội dung câu hỏi -->
+              <md-content id="question0" class="md-padding" style="background-color: rgb(209, 223, 227)">
+                <md-input-container id="a" class="md-block" flex-gt-sm>
+                  <label>Câu hỏi thứ nhất</label>
+                  <input ng-model="addtest.data.questionSet[0].question">
+                  <br>
+                </md-input-container>
+                <br>
+
+                <!--nội dung các câu trả lời-->
+                <div id="answer0" layout-gt-sm="column">
+                      <div id="answer0_0">
+                        <md-input-container class="md-block" flex-gt-sm>
+                            <label>Câu trả lời 1</label>
+                            <input ng-model="addtest.data.questionSet[0].answerSet[0]">
+                        </md-input-container>
+
+                        <!--Thêm câu trả lời đúng-->
+                        <input type="radio" name="gender" ng-click="addtest.insertCorrectAnswer(0, addtest.data.questionSet[0].answerSet[0])"> Đáp án đúng <br>
+
+                        <!--Xóa câu hỏi-->
+                        <button id="#answer0_0" ng-click="addtest.removeAnswer($event)">X</button>
+                      </div>
+                </div>
+
+                <!--Điểm số của câu hỏi-->
+                <md-input-container class="md-block" flex-gt-sm>
+                  <label>Điểm số</label>
+                  <input ng-model="addtest.data.questionSet[0].score" style="width: 120px;" type="number" step="0.25">
+                </md-input-container>
+
+                <!--Thêm câu trả lời-->
+                <button id="#answer0" class="md-primary md-hue-1" ng-click="addtest.appendAnswer($event)">Thêm câu trả lời</button>
+                <!--xóa câu hỏi-->
+                <button id="#question0" class="md-primary md-hue-1" ng-click="addtest.removeQuestion($event)">Xóa câu hỏi</button>
+              </md-content>
+          </md-content>
+        </form>
+
+        <div layout="column" layout-align="center center">
+          <md-button class="md-primary md-hue-1" ng-click="addtest.appendQuestion()">Thêm câu hỏi</md-button>
+          <md-button class="md-raised md-primary" ng-click="addtest.changeTab()" >Hoàn Thành</md-button>
+        </div>
+      </md-tab>
+
+      <!--tab xem lại-->
+      <md-tab label="Xem lại" md-on-select="addtest.foreChange()">
+        <h1 class="md-display-2">Xem lại</h1>
+        <md-content>
+          <h2>{{addtest.data.title}}</h2>
+          <div ng-repeat="ques in addtest.data.questionSet" ng-if="ques != null" layout="column" layout-align="center">
+              <md-button class="md-raised" style="background-color: rgb(30, 73, 224)"><textarea rows="3" name="Text1" readonly>{{ques.question}}</textarea></md-button>
+
+
+              <!-- các lựa chọn -->
+              <div ng-repeat="answer in ques.answerSet" ng-if="answer != ''" layout="column" layout-align="center">
+                  <md-button class="md-raised"><textarea rows="3" name="Text1" readonly>{{answer}}</textarea></md-button>
+              </div>
+
+              <!-- đáp án -->
+              <md-button class="md-raised" style="background-color: rgb(127, 83, 182)" ><textarea rows="3" name="Text1" readonly>{{ques.correctAnswer}}</textarea></md-button>
+
+              <!--Điểm số của câu hỏi-->
+              <md-input-container class="md-block" flex-gt-sm>
+                  <label>Điểm số</label>
+                  <input ng-model="addtest.data.questionSet[0].score" style="width: 120px;" type="number" step="0.25" readonly>
+              </md-input-container>
+          </div>
+          <div layout="column" layout-align="center center">
+            <md-button class="md-raised md-primary" ng-click="addtest.buildTest()">Lưu câu hỏi</md-button>
+          </div>
+        </md-content>
+      </md-tab>
+    </md-tabs>
+  </md-content>
+</div>

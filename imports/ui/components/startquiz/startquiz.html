@@ -1,0 +1,260 @@
+<h1 id="code" style ="visibility: hidden;">Code đã được gửi</h1>
+<md-content>
+    <md-tabs md-dynamic-height md-border-bottom md-selected="startquiz.selectedTab">
+
+      <!-- Tab thứ nhất -->
+      <md-tab label="Tạo kì thi">
+        <md-content class="md-padding">
+          <h1 class="md-display-2">Tab One</h1>
+          <form name="startquiz.myForm">
+            <div layout="row" layout-align="center">
+
+              <!-- Nhập thông tin kì thi -->
+              <div class="startquiz-tab" layout="column" layout-align="center center">
+
+                <!-- Nhập mã kì thi -->
+                <md-input-container class="md-block" flex-gt-sm style="width: 80%;">
+                        <label>Mã kì thi</label>
+                        <input ng-model="startquiz.data._id" readonly>
+                </md-input-container>
+
+                <!-- Nhập tên kì thi -->
+                <md-input-container class="md-block" flex-gt-sm style="width: 80%;">
+                        <label>Nhập tên kì thi</label>
+                        <input name="examName" ng-model="startquiz.data.examName" required>
+                        <br>
+                        <p class="error" role="alert" ng-show="startquiz.myForm.examName.$error.required" style="color: red;">
+                            tên kì thi là bắt buộc
+                        </p>
+                </md-input-container>
+
+
+                <!-- Số lượng người chơi tối đa-->
+                <!-- <md-input-container class="md-block" flex-gt-sm style="width: 80%; margin-left: 10%;">
+                        <label>Số lượng người chơi tối đa</label>
+                        <input type="number" step="10" ng-model="startquiz.data.userCount">
+                </md-input-container> -->
+
+                <!-- Chủ đề -->
+                <!-- <md-input-container class="md-block" flex-gt-sm style="width: 80%; margin-left: 10%;">
+                        <label>Nhập tên chủ đề</label>
+                        <input name="topic" ng-model="startquiz.data.topic" required>
+                        <br>
+                        <p lass="error" role="alert" class="error" ng-show="startquiz.myForm.topic.$error.required" style="color: red">
+                            chủ đề là bắt buộc
+                        </p>
+                </md-input-container> -->
+
+                <!--Chọn câu hỏi từ-->
+                <div layout-gt-md="row" layout-md="column" layout-align="center center" layout-fill style="width: 80%;">
+                  <md-button id="bank" class="md-raised md-primary" style="width: 60%;" ng-click="startquiz.changeTabBank()">Ngân hàng câu hỏi</md-button>
+                  <md-button id="create" class="md-raised md-primary" style="width: 60%;" ng-click="startquiz.changeTabCreate()">Câu hỏi tự tạo</md-button>
+                </div>
+                <!-- Số lượng người chơi hiên tại-->
+                <!-- <md-input-container class="md-block" flex-gt-sm style="width: 80%; margin-left: 10%;">
+                        <label>Số lượng người chơi hiện tại</label>
+                        <input type="number" step="10" ng-model="startquiz.data.reallyCount" value="0" readonly>
+                </md-input-container> -->
+
+                <!-- Thời gian -->
+                <!-- <div layout="row" layout-align="center">
+
+                  <md-input-container class="md-block" flex-gt-sm style="width: 30%; margin-left: 10%;">
+                          <label>Thời gian bắt đầu</label>
+                          <input name="timeStart" type="datetime-local" ng-model="startquiz.data.timeStart" required>
+                          <br>
+                          <p role="alert" class="error" ng-show="startquiz.myForm.timeStart.$error.required" style="color: red">
+                              thời gian bắt đầu là bắt buộc
+                          </p>
+                  </md-input-container>
+
+
+                  <md-input-container class="md-block" flex-gt-sm style="width: 30%; margin-right: 10%;">
+                          <label>thời gian kết thúc</label>
+                          <input name="timeEnd" type="datetime-local" ng-model="startquiz.data.timeEnd" required>
+                          <br>
+                          <p role="alert" class="error" ng-show="startquiz.myForm.timeEnd.$error.required" style="color: red">
+                              thời gian kết thúc là bắt buộc
+                          </p>
+                  </md-input-container>
+
+                </div> -->
+
+
+
+                <!-- Tạo câu hỏi -->
+                <!-- <div layout="row" layout-align="center">
+                  <md-button class="md-raised md-primary" style="width: 80%;" ng-click="startquiz.changeTab()">Tạo câu hỏi</md-button>
+                </div> -->
+              </div>
+            </div>
+          </form>
+        </md-content>
+      </md-tab>
+
+      <!-- Tab thứ hai -->
+      <md-tab label="Thêm câu hỏi" md-on-select="startquiz.foreChange()">
+        <md-content class="md-padding">
+          <!-- <h1 class="md-display-2">Tab Two</h1> -->
+          <div>
+
+            <!-- Nhập thông tin kì thi -->
+            <!-- <div class="startquiz-tab"> -->
+              <addtest id="addtest"></addtest>
+              <questionbank id="questionbank"></questionbank>
+              <!-- Thêm câu hỏi -->
+              <!-- <md-button class="md-raised md-primary" style="width: 80%; margin-left: 10%;" href="#">Ngân hàng câu hỏi</md-button>
+              <md-button class="md-raised md-primary" style="width: 80%; margin-left: 10%;" href="/addtest">Câu hỏi tự tạo</md-button> -->
+              <!-- Trộn câu hỏi-->
+              <!-- <md-button class="md-raised md-primary" style="width: 40%; margin-left: 30%;" ng-click="">Trộn câu hỏi</md-button> -->
+
+              <!-- Số lượng câu hỏi -->
+              <!-- <div layout="row" layout-align="center">
+                <h3 style="margin-left: 10%;">Số lượng câu hỏi</h3>
+                <md-input-container class="md-block" flex-gt-sm style="margin-left: 10%;">
+                        <input type="number" ng-model="startquiz.data.questionCount" readonly>
+                </md-input-container>
+              </div>
+
+              <h3 style="margin-left: 10%;">Mức độ câu hỏi</h3>
+
+              <div layout="row" layout-align="center">
+                <h4 style="margin-left: 15%;">Khó</h4>
+                <md-input-container class="md-block" flex-gt-sm style="margin-left: 10%;">
+                        <input type="number" ng-model="startquiz.data.hardLevel" readonly>
+                </md-input-container>
+              </div>
+
+              <div layout="row" layout-align="center">
+                <h4 style="margin-left: 15%;">Trung bình</h4>
+                <md-input-container class="md-block" flex-gt-sm style="margin-left: 10%;">
+                        <input type="number" step="10" ng-model="startquiz.data.normalLevel" readonly>
+                </md-input-container>
+              </div>
+
+              <div layout="row" layout-align="center">
+                <h4 style="margin-left: 15%;">Dễ</h4>
+                <md-input-container class="md-block" flex-gt-sm style="margin-left: 10%;">
+                        <input type="number" step="10" ng-model="startquiz.data.easyLevel" readonly>
+                </md-input-container>
+              </div> -->
+
+              <!-- Bắt đầu -->
+              <!-- <div layout="row" layout-align="center">
+                <md-button class="md-raised md-primary" style="width: 80%;" ng-click="startquiz.insertExam()">Hoàn thành</md-button>
+              </div> -->
+            <!-- </div> -->
+
+            <!-- Gửi mã code -->
+            <!-- <div id="sendCodeTab" style="width: 40%; margin-left: 7%; border: 1px solid rgb(180, 180, 180)" disable="true">
+
+              <div layout="column" layout-align="top center" style="height: 320px; overflow: scroll; overflow-x: hidden;">
+                <table ng-repeat="user in startquiz.usersOnline">
+                    <tr>
+                      <td>
+                        <img src="/image/green-glossy-icon-md.png" alt="" style="width: 14px; height: 14px;">
+                      </td>
+                      <td style="width: 150px;">
+                        <div style="margin-left: 10px;">{{user.profile.name}}</div>
+                      </td>
+                      <td>
+                        <md-button id="sendCode" class="md-raised md-primary" style="width: 50px;" ng-click="startquiz.sendCode(user._id, $event)" DISABLED="true">Mời</md-button>
+                      </td>
+                    </tr>
+                </table>
+              </div>
+
+              <div layout="row" layout-align="center">
+                <md-button id="sendCodeAll" class="md-raised md-primary" style="width: 80%; margin-left: 10%;" ng-click="startquiz.inviteAll()" DISABLED="true">Mời tất cả mọi người</md-button>
+              </div>
+            </div> -->
+
+          </div>
+        </md-content>
+      </md-tab>
+
+      <!-- Tab thứ ba -->
+      <md-tab label="Hoàn tất" md-on-select="startquiz.foreChange()">
+        <h1 class="md-display-2">Cài Đặt</h1>
+        <p id="Error" class="error" role="alert" style="color: red; display: none;">
+            bạn cần thêm câu hỏi trước khi hòan tất việc tạo đề
+        </p>
+        <md-content class="md-padding">
+          <div layout="row" layout-align="center">
+            <div class="startquiz-tab" layout="column" layout-align="center center">
+
+              <!-- Nhập thời gian cho kì thi theo phút-->
+              <!-- Chỉnh thời gian -->
+              <div layout="row" layout-align="left" style="width: 80%;">
+                <label>Tổng thời gian cho kì thi (theo phút)</label>
+              </div>
+              <div layout-gt-md="row" layout-md="column" style="width: 80%;">
+                <!-- <div flex="10" layout layout-align="center center">
+                  <span class="md-body-1">Thời gian cho mỗi câu hỏi</span>
+                </div> -->
+                <md-slider flex min="0" max="180" ng-model="startquiz.data.deadline" aria-label="red" id="red-slider" class>
+                </md-slider>
+                <br>
+                <div flex="20" style="margin-left: 10px" layout layout-align="center center">
+                  <input flex type="number" ng-model="startquiz.data.deadline" aria-label="red" aria-controls="red-slider">
+                </div>
+              </div>
+
+              <!-- Số lượng người chơi -->
+              <div layout="row" layout-align="left" style="width: 80%;">
+                <label>Số lượng người chơi tối đa</label>
+              </div>
+              <div layout-gt-md="row" layout-md="column" style="width: 80%;">
+                <!-- <div flex="10" layout layout-align="center center">
+                  <span class="md-body-1">Thời gian cho mỗi câu hỏi</span>
+                </div> -->
+                <md-slider flex min="0" max="100" ng-model="startquiz.data.userCount" aria-label="red" id="red-slider" class>
+                </md-slider>
+                <br>
+                <div flex="20" style="margin-left: 10px" layout layout-align="center center">
+                  <input flex type="number" ng-model="startquiz.data.userCount" aria-label="red" aria-controls="red-slider">
+                </div>
+              </div>
+
+              <!-- Chia sẽ với cộng đồng -->
+              <div layout="column" layout-align="left" style="width: 80%;">
+                <md-switch ng-model="startquiz.public" aria-label="Switch 1" ng-change="startquiz.publicQuestion()">
+                   chia sẽ với cộng đồng?
+                </md-switch>
+                <md-input-container id="questionFields" class="md-block" style="display: none;" flex-gt-sm>
+                  <label>Nhập tên lĩnh vực</label>
+                  <input ng-model="startquiz.fields">
+                </md-input-container>
+              </div>
+              <!-- Hình thức chơi -->
+              <!-- <md-input-container id="computer" flex-gt-sm style="width: 80%;">
+                <label>Chọn hình thức</label>
+                <md-select ng-model="addtest.data.questionSet[0].level">
+                  <md-option ng-value="level" ng-repeat="level in addtest.levels">{{level}}</md-option>
+                </md-select>
+              </md-input-container>
+
+              <div id="mobile" layout="column" layout-align="center left" style="width: 80%;">
+                <label style="font-size: 23px; color: rgb(143, 143, 143);">Chọn hình thức</label>
+                <md-radio-group ng-model="data.group1" layout="row">
+                  <md-radio-button value="team" class="md-primary">Đấu đội</md-radio-button>
+                  <md-radio-button value="personal"> Cá nhân </md-radio-button>
+                  <md-radio-button value="class">Theo lớp</md-radio-button>
+                </md-radio-group>
+              </div> -->
+              <md-button class="md-raised md-primary" style="width: 60%;" ng-click="startquiz.insertExam()">Hoàn tất</md-button>
+            </div>
+          </div>
+            <send-code-button id="send-code" style="display:"></send-code-button>
+        </md-content>
+      </md-tab>
+
+      <!-- Tab thứ tư -->
+      <!-- <md-tab label="Hoàn thành" md-on-select="startquiz.foreChange()">
+          <h1 class="md-display-2">Xem lại</h1>
+          <md-content>
+
+          </md-content>
+      </md-tab> -->
+    </md-tabs>
+  </md-content>

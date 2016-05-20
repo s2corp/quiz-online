@@ -1,0 +1,56 @@
+.buttondemoBasicUsage section {
+  background: #f7f7f7;
+  border-radius: 3px;
+  text-align: center;
+  margin: 1em;
+  position: relative !important;
+  padding-bottom: 10px; }
+.buttondemoBasicUsage md-content {
+  margin-right: 7px; }
+.buttondemoBasicUsage section .md-button {
+  margin-top: 16px;
+  margin-bottom: 16px; }
+.buttondemoBasicUsage .label {
+  position: absolute;
+  bottom: 5px;
+  left: 7px;
+  font-size: 14px;
+  opacity: 0.54;}
+  .contentdemoBasicUsage div.demo-content {
+  height: 100px; }
+.contentdemoBasicUsage div[ng-controller] {
+  height: 100px;
+  padding-bottom: 15px; }
+.contentdemoBasicUsage md-content {
+  padding: 24px; }
+
+.notification {
+  width: 50%;
+  height: 100px;
+}
+
+.startquiz-tab1 {
+  width: 50%;
+  border: 1px solid rgb(180, 180, 180);
+}
+
+@media only screen and (max-width: 1000px) {
+  .notification {
+    width: 80%;
+    height: 100px;
+  }
+  .startquiz-tab1 {
+    width: 100%;
+  }
+  div.createquiz {
+    margin-left: 15%;
+  }
+  .md-raised{
+    height: 75px;
+    font-size: 40px;
+  }
+  label{
+    font-size: 40px;
+  }
+
+}
