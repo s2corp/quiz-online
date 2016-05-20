@@ -1,0 +1,149 @@
+import angular from 'angular';
+import angularMeteor from 'angular-meteor';
+
+import './startquiz.html';
+import { Session } from 'meteor/session';
+import { Question } from '../../../api/lists/question.js';
+import { Notification } from '../../../api/lists/notification.js';
+import { Examination } from '../../../api/lists/examination.js';
+import { QuestionBankData } from '../../../api/lists/questionbankdata.js'
+import { name as AddTest } from '../addtest/addtest.js';
+import { name as QuestionBank } from '../questionbank/questionbank.js';
+import { name as SendCodeButton } from '../sendCodeButton/sendCodeButton';
+Meteor.subscribe('userStatus')
+
+class StartQuiz{
+  constructor($scope, $reactive){
+    'ngInject';
+
+    $reactive(this).attach($scope);
+    this.usersCount = 0;
+    this.code = (Math.floor(Math.random()*99999) + 10000).toString();
+    this.fields = ''
+    this.data = {
+        _id: this.code,
+        examName: '',
+        deadline: 0,
+        questionSetId: '',
+        questionCount: 0,
+        usersList: [],
+        reallyCount: 0,
+        userCount: 50,
+    };
+    this.disable = false;
+
+    this.data.reallyCount = this.data.usersList.length;
+
+    this.autorun(() => {
+      if(Session.get('selectedTab')){
+        this.selectedTab = parseInt(Session.get('selectedTab'));
+        Session.set('selectedTab', 0);
+      }
+    });
+  }
+
+  changeTabCreate() {
+    if(this.myForm.$valid)
+        if (this.selectedTab === 1) {
+            this.selectedTab = 0;
+        }
+        else {
+            this.selectedTab++;
+        }
+    document.getElementById('addtest').style.display = 'inline';
+    document.getElementById('questionbank').style.display = 'none';
+    //Session.set('quizData', this.data);
+  }
+
+  changeTabBank() {
+    if(this.myForm.$valid)
+        if (this.selectedTab === 1) {
+            this.selectedTab = 0;
+        }
+        else {
+            this.selectedTab++;
+        }
+    document.getElementById('questionbank').style.display = 'inline';
+    document.getElementById('addtest').style.display = 'none';
+    //Session.set('quizData', this.data);
+  }
+
+  foreChange()
+  {
+    if(!this.myForm.$valid)
+     this.selectedTab = 0;
+    document.getElementById('Error').style.display = 'none';
+  }
+
+  insertExam(){
+    if(this.myForm.$valid)
+    {
+      if(Session.get('questionId'))
+      {
+        this.data.questionSetId = Session.get('questionId');
+      }
+
+      if(Session.get('questionCount')){
+        this.data.questionCount = Session.get('questionCount');
+      }
+
+      this.data.userId = Meteor.userId();
+      if(this.data.questionSetId)
+      {
+        //thêm kì thi vào bảng examination
+        Examination.insert(this.data);
+        Session.set('quizId', this.data._id);
+
+        //thêm câu hỏi vào ngân hàng câu hỏi
+        if(this.public && this.fields != ''){
+          var quesdata = Question.find({_id: this.data.questionSetId}).fetch();
+          console.log(quesdata[0]);
+          console.log(quesdata[0].questionSet);
+          quesdata[0].questionSet.forEach((elem) => {
+            var data = {
+              fields: this.fields,
+              question: elem
+            }
+            QuestionBankData.insert(data);
+          });
+        }
+
+        //reset dữ liệu
+        this.data = {};
+        document.getElementById('send-code').style.display='inline';
+      }
+      else
+        document.getElementById('Error').style.display = 'inline';
+    }
+  }
+
+  publicQuestion(){
+    if(this.public)
+      document.getElementById('questionFields').style.display = 'inline';
+    else
+      document.getElementById('questionFields').style.display = 'none';
+  }
+}
+
+const name='startquiz';
+
+export default angular.module(name, [
+  angularMeteor,
+  AddTest,
+  QuestionBank,
+  SendCodeButton
+]).component(name, {
+  templateUrl: `imports/ui/components/${name}/${name}.html`,
+  controllerAs: name,
+  controller: StartQuiz
+})
+  .config(config);
+
+function config($stateProvider) {
+  'ngInject';
+  $stateProvider
+  	.state('startQuiz', {
+  		url: '/startQuiz',
+  		template: '<startquiz></startquiz>'
+  	});
+}
