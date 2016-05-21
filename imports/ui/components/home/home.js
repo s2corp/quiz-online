@@ -1,8 +1,6 @@
 import angular from 'angular';
 import angularMeteor from 'angular-meteor';
-
-import { name as Login } from '../login/login';
-import { Question } from '../../../api/lists/question.js';
+import uiRouter from "angular-ui-router";
 import { name as Notification } from '../notification/notification';
 import './home.html';
 
@@ -12,8 +10,8 @@ const name = 'home';
 
 export default  angular.module(name, [
     angularMeteor,
+    uiRouter,
     'accounts.ui',
-    Login,
     Notification
   ]
 )

@@ -2,7 +2,7 @@ import angular from 'angular';
 import angularMeteor from 'angular-meteor';
 import uiRouter from 'angular-ui-router';
 import ngMaterial from 'angular-material';
-import { Question } from '../../../api/lists/question';
+import { Question } from '../../../api/question';
 
 import './addtest.html';
 //import { Users } from '../../../api/lists/user.js';
@@ -13,6 +13,7 @@ class AddTest {
     'ngInject';
 
     $reactive(this).attach($scope);
+    this.subscribe("question");
     this.code = (Math.floor(Math.random()*99999) + 10000).toString();
     this.data = {
       _id: this.code,

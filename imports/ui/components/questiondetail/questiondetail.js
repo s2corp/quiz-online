@@ -3,7 +3,7 @@ import angularMeteor from 'angular-meteor';
 import uiRouter from 'angular-ui-router';
 
 import './questiondetail.html';
-import { Question } from '../../../api/lists/question';
+import { Question } from '../../../api/question';
 
 class QuestionDetail {
   constructor($stateParams, $scope, $reactive) {
@@ -11,6 +11,7 @@ class QuestionDetail {
 
       $reactive(this).attach($scope);
       //console.log($stateParams.questionId);
+      this.subscribe("question");
       this.helpers({
         question() {
           return Question.find({

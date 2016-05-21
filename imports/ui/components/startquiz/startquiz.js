@@ -3,10 +3,10 @@ import angularMeteor from 'angular-meteor';
 
 import './startquiz.html';
 import { Session } from 'meteor/session';
-import { Question } from '../../../api/lists/question.js';
-import { Notification } from '../../../api/lists/notification.js';
-import { Examination } from '../../../api/lists/examination.js';
-import { QuestionBankData } from '../../../api/lists/questionbankdata.js'
+import { Question } from '../../../api/question';
+import { Notification } from '../../../api/notificationdata';
+import { Examination } from '../../../api/examination';
+import { QuestionBankData } from '../../../api/questionbankdata'
 import { name as AddTest } from '../addtest/addtest.js';
 import { name as QuestionBank } from '../questionbank/questionbank.js';
 import { name as SendCodeButton } from '../sendCodeButton/sendCodeButton';
@@ -17,6 +17,10 @@ class StartQuiz{
     'ngInject';
 
     $reactive(this).attach($scope);
+    this.subscribe("question");
+    this.subscribe("notification");
+    this.subscribe("examination");
+    this.subscribe("questionbankdata");
     this.usersCount = 0;
     this.code = (Math.floor(Math.random()*99999) + 10000).toString();
     this.fields = ''

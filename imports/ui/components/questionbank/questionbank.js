@@ -2,14 +2,15 @@ import angular from 'angular';
 import angularMeteor from 'angular-meteor';
 
 import './questionbank.html';
-import { Question } from '../../../api/lists/question.js'
-import { QuestionBankData } from '../../../api/lists/questionbankdata.js'
+import { Question } from '../../../api/question'
+import { QuestionBankData } from '../../../api/questionbankdata'
 
 class QuestionBank {
   constructor($scope, $reactive){
     'ngInject';
 
     $reactive(this).attach($scope);
+    this.subscribe("questionbankdata");
     this.code = (Math.floor(Math.random()*99999) + 10000).toString();
     this.questionCount = 0;
     this.fields = '';
@@ -88,7 +89,7 @@ class QuestionBank {
     }
 
     Session.set('selectedTab', '2');
-    
+
     //reset data
     this.value = {};
   }

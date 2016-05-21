@@ -9,12 +9,14 @@
     "angular-animate": "^1.5.5",
     "angular-aria": "^1.5.5",
     "angular-material": "^1.0.8",
+    "angular-material-data-table": "^0.10.9",
     "angular-messages": "^1.5.5",
     "angular-meteor": "^1.3.10",
     "angular-mocks": "^1.5.5",
     "angular-route": "^1.5.5",
     "angular-sanitize": "^1.5.5",
     "angular-ui-router": "^0.2.18",
+    "cryptr": "^2.0.0",
     "ionic-sdk": "^1.2.4",
     "meteor-node-stubs": "^0.2.3"
   }

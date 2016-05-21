@@ -9,13 +9,12 @@ import { name as RegisterStudent } from '../register_student/registerStudent';
 import { name as RegisterTeacher } from '../register_teacher/registerTeacher';
 import { name as Navigation } from '../navigation/navigation';
 import { name as Authenticated } from '../authenticated/authenticated';
-import { name as ManageQuestion } from '../managequestion/managequestion';
 import { name as QuestionDetail } from '../questiondetail/questiondetail';
 import { name as StartQuiz } from '../startquiz/startquiz';
 import { name as Notification } from '../notification/notification';
-import { name as JoinExam } from '../joinexam/joinexam';
 import { name as NotificateButton} from '../notificateButton/notificateButton';
-
+import { name as joinExam} from '../joinExam/joinExam';
+import { name as waitExam} from '../waitExam/waitExam';
 import './maincomponent.html';
 
 class Main{}
@@ -32,11 +31,11 @@ export default  angular.module(name, [
     RegisterStudent,
     Authenticated,
     NotificateButton,
-    ManageQuestion,
     QuestionDetail,
     StartQuiz,
     Notification,
-    JoinExam,
+    joinExam,
+    waitExam
     ///ngMaterial
   ]
 )
