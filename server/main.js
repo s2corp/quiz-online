@@ -98,3 +98,29 @@ Meteor.methods({
       return data;
     }
   });
+
+  //countTime
+  Meteor.methods({
+    timeRunOut:function(time){
+       time--;
+       return time;
+    }
+  });
+
+
+  //kiem tra cau tra loi
+  Meteor.methods({
+    checkanswer:function(question_id,question,answer,index){
+      var tam = Question.find({$and:[{"_id":question_id}
+        ,{"questionSet": { $elemMatch: { "question":question,"correctAnswerSet":answer}}}]}).count();
+      if(tam > 0)
+      {
+        console.log(tam);
+        return tam;
+      }
+      else {
+        console.log("-1");
+        return -1;
+      }
+    }
+  });
