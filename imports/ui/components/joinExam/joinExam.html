@@ -1,0 +1,18 @@
+<div layout="row" layout-xs="column" layout-sm="column" layout-md="row" layout-padding id="content"  >
+  <div flex-offset="30" flex-offset-md="20" flex-md="60" flex-sm="100" flex="50" layout-align="center center" >
+    <md-card class="md-whiteframe-9dp" >
+      <img class="md-card-image" src="card-image.png" alt="image caption">
+      <md-card-content layout="column">
+        <md-input-container class="md-whiteframe-9dp">
+          <label>Vui lòng nhập mã để tham gia kì thi!</label>
+          <input type="text" ng-model="zipcode">
+        </md-input-container>
+      </md-card-content>
+      <div class="md-actions" layout="column"  layout-align="center center" style="background-color:rgba(24, 149, 145, 0.52)" >
+         <!-- <md-button ui-sref="test({test_id:zipcode})">JON NOW</md-button> -->
+         <md-button ng-click="joinExam.loginExam(zipcode)" >Vao Game</md-button>
+       </div>
+    </md-card>
+  </div>
+</div>
+<a href="waitExam">dfds</a>

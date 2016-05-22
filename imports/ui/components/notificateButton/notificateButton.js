@@ -4,15 +4,15 @@ import angularMeteor from 'angular-meteor';
 import './notificateButton.html';
 import './notificateModal.html';
 import { name as Notification } from '../notification/notification';
-import { NotificationData } from '../../../api/lists/notification.js';
+import { NotificationData } from '../../../api/notificationdata';
 
 class NotificateButton {
-  constructor($mdDialog, $mdMedia) {
+  constructor($mdDialog, $mdMedia, $scope,$reactive) {
     'ngInject';
-
+    $reactive(this).attach($scope);
     this.$mdDialog = $mdDialog;
     this.$mdMedia = $mdMedia;
-
+    this.subscribe("notification");
     var query = NotificationData.find( { 'userId': Meteor.userId() } );
     var handle = query.observeChanges({
       added: function (id, user) {

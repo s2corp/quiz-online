@@ -2,18 +2,32 @@ import angular from 'angular';
 import angularMeteor from 'angular-meteor';
 
 import './questionbank.html';
-import { Question } from '../../../api/lists/question.js'
-import { QuestionBankData } from '../../../api/lists/questionbankdata.js'
+import { Question } from '../../../api/question'
+import { QuestionBankData } from '../../../api/questionbankdata'
 
 class QuestionBank {
   constructor($scope, $reactive){
     'ngInject';
 
     $reactive(this).attach($scope);
+    this.subscribe("questionbankdata");
+
+    //mã code tự sinh sử dụng cho id của bộ câu hỏi cộng đồng
     this.code = (Math.floor(Math.random()*99999) + 10000).toString();
-    this.questionCount = 0;
+
+    //sử dụng để hiện hoặc ẩn nội dung câu hỏi
+    this.display = 'none';
+
+    //lĩnh vực mà người dùng lựa chọn
     this.fields = '';
 
+    //số lượng câu hỏi tối đa của lĩnh vực được chọn
+    this.maxCount = 0;
+
+    //số lượng câu hỏi hiện tại
+    this.questionCount = 0;
+
+    //chứa tất cả nội dung của kì thi
     this.value = {
       _id: this.code,
       title: 'câu hỏi cộng đồng',
@@ -41,6 +55,7 @@ class QuestionBank {
   addQuestionPersonal(question){
     var questions = Question.find({'_id': question._id}).fetch();
 
+    this.value.title = questions[0].title;
     this.value.questionSet = questions[0].questionSet;
 
     this.selectedTab = 2;
@@ -50,8 +65,18 @@ class QuestionBank {
   }
 
   addQuestionPublic(){
+    var randMax = Math.floor((Math.random() * 5) + 6) / 10;
+    var randMin = Math.floor((Math.random() * 5) + 1) / 10;
+    var questions = [];
+    var count = 0;
+
     //lựa chọn các câu hỏi với lĩnh vực đã chọn
-    var questions = QuestionBankData.find({'fields': this.fields}, {limit: this.questionCount});
+    while(count < this.questionCount){
+      questions = QuestionBankData.find({'fields': this.fields, 'randomValue': {$gt: randMin}, 'randomValue': {$lt: randMax}} , {limit: this.questionCount});
+      count = questions.count();
+      randMin -= 0.0001;
+      randMax += 0.0001;
+    }
 
     //tạo phần tử của bảng Question
     var tempQues = [];
@@ -88,7 +113,7 @@ class QuestionBank {
     }
 
     Session.set('selectedTab', '2');
-    
+
     //reset data
     this.value = {};
   }
@@ -113,6 +138,18 @@ class QuestionBank {
      }
    }
 
+   //hiện và ẩn nội dung ứng với một câu hỏi trong tab xem lại
+   showhideQuestion(id){
+    if(document.getElementById(id).style.display === 'none')
+      document.getElementById(id).style.display = 'inline';
+    else
+      document.getElementById(id).style.display = 'none';
+   }
+
+   //hiển thị số lượng câu hỏi tối đa đối với một lĩnh vực được lựa chọn
+   showMaxCount(){
+     this.maxCount = QuestionBankData.find({'fields': this.fields}).count();
+   }
 
 }
 

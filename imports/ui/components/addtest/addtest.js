@@ -2,7 +2,7 @@ import angular from 'angular';
 import angularMeteor from 'angular-meteor';
 import uiRouter from 'angular-ui-router';
 import ngMaterial from 'angular-material';
-import { Question } from '../../../api/lists/question';
+import { Question } from '../../../api/question';
 
 import './addtest.html';
 //import { Users } from '../../../api/lists/user.js';
@@ -13,6 +13,7 @@ class AddTest {
     'ngInject';
 
     $reactive(this).attach($scope);
+    this.subscribe("question");
     this.code = (Math.floor(Math.random()*99999) + 10000).toString();
     this.data = {
       _id: this.code,
@@ -74,7 +75,7 @@ class AddTest {
     '<div id=answer'+ this.question + '_' + answer + '>' +
       '<md-input-container class="md-block" flex-gt-sm>' +
         '<label>câu trả lời ' + answer + '</label>' +
-        '<input ng-model="addtest.data.questionSet[' + this.question + '].answerSet[' + answer + ']">' +
+        '<textarea ng-model="addtest.data.questionSet[' + this.question + '].answerSet[' + answer + ']" md-maxlength="500" rows="5" md-select-on-focus></textarea>' +
       '</md-input-container>' +
       '<input type="radio" name="gender" ng-click="addtest.insertCorrectAnswer(' + this.question + ', addtest.data.questionSet[' + this.question + '].answerSet[' + answer + '])"> Đáp án đúng <br>' +
       '<button id="#answer' + this.question + '_' + answer + '" ng-click="addtest.removeAnswer($event)">X</button>' +
@@ -99,14 +100,14 @@ class AddTest {
     var quesString = '<br><md-content id="question' + this.question + '" class="md-padding" style="background-color: rgb(209, 223, 227)">' +
                                 '<md-input-container class="md-block" flex-gt-sm>' +
                                       '<label>Câu hỏi thứ ' + this.question + '</label>' +
-                                      '<input ng-model="addtest.data.questionSet[' + this.question + '].question">' +
+                                      '<textarea ng-model="addtest.data.questionSet[' + this.question + '].question" md-maxlength="500" rows="5" md-select-on-focus></textarea>' +
                                 '</md-input-container>' +
                                 '<br>' +
                                 '<div id="answer' + this.question + '" layout-gt-sm="column">' +
                                   '<div id=answer'+ this.question + '_' + this.answer + '>' +
                                     '<md-input-container class="md-block" flex-gt-sm>' +
                                           '<label>Câu trả lời 1</label>' +
-                                          '<input ng-model="addtest.data.questionSet[' + this.question + '].answerSet[0]">' +
+                                          '<textarea ng-model="addtest.data.questionSet[' + this.question + '].answerSet[0]" md-maxlength="500" rows="5" md-select-on-focus></textarea>' +
                                     '</md-input-container>' +
                                     '<input type="radio" name="gender" ng-click="addtest.insertCorrectAnswer(' + this.question + ', addtest.data.questionSet[' + this.question + '].answerSet[' + this.answer + '])"> Đáp án đúng <br>' +
                                     '<button id="#answer' + this.question + '_' + this.answer + '" ng-click="addtest.removeAnswer($event)">X</button>' +

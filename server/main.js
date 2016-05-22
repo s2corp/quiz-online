@@ -2,23 +2,12 @@ import { Meteor } from 'meteor/meteor';
 import { Email } from 'meteor/email';
 import { Session } from 'meteor/session';
 
-import { NotificationData } from '../imports/api/lists/notification.js';
-import { Examination } from '../imports/api/lists/examination.js';
-import { Question } from '../imports/api/lists/question.js';
-import { QuestionBankData } from '../imports/api/lists/questionbankdata.js';
-import {UserExam} from '../imports/api/lists/userexam.js';
-
+import { NotificationData } from '../imports/api/notificationdata';
+import { Examination } from '../imports/api/examination';
+import { Question } from '../imports/api/question';
+import { QuestionBankData } from '../imports/api/questionbankdata';
 process.env.MAIL_URL = 'smtp://sanghuynhnt95@gmail.com:123581321tuongmo@smtp.gmail.com:465/';
 
-//sang huynh
-//nguyen xuan vinh
-//thêm user
-
-function Sang(){
-}
-function vinh(){
-
-}
 Meteor.methods({
   insertUser: function(user){
     Meteor.users.insert(user)
@@ -52,7 +41,6 @@ Accounts.onCreateUser(function(options, user) {
 //kiểm tra mail trùng lặp
 Meteor.methods({
   findUser: function(inMail){
-    //console.log(Meteor.users.find({mail: inMail}).count());
     var result = Meteor.users.find({mail: inMail}).count();
     return result;
   }
@@ -82,6 +70,54 @@ Meteor.methods({
   });
 
   Meteor.publish("userStatus", function() {
-    //console.log(Notification.find( { 'userId': Meteor.userId() } ).count());
     return Meteor.users.find({ "status.online": true });
+  });
+
+
+  Meteor.methods({
+    updateExam:function(id,user,scored){
+      Examination.update({_id:id,"usersList.userId":user}, {$set:{
+          "usersList.$.scored":scored
+      }});
+    }
+  });
+
+  Meteor.methods({
+    finduser:function(userList){
+      var data = [];
+      for (var i = 0; i < userList.length; i++) {
+
+        var user = Meteor.users.findOne({_id:userList[i].userId});
+
+        data.push(user)
+      }
+
+      return data;
+    }
+  });
+
+  //countTime
+  Meteor.methods({
+    timeRunOut:function(time){
+       time--;
+       return time;
+    }
+  });
+
+
+  //kiem tra cau tra loi
+  Meteor.methods({
+    checkanswer:function(question_id,question,answer,index){
+      var tam = Question.find({$and:[{"_id":question_id}
+        ,{"questionSet": { $elemMatch: { "question":question,"correctAnswerSet":answer}}}]}).count();
+      if(tam > 0)
+      {
+        console.log(tam)
+        return tam;
+      }
+      else {
+        console.log("-1");
+        return -1;
+      }
+    }
   });

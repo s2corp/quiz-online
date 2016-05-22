@@ -1,14 +1,14 @@
 import angular from 'angular';
 import angularMeteor from 'angular-meteor';
 
-import { name as Login } from '../login/login';
-import { NotificationData } from '../../../api/lists/notification.js';
+import { NotificationData } from '../../../api/notificationdata';
 import './notification.html';
 
 class Note{
   constructor($scope, $reactive){
     'ngInject';
     $reactive(this).attach($scope);
+    this.subscribe("notification");
     this.helpers({
       notes() {
         if( NotificationData.find( { 'userId': Meteor.userId() } ).count() > 0 )

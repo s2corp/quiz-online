@@ -28,6 +28,15 @@
                         </p>
                 </md-input-container>
 
+                <md-input-container class="md-block" style="width: 80%;">
+                  <label>Nhập mô tả</label>
+                  <textarea name="examDescrip" ng-model="startquiz.data.examDescrip" md-maxlength="500" rows="5" md-select-on-focus required></textarea>
+                  <br>
+                  <p class="error" role="alert" ng-show="startquiz.myForm.examDescrip.$error.required" style="color: red;">
+                      mô tả là bắt buộc
+                  </p>
+                </md-input-container>
+
 
                 <!-- Số lượng người chơi tối đa-->
                 <!-- <md-input-container class="md-block" flex-gt-sm style="width: 80%; margin-left: 10%;">
@@ -217,7 +226,7 @@
               </div>
 
               <!-- Chia sẽ với cộng đồng -->
-              <div layout="column" layout-align="left" style="width: 80%;">
+              <div id="share" layout="column" layout-align="left" style="width: 80%;">
                 <md-switch ng-model="startquiz.public" aria-label="Switch 1" ng-change="startquiz.publicQuestion()">
                    chia sẽ với cộng đồng?
                 </md-switch>
@@ -242,7 +251,7 @@
                   <md-radio-button value="class">Theo lớp</md-radio-button>
                 </md-radio-group>
               </div> -->
-              <md-button class="md-raised md-primary" style="width: 60%;" ng-click="startquiz.insertExam()">Hoàn tất</md-button>
+              <md-button class="md-raised md-primary" style="width: 60%;" ui-sref="waitExam({exam_id: startquiz.code})" ng-click="startquiz.insertExam()">Hoàn tất</md-button>
             </div>
           </div>
             <send-code-button id="send-code" style="display:"></send-code-button>

@@ -3,7 +3,7 @@ import angularMeteor from 'angular-meteor';
 import uiRouter from 'angular-ui-router';
 
 import './sendCode.html';
-import { NotificationData } from '../../../api/lists/notification.js';
+import { NotificationData } from '../../../api/notificationdata';
 //import { Users } from '../../../api/lists/user.js';
 
 class SendCode{
@@ -12,6 +12,7 @@ class SendCode{
     'ngInject';
 
     $reactive(this).attach($scope);
+    this.subscribe("notification");
     this.helpers({
       usersOnline() {
         return Meteor.users.find({ "status.online": true })

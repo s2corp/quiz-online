@@ -4,7 +4,7 @@
       <!-- Tab thứ nhất -->
       <md-tab label="Cá nhân">
         <md-content class="md-padding">
-          <h1 class="md-display-2">Tab One</h1>
+          <!-- <h1 class="md-display-2">Tab One</h1> -->
             <div>
               <!-- Nhập thông tin kì thi -->
               <!-- <div class="questionbank-tab"> -->
@@ -25,24 +25,35 @@
       <!-- Tab thứ hai -->
       <md-tab label="Cộng đồng" md-on-select="questionbank.foreChange()">
         <md-content class="md-padding">
-          <h1 class="md-display-2">Tab Two</h1>
+          <!-- <h1 class="md-display-2">Tab Two</h1> -->
           <form name="questionbank.myForm">
             <div layout="row" layout-align="center">
               <div class="questionbank-tab">
+
+                <!-- Chọn lĩnh vực  -->
+                <md-input-container flex-gt-sm style="width: 80%; margin-left: 10%;">
+                  <label>Chọn lĩnh vực</label>
+                  <md-select ng-model="questionbank.fields" ng-change="questionbank.showMaxCount()">
+                    <md-option ng-value="fields" ng-repeat="fields in questionbank.data">{{fields}}</md-option>
+                  </md-select>
+                </md-input-container>
+
+                <!-- Số lượng câu hỏi tối đa thuộc lĩnh vực-->
+                <md-input-container class="md-block" flex-gt-sm style="width: 80%; margin-left: 10%;">
+                        <label>Số lượng câu hỏi tối đa</label>
+                        <input name="numberQuestion" type="number" ng-model="questionbank.maxCount" readonly>
+                </md-input-container>
+
+                <!-- Nhập số lượng câu hỏi -->
                 <md-input-container class="md-block" flex-gt-sm style="width: 80%; margin-left: 10%;">
                         <label>Nhập số lượng câu hỏi</label>
-                        <input name="numberQuestion" type="number" ng-model="questionbank.questionCount" required>
+                        <input name="numberQuestion" type="number" ng-model="questionbank.questionCount" ng-max="questionbank.maxCount" required>
                         <br>
                         <p role="alert" class="error" ng-show="questionbank.myForm.numberQuestion.$error.required" style="color: red">
                             Số lượng câu hỏi là bắt buộc
                         </p>
                 </md-input-container>
-                <md-input-container flex-gt-sm style="width: 80%; margin-left: 10%;">
-                  <label>Chọn lĩnh vực</label>
-                  <md-select ng-model="questionbank.fields">
-                    <md-option ng-value="fields" ng-repeat="fields in questionbank.data">{{fields}}</md-option>
-                  </md-select>
-                </md-input-container>
+
                 <div layout="row" layout-align="center">
                   <md-button class="md-raised md-primary" style="width: 80%;" ng-click="questionbank.addQuestionPublic()">Chọn câu hỏi</md-button>
                 </div>
@@ -54,31 +65,68 @@
 
       <!--tab xem lại-->
       <md-tab label="Xem lại" md-on-select="questionbank.foreChange()">
-        <h1 class="md-display-2">Xem lại</h1>
-        <md-content>
-          <h2>{{questionbank.value.title}}</h2>
-          <div ng-repeat="ques in questionbank.value.questionSet" ng-if="ques != null" layout="column" layout-align="center">
-              <md-button class="md-raised" style="background-color: rgb(30, 73, 224)"><textarea rows="3" name="Text1" readonly>{{ques.question}}</textarea></md-button>
+        <!-- <h1 class="md-display-2">Xem lại</h1> -->
+        <div layout="row" layout-align="center">
+          <md-content style="width: 80%;">
+            <h2>{{questionbank.value.title}}</h2>
+            <div ng-repeat="ques in questionbank.value.questionSet" ng-if="ques != null" layout="column" layout-align="center">
+              <!-- Câu hỏi -->
+              <!-- <md-button class="md-raised" style="background-color: rgb(30, 73, 224)"><textarea rows="3" name="Text1" readonly>{{ques.question}}</textarea></md-button> -->
+              <div layout="row" layout-align="left left">
+                <!--hiển thi câu hỏi-->
+                <md-button class="md-raised" style="height: 50%; width: 95%;" ng-click="questionbank.showhideQuestion(ques.question)">{{ques.question}}</md-button>
 
+                <!-- Thay thế câu hỏi -->
+                <md-button class="md-raised md-primary" style="margin-left: 10px; height: 50%; background-color: rgb(240, 121, 11)" ng-click="questionbank.addQuestionPublic()">Thay thế</md-button>
 
-              <!-- các lựa chọn -->
-              <div ng-repeat="answer in ques.answerSet" ng-if="answer != ''" layout="column" layout-align="center">
-                  <md-button class="md-raised"><textarea rows="3" name="Text1" readonly>{{answer}}</textarea></md-button>
+                <!-- Xóa câu hỏi -->
+                <md-button class="md-raised md-primary" style="margin-left: 10px; height: 50%; background-color: rgb(231, 19, 6);" ng-click="questionbank.addQuestionPublic()">X</md-button>
               </div>
 
-              <!-- đáp án -->
-              <md-button class="md-raised" style="background-color: rgb(127, 83, 182)" ><textarea rows="3" name="Text1" readonly>{{ques.correctAnswer}}</textarea></md-button>
+              <!-- Nội dung bộ câu hỏi -->
+              <div id="{{ques.question}}" style="display: none; margin-left: 10px;">
 
-              <!--Điểm số của câu hỏi-->
-              <md-input-container class="md-block" flex-gt-sm>
-                  <label>Điểm số</label>
-                  <input ng-model="questionbank.value.questionSet[0].score" style="width: 120px;" type="number" step="0.25" readonly>
-              </md-input-container>
-          </div>
-          <div layout="column" layout-align="center center">
-            <md-button class="md-raised md-primary" ng-click="questionbank.buildTest()">Lưu câu hỏi</md-button>
-          </div>
-        </md-content>
+                <!-- Nội dung câu hỏi -->
+                <md-input-container id="a" class="md-block" flex-gt-sm style="width:80%;">
+                  <label>Câu hỏi</label>
+                  <textarea ng-model="ques.question" md-maxlength="500" rows="5" md-select-on-focus style="background-color: rgb(22, 71, 180)" readonly></textarea>
+                  <br>
+                </md-input-container>
+
+
+                <!-- các lựa chọn -->
+                <div ng-repeat="answer in ques.answerSet" ng-if="answer != ''" layout="column" layout-align="center">
+                    <!-- <md-button class="md-raised"><textarea rows="3" name="Text1" readonly>{{answer}}</textarea></md-button> -->
+                    <md-input-container id="a" class="md-block" flex-gt-sm style="width:80%;">
+                      <label>Lựa chọn</label>
+                      <textarea ng-model="answer" md-maxlength="500" rows="5" md-select-on-focus readonly></textarea>
+                      <br>
+                    </md-input-container>
+                </div>
+
+                <!-- đáp án -->
+                <!-- <md-button class="md-raised" style="background-color: rgb(127, 83, 182)" ><textarea rows="3" name="Text1" readonly>{{ques.correctAnswer}}</textarea></md-button> -->
+                <md-input-container id="a" class="md-block" flex-gt-sm style="width:80%;">
+                  <label>Đáp án</label>
+                  <textarea ng-model="ques.correctAnswer" md-maxlength="500" rows="5" md-select-on-focus style="background-color: rgb(212, 20, 89)" readonly></textarea>
+                  <br>
+                </md-input-container>
+
+                <!--Điểm số của câu hỏi-->
+                <md-input-container class="md-block" flex-gt-sm>
+                    <label>Điểm số</label>
+                    <input ng-model="ques.score" style="width: 120px;" type="number" step="0.25" readonly>
+                </md-input-container>
+              </div>
+
+            </div>
+
+            <div layout="column" layout-align="center center">
+              <md-button class="md-raised md-primary" ng-click="questionbank.buildTest()">Lưu câu hỏi</md-button>
+            </div>
+          </md-content>
+        </div>
+
       </md-tab>
 
     </md-tabs>
