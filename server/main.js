@@ -1,7 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import { Email } from 'meteor/email';
 import { Session } from 'meteor/session';
-
+import {Promise} from 'meteor/promise';
 import { NotificationData } from '../imports/api/notificationdata';
 import { Examination } from '../imports/api/examination';
 import { Question } from '../imports/api/question';
@@ -76,13 +76,6 @@ Meteor.methods({
   });
 
 
-  Meteor.methods({
-    updateExam:function(id,user,scored){
-      Examination.update({_id:id,"usersList.userId":user}, {$set:{
-          "usersList.$.scored":scored
-      }});
-    }
-  });
 
   Meteor.methods({
     finduser:function(userList){
@@ -110,17 +103,54 @@ Meteor.methods({
 
   //kiem tra cau tra loi
   Meteor.methods({
-    checkanswer:function(question_id,question,answer,index){
-      var tam = Question.find({$and:[{"_id":question_id}
-        ,{"questionSet": { $elemMatch: { "question":question,"correctAnswerSet":answer}}}]}).count();
-      if(tam > 0)
-      {
-        console.log(tam);
-        return tam;
+    scoredUser:function(id,user){
+      var val = Examination.findOne({$and:[{"_id":id},{"usersList.userId":user}]});
+      for (var i = 0; i < val.usersList.length; i++) {
+        if(val.usersList[i].userId === user)
+        {
+          console.log("vi tri " +i);
+          console.log(val.usersList[i].scored);
+            return val.usersList[i].scored;
+        }
+
+
       }
-      else {
-        console.log("-1");
-        return -1;
-      }
+      //console.log(val);
+
+
     }
   });
+
+  Meteor.methods({
+    checkanswer:function(id,user,question_id,question,answer,index){
+      var tam = Question.findOne({$and:[{"_id":question_id}
+        ,{"questionSet": { $elemMatch: { "question":question,"correctAnswerSet":answer}}}]});
+      if(tam !== null)
+      {
+        Examination.update({_id:id,"usersList.userId":user}, {$inc:{
+            "usersList.$.scored":tam.questionSet[index].scored
+        }});
+      }
+
+
+      var score = 0;
+      var val = Examination.findOne({$and:[{"_id":id},{"usersList.userId":user}]});
+      for (var i = 0; i < val.usersList.length; i++) {
+        if(val.usersList[i].userId === user)
+        {
+          console.log("vi tri " +i);
+          console.log(val.usersList[i].scored);
+            score = val.usersList[i].scored;
+        }
+      }
+        return score;
+}
+  });
+
+    Meteor.methods({
+      updateExam:function(id,user,scored){
+        Examination.update({_id:id,"usersList.userId":user}, {$set:{
+            "usersList.$.scored":scored
+        }});
+      }
+    });

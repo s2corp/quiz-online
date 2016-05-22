@@ -13,6 +13,7 @@ class StartedExam {
     'ngInject';
     $reactive(this).attach($scope);
     this.subscribe('question');
+    this.subscribe("examination");
     this.score=0;
     this.selectedIndex = 0 ;//hien ra cau hoi thu i
     this.isend = true;//kiem tra het cau hoi chua
@@ -31,6 +32,7 @@ class StartedExam {
         }
       },
       showquestion(){
+
 
         if(Question.find({"_id":$stateParams.question_id}).count() > 0)
         {
@@ -55,40 +57,17 @@ class StartedExam {
 
   checkanswer(que,data,vitri)
   {
-    //console.log(this.question_id);
-    // var ans=Question.find({$and:[{"_id":this.question_id}
-    //   ,{"questionSet": { $elemMatch: { "question":{$not:{$ne:que}},"correctAnswerSet":data}}}]}).count();
-    //   console.log(ans);
-
-    Meteor.call("checkanswer",this.question_id,que,data,vitri , function(error, result){
+    var userscored =
+    Meteor.call("checkanswer",this.exam_id,Meteor.userId(),this.question_id,que,data,vitri , function(error, result){
       if(error){
         console.log("error", error);
       }
-
       if(result){
-      console.log("ket qua");
-       console.log(result);
-        Session.set("valueresult", result);
+        console.log(result);
+        document.getElementById('scored').innerHTML = result;
       }
-    })
-    
+    });
 
-    console.log("correctAnswerSet");
-    console.log(Session.get("valueresult"));
-    // if(Session.get("valueresult") == null)
-    //   console.log("null valueresult");
-
-
-    //  console.log(ans.questionSet[vitri].scored);
-      // if(ans > 0){
-      //   console.log("dung");
-      //
-      //         this.score =this.score + val.questionSet[vitri].scored;
-      //         Meteor.call("updateExam",this.exam_id,Meteor.userId(),this.score);
-      //    }
-      //    else {
-      //      console.log("sai");
-      //    }
           //console.log(val.questionSet.length);
         if (this.selectedIndex < (this.lengthquestion - 1)) {
           this.selectedIndex = this.selectedIndex + 1;

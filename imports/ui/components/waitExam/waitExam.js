@@ -23,6 +23,7 @@ class WaitExam {
     this.stateParams = $stateParams;
     this.data =[];
     this.stop;
+    this.time = 3;
     var val ;
     this.helpers({
       userinfor(){
@@ -47,9 +48,9 @@ class WaitExam {
       },
       ownExam(){
         //var us = Examination.find({"field":value});
-        console.log(this.val.questionSetId);
+        //console.log(this.val.questionSetId);
         var us = Question.find({"_id":this.val.questionSetId, "userId":Meteor.userId()}).count();
-        console.log(us);
+        //console.log(us);
         if(us > 0)
           return true;
         return false;
@@ -58,15 +59,13 @@ class WaitExam {
 }
   runTime()
   {
-    Session.set("stopTime", 2);
+    Session.set("stopTime", this.time);
     this.stop = Meteor.setInterval(function(){
       Meteor.call("timeRunOut", Session.get("stopTime"), function(error, result){
         if(error){
           console.log("error", error);
         }
-          console.log(result);
           Session.set("stopTime", result);
-
       });
     }, 1000);
     this.autorun(function(){
@@ -78,6 +77,9 @@ class WaitExam {
 
         this.state.go("startedExam",{'exam_id':this.stateParams.exam_id,'question_id':this.val.questionSetId});
         //this.state.go("home");
+      }
+      else {
+        this.time = Session.get("stopTime");
       }
 
     });
