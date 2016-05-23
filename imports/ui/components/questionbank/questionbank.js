@@ -44,6 +44,9 @@ class QuestionBank {
       date: new Date()
     }
 
+    //xóa dữ liệu trong questionId
+    delete Session.keys['questionId'];
+
     this.helpers({
       questions() {
         return Question.find({"userId": Meteor.userId()});
@@ -100,17 +103,6 @@ class QuestionBank {
     this.changeTab();
   }
 
-  changeTab()
-  {
-    if(this.myForm.$valid)
-        if (this.selectedTab === 2) {
-            this.selectedTab = 0;
-        }
-        else {
-            this.selectedTab++;
-        }
-  }
-
   buildTest(){
 
     //insert phần tử vào bảng Question
@@ -129,6 +121,19 @@ class QuestionBank {
     //reset data
     this.value = {};
   }
+
+
+  changeTab()
+  {
+    if(this.myForm.$valid)
+        if (this.selectedTab === 2) {
+            this.selectedTab = 0;
+        }
+        else {
+            this.selectedTab++;
+        }
+  }
+
 
   //sử dụng để lọc điều kiện tìm kiếm trong changeQuestion
   countValue(condition){
