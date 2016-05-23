@@ -24,8 +24,14 @@ class QuestionBank {
     //số lượng câu hỏi tối đa của lĩnh vực được chọn
     this.maxCount = 0;
 
+    //chứa các câu hỏi đã chọn trong changeQuestion
+    this.questionChose = [];
+
     //số lượng câu hỏi hiện tại
     this.questionCount = 0;
+
+    //danh sách chứa tên các câu hỏi đã thêm
+    this.questionName = [];
 
     //chứa tất cả nội dung của kì thi
     this.value = {
@@ -46,10 +52,6 @@ class QuestionBank {
         return disctinctValues;
       }
     });
-  }
-
-  remove(questionId){
-    Question.remove(questionId)
   }
 
   addQuestionPersonal(question){
@@ -82,6 +84,7 @@ class QuestionBank {
     var tempQues = [];
     questions.forEach((elem) => {
       tempQues.push(elem.question);
+      this.questionName.push(elem.question.question);
     });
     this.value.questionSet = tempQues;
 
@@ -118,6 +121,28 @@ class QuestionBank {
     this.value = {};
   }
 
+  changeQuestion(question)
+  {
+    var index = 0;
+    var rand = Math.random();
+    var count = 0;
+
+    for(i = 0; i < this.value.questionSet.length; i++)
+      if(this.value.questionSet[i].question === question){
+        index = i;
+        break;
+      }
+
+    var questionResult = QuestionBankData.findOne( { 'fields': this.fields, 'question.question': {$nin: this.questionName}, 'question.question': {$nin: this.questionChose} } );
+    this.questionChose.push(questionResult.question.question);
+    if(this.questionChose.length === this.maxCount)
+       this.questionChose = [];
+    if(this.questionName.indexOf(questionResult.question.question) === -1){
+      this.value.questionSet[index] = questionResult.question;
+      this.questionName[index] = questionResult.question.question;
+    }
+  }
+
   //clean up data
   cleanupAngularObject(value)
   {
@@ -136,6 +161,19 @@ class QuestionBank {
              }
          }
      }
+   }
+
+   //sử dụng đối với câu hỏi cá nhân
+   remove(questionId){
+     Question.remove(questionId)
+   }
+
+   //sử dụng với câu hỏi cộng đồng
+   removeQuestion(index){
+    //  for(i = 0; i < this.value.questionSet.length; i++){
+    //    if(this.value.questionSet[i].question === ques.question){
+    //      var index = i;
+         this.value.questionSet.splice(index, 1);
    }
 
    //hiện và ẩn nội dung ứng với một câu hỏi trong tab xem lại
