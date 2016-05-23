@@ -16,6 +16,7 @@ import { name as NotificateButton} from '../notificateButton/notificateButton';
 import { name as joinExam} from '../joinExam/joinExam';
 import { name as waitExam} from '../waitExam/waitExam';
 import { name as startedExam} from '../startedExam/startedExam';
+import { name as Auth } from '../auth/auth';
 
 import './maincomponent.html';
 
@@ -38,7 +39,8 @@ export default  angular.module(name, [
     Notification,
     joinExam,
     waitExam,
-    startedExam
+    startedExam,
+    Auth
     ///ngMaterial
   ]
 )
@@ -48,7 +50,7 @@ export default  angular.module(name, [
   controller: Main
 })
 .config(config)
-  // .run(run);
+.run(run);
 
 function config($locationProvider, $urlRouterProvider, $mdIconProvider) {
   'ngInject';
@@ -73,4 +75,16 @@ function config($locationProvider, $urlRouterProvider, $mdIconProvider) {
       iconPath + 'svg-sprite-navigation.svg')
     .iconSet('image',
       iconPath + 'svg-sprite-image.svg');
+}
+
+function run($rootScope, $state) {
+  'ngInject';
+
+  $rootScope.$on('$stateChangeError',
+    (event, toState, toParams, fromState, fromParams, error) => {
+      if (error === 'AUTH_REQUIRED') {
+        $state.go('login');
+      }
+    }
+  );
 }

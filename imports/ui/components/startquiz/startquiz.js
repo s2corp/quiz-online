@@ -152,6 +152,15 @@ function config($stateProvider) {
   $stateProvider
   	.state('startQuiz', {
   		url: '/startQuiz',
-  		template: '<startquiz></startquiz>'
+  		template: '<startquiz></startquiz>',
+      resolve: {
+      currentUser($q) {
+        if (Meteor.userId() === null) {
+          return $q.reject('AUTH_REQUIRED');
+        } else {
+          return $q.resolve();
+        }
+      }
+    }
   	});
 }
