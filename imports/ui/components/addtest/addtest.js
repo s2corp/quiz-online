@@ -198,6 +198,14 @@ class AddTest {
      }
  }
 
+ //hiện và ẩn nội dung ứng với một câu hỏi trong tab xem lại
+ showhideQuestion(id){
+  if(document.getElementById(id).style.display === 'none')
+    document.getElementById(id).style.display = 'inline';
+  else
+    document.getElementById(id).style.display = 'none';
+ }
+
  //chặn việc chuyển tab
  foreChange()
  {

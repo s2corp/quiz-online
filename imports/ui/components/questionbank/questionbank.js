@@ -18,6 +18,9 @@ class QuestionBank {
     //sử dụng để hiện hoặc ẩn nội dung câu hỏi
     this.display = 'none';
 
+    //ẫn nút sửa và xóa nếu là câu hỏi cá nhân
+    this.disableButton = false;
+
     //lĩnh vực mà người dùng lựa chọn
     this.fields = '';
 
@@ -62,11 +65,15 @@ class QuestionBank {
 
     this.selectedTab = 2;
 
+    this.disableButton = true;
+
     Session.set('questionId', question._id);
     Session.set('questionCount', question.questionSet.length);
   }
 
   addQuestionPublic(){
+    this.questionChose = [];
+    this.questionName = [];
     var randMax = Math.floor((Math.random() * 5) + 6) / 10;
     var randMin = Math.floor((Math.random() * 5) + 1) / 10;
     var questions = [];
@@ -87,6 +94,8 @@ class QuestionBank {
       this.questionName.push(elem.question.question);
     });
     this.value.questionSet = tempQues;
+
+    this.disableButton = false;
 
     this.changeTab();
   }
@@ -121,10 +130,19 @@ class QuestionBank {
     this.value = {};
   }
 
+  //sử dụng để lọc điều kiện tìm kiếm trong changeQuestion
+  countValue(condition){
+    var count = 1;
+    for(i=1; i<condition.length; i++)
+        if(condition[i] !== condition[i - 1])
+          count ++;
+    return count;
+  }
+
   changeQuestion(question)
   {
+
     var index = 0;
-    var rand = Math.random();
     var count = 0;
 
     for(i = 0; i < this.value.questionSet.length; i++)
@@ -132,14 +150,28 @@ class QuestionBank {
         index = i;
         break;
       }
+    var condition = this.questionChose.concat(this.questionName);
+    condition = this.filterData(condition);
 
-    var questionResult = QuestionBankData.findOne( { 'fields': this.fields, 'question.question': {$nin: this.questionName}, 'question.question': {$nin: this.questionChose} } );
-    this.questionChose.push(questionResult.question.question);
-    if(this.questionChose.length === this.maxCount)
-       this.questionChose = [];
-    if(this.questionName.indexOf(questionResult.question.question) === -1){
+    if(condition.length >= this.maxCount){
+      this.questionChose = [];
+      condition = this.questionChose.concat(this.questionName);
+      condition = this.filterData(condition);
+    }
+
+    var questionResult = QuestionBankData.findOne( { 'fields': this.fields, 'question.question': {$nin: condition} } );
+
+    if(questionResult)
+    {
+      if(this.questionChose.indexOf(questionResult.question.question) === -1)
+        this.questionChose.push(questionResult.question.question);
+
+
       this.value.questionSet[index] = questionResult.question;
       this.questionName[index] = questionResult.question.question;
+    }
+    else {
+      alert('bạn đã chọn tất cả câu hỏi hiện có');
     }
   }
 
@@ -161,6 +193,18 @@ class QuestionBank {
              }
          }
      }
+   }
+
+   //lọc dữ liệu trùng lặp
+   filterData(data){
+    data.sort();
+    for(i = 1; i < data.length; i ++) {
+      if(data[i] === data[i - 1]){
+        data.splice(i, 1);
+        i --;
+      }
+    }
+    return data;
    }
 
    //sử dụng đối với câu hỏi cá nhân

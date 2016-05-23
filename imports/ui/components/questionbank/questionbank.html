@@ -80,10 +80,10 @@
                 <md-button class="md-raised" style="height: 50%; width: 95%;" ng-click="questionbank.showhideQuestion(ques.question)">{{ques.question}}</md-button>
 
                 <!-- Thay thế câu hỏi -->
-                <md-button class="md-raised md-primary" style="margin-left: 10px; height: 50%; background-color: rgb(240, 121, 11)" ng-click="questionbank.changeQuestion(ques.question)">Thay thế</md-button>
+                <md-button class="md-raised md-primary" style="margin-left: 10px; height: 50%; background-color: rgb(240, 121, 11)" ng-click="questionbank.changeQuestion(ques.question)" ng-disabled="questionbank.disableButton == true">Thay thế</md-button>
 
                 <!-- Xóa câu hỏi -->
-                <md-button class="md-raised md-primary" style="margin-left: 10px; height: 50%; background-color: rgb(231, 19, 6);" ng-click="questionbank.removeQuestion(ques.$index)">X</md-button>
+                <md-button class="md-raised md-primary" style="margin-left: 10px; height: 50%; background-color: rgb(231, 19, 6);" ng-click="questionbank.removeQuestion(ques.$index)" ng-disabled="questionbank.disableButton == true">X</md-button>
               </div>
 
               <!-- Nội dung bộ câu hỏi -->
