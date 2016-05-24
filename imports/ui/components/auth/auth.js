@@ -12,10 +12,12 @@ import { name as Login } from '../login/login';
 const name = 'auth';
 
 class Auth {
-  constructor($scope, $reactive) {
+  constructor($scope, $reactive, $state) {
     'ngInject';
 
     $reactive(this).attach($scope);
+
+    this.state = $state;
 
     this.helpers({
       isLoggedIn() {
@@ -29,6 +31,7 @@ class Auth {
 
   logout() {
     Accounts.logout();
+    this.state.go('home');
   }
 }
 

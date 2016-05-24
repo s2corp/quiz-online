@@ -57,7 +57,7 @@
                 </md-input-container>
 
                 <!--Thêm câu trả lời-->
-                <button id="#answer0" class="md-primary md-hue-1" ng-click="addtest.appendAnswer($event)" ng-disabled="addtest.data.questionSet.length - 1 > 0">Thêm câu trả lời</button>
+                <button id="#answer0" class="md-primary md-hue-1" ng-click="addtest.appendAnswer($event)" ng-disabled="addtest.disable > 0">Thêm câu trả lời</button>
 
                 <!--xóa câu hỏi-->
                 <button id="#question0" class="md-primary md-hue-1" ng-click="addtest.removeQuestion($event)">Xóa câu hỏi</button>

@@ -32,6 +32,9 @@ class AddTest {
     //số lượng câu trả lời hiện tại
     this.answer = 0;
 
+    //dùng để ẩn chức năng câu hỏi
+    this.disable = 0;
+
     //số lượng câu hỏi hiện tại
     this.question = 0;
 
@@ -111,11 +114,12 @@ class AddTest {
                                   '<label>Điểm số</label>' +
                                   '<input ng-model="addtest.data.questionSet[' + this.question + '].score" style="width: 120px;" type="number" step="0.25">' +
                                 '</md-input-container><br>' +
-                                '<button id="#answer'+ this.question + '" class="md-primary md-hue-1" ng-click="addtest.appendAnswer($event)" ng-disabled="addtest.data.questionSet.length - 1 >'+ this.question +'">Thêm câu trả lời</button>' +
+                                '<button id="#answer'+ this.question + '" class="md-primary md-hue-1" ng-click="addtest.appendAnswer($event)" ng-disabled="addtest.disable > '+ this.question +'">Thêm câu trả lời</button>' +
                                 '<button id="#question' + this.question + '" class="md-primary md-hue-1" ng-click="addtest.removeQuestion($event)">Xóa câu hỏi</button>' +
                           '</md-content>';
     var myEl = angular.element( document.querySelector( '#questionSet' ) );
     myEl.append(this.compile(quesString)(this.scope));
+    this.disable ++;
   }
 
   //lưu bộ câu hỏi vào cơ sở dữ liẹu
@@ -233,6 +237,7 @@ class AddTest {
 
     myEl.remove();
     this.data.questionSet[questionIndex] = null;
+    this.disable --;
   }
 }
 
