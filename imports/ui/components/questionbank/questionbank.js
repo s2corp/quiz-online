@@ -227,6 +227,16 @@ class QuestionBank {
 
    //hiện và ẩn nội dung ứng với một câu hỏi trong tab xem lại
    showhideQuestion(id){
+    console.log(id);
+    if(document.getElementById(id).style.display === 'none')
+      document.getElementById(id).style.display = 'inline';
+    else
+      document.getElementById(id).style.display = 'none';
+   }
+
+   showhideQuestionSet(event){
+    var id = event.target.id.toString() + '#'
+    console.log(id);
     if(document.getElementById(id).style.display === 'none')
       document.getElementById(id).style.display = 'inline';
     else

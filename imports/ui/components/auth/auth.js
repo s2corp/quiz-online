@@ -32,6 +32,9 @@ class Auth {
   logout() {
     Accounts.logout();
     this.state.go('home');
+    delete Session.keys['questionId'];
+    delete Session.keys['questionCount'];
+    delete Session.keys['selectedTab'];
   }
 }
 
