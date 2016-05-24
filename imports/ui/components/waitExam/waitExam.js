@@ -6,6 +6,7 @@ import { Meteor } from 'meteor/meteor';
 import {Examination} from '../../../api/examination';
 import {Question} from '../../../api/question';
 import {Session} from 'meteor/session';
+import  mdDataTable from 'angular-material-data-table';
 //import { name as displayProfileUser } from '../../filters/displayProfileUser';
 import './waitExam.html';
 import '../../../api/users';
@@ -25,8 +26,12 @@ class WaitExam {
     this.stop;
     this.time = 3;
     var val ;
+    this.start =false;
+    this.statusExam = false;
     this.helpers({
       userinfor(){
+
+
         //console.log("message");
         //var val = Exam.findOne({"_id":$stateParams.exam_id});
         //console.log(val);
@@ -52,13 +57,16 @@ class WaitExam {
         var us = Question.find({"_id":this.val.questionSetId, "userId":Meteor.userId()}).count();
         //console.log(us);
         if(us > 0)
-          return true;
-        return false;
+          this.start = true;
+        return this.start;
       }
     });
 }
+
   runTime()
   {
+    this.statusExam = true;
+    this.start = false;
     Session.set("stopTime", this.time);
     this.stop = Meteor.setInterval(function(){
       Meteor.call("timeRunOut", Session.get("stopTime"), function(error, result){
@@ -72,17 +80,25 @@ class WaitExam {
       if(Session.get("stopTime") < 1)
       {
         Meteor.clearInterval(this.stop);
-        //console.log(this.stateParams.exam_id);
-        //console.log(this.val.questionSetId);
-
-        this.state.go("startedExam",{'exam_id':this.stateParams.exam_id,'question_id':this.val.questionSetId});
-        //this.state.go("home");
+      var checkown = Question.find({"_id":this.val.questionSetId,"userId":Meteor.userId()}).count();
+        // if(checkown > 0)
+        //   this.state.go("scored-exam",{"exam_id":this.stateParams.exam_id});
+        //   else {
+        //     this.state.go("startedExam",{'exam_id':this.stateParams.exam_id,'question_id':this.val.questionSetId});
+        //   }
+         this.state.go("startedExam",{'exam_id':this.stateParams.exam_id,'question_id':this.val.questionSetId});
       }
       else {
         this.time = Session.get("stopTime");
       }
 
     });
+
+
+
+
+
+
   }
 }
 
@@ -90,7 +106,8 @@ const name = 'waitExam';
 export default angular.module(name,[
   angularMeteor,
   uiRouter,
-  ngMaterial
+  ngMaterial,
+  mdDataTable
 ])
 .component(name,{
   templateUrl:'imports/ui/components/waitExam/waitExam.html',

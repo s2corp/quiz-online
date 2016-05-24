@@ -24,6 +24,30 @@ class StartedExam {
     this.state=$state;
     this.selectedRow = null;
     this.lengthquestion = 0;
+    $scope.time =10;
+    Session.set("stoprun", $scope.time);
+    //ham tu dong kiem tra thoi gian
+    this.autorun(() =>{
+      var isstop = Meteor.setInterval(function(){
+        Meteor.call("timeRunOut", Session.get("stoprun"), function(error, result){
+          if(error){
+            console.log("error", error);
+          }
+            Session.set("stoprun", result);
+        });
+        if(Session.get("stoprun") < 1)
+        {
+          Meteor.clearInterval(isstop);
+         $state.go("scored-exam",{"exam_id": $stateParams.exam_id});
+        }
+        else {
+          $scope.time = Session.get("stoprun");
+          document.getElementById('time').innerHTML = Session.get("stoprun");
+        }
+
+      }, 1000);
+    });
+
     this.helpers({
       getuser(){
         if(Meteor.userId() === null)
@@ -43,7 +67,7 @@ class StartedExam {
           return Question.findOne({"_id":$stateParams.question_id});
         }
           else {
-           $state.go('home');
+           this.state.go('home');
           }
     }
   });
@@ -75,7 +99,7 @@ class StartedExam {
         else {
           this.isend = false;
           //this.state.go('home');
-          //this.state.go('scored-exam',{"exam_id":this.exam_id});
+          this.state.go('scored-exam',{"exam_id":this.exam_id});
         }
         this.selectedRow = null;
       //  ans = null;

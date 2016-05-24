@@ -99,28 +99,15 @@ Meteor.methods({
        return time;
     }
   });
-
-
-  //kiem tra cau tra loi
   Meteor.methods({
-    scoredUser:function(id,user){
-      var val = Examination.findOne({$and:[{"_id":id},{"usersList.userId":user}]});
-      for (var i = 0; i < val.usersList.length; i++) {
-        if(val.usersList[i].userId === user)
-        {
-          console.log("vi tri " +i);
-          console.log(val.usersList[i].scored);
-            return val.usersList[i].scored;
-        }
-
-
-      }
-      //console.log(val);
-
-
+    timeRun:function(time){
+       time--;
+       return time;
     }
   });
 
+
+  //kiem tra cau tra loi va cap nhap lai diem so
   Meteor.methods({
     checkanswer:function(id,user,question_id,question,answer,index){
       var tam = Question.findOne({$and:[{"_id":question_id}
@@ -138,8 +125,6 @@ Meteor.methods({
       for (var i = 0; i < val.usersList.length; i++) {
         if(val.usersList[i].userId === user)
         {
-          console.log("vi tri " +i);
-          console.log(val.usersList[i].scored);
             score = val.usersList[i].scored;
         }
       }

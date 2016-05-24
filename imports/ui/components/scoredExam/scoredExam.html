@@ -1,0 +1,28 @@
+<div layout="column" layout-padding layout-margin>
+
+  <div layout="column" layout-align="center center">
+    <p>
+      {{scoredExam.infor.examName}}
+    </p>
+
+    <p layout-align="center center">
+      Danh sách người chơi và kết quả.
+    </p>
+  </div>
+  <md-table-container class="md-whiteframe-9dp">
+    <table md-table>
+      <thead md-head >
+        <tr md-row>
+          <th md-column >User</th>
+          <th md-column >score</th>
+        </tr>
+      </thead>
+      <tbody md-body>
+        <!-- xap xep giam dan thi them (-) vao truoc va lay truong thoi ko co inf.scored -->
+        <tr ng-repeat="inf in scoredExam.infor.usersList | orderBy:'-scored' " >
+          <td md-cell>{{inf.userId}}</td>
+          <td md-cell>{{inf.scored}}</td></tr>
+      </tbody>
+    </table>
+  </md-table-container>
+</div>
