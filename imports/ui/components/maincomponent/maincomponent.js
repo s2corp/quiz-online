@@ -19,7 +19,11 @@ import { name as startedExam} from '../startedExam/startedExam';
 import { name as scoredExam} from '../scoredExam/scoredExam';
 import './maincomponent.html';
 
-class Main{}
+class Main{
+  constructor(){
+    
+  }
+}
 
 const name = 'maincomponent';
 
