@@ -49,7 +49,7 @@ class QuestionBank {
 
     this.helpers({
       questions() {
-        return Question.find({"userId": Meteor.userId()});
+        return Question.find({"userId": Meteor.userId()}, {sort: {date: -1}});
       },
       data() {
         var data = QuestionBankData.find().fetch();

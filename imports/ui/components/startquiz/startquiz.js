@@ -159,12 +159,14 @@ function config($stateProvider) {
   		template: '<startquiz></startquiz>',
       resolve: {
       currentUser($q) {
-        if (Meteor.userId() === null) {
+        if(Meteor.userId() === null)
           return $q.reject('AUTH_REQUIRED');
-        } else {
-          return $q.resolve();
+        else
+          if (Meteor.user().profile.job !== 'teacher')
+            return $q.reject('JOB_REQUIRED');
+          else
+            return $q.resolve();
         }
       }
-    }
   	});
 }

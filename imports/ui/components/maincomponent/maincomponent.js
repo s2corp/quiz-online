@@ -83,8 +83,11 @@ function run($rootScope, $state) {
   $rootScope.$on('$stateChangeError',
     (event, toState, toParams, fromState, fromParams, error) => {
       if (error === 'AUTH_REQUIRED') {
+        alert('bạn cần đăng nhập trước khi tạo đề thi');
         $state.go('login');
       }
+      if (error === 'JOB_REQUIRED')
+        alert('bạn cần có tài khoản giáo viên để có thể tạo đề thi')
     }
   );
 }

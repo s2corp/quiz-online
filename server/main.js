@@ -8,9 +8,21 @@ import { Question } from '../imports/api/question';
 import { QuestionBankData } from '../imports/api/questionbankdata';
 process.env.MAIL_URL = 'smtp://sanghuynhnt95@gmail.com:123581321tuongmo@smtp.gmail.com:465/';
 
+var VertificateCode = '';
+
 Meteor.methods({
   insertUser: function(user){
     Meteor.users.insert(user)
+  }
+});
+
+Meteor.methods({
+  updateUser: function(user){
+    if(user.code === VertificateCode)
+      Meteor.users.update({'_id': Meteor.userId()}, {$set: {'profile.job': 'teacher'}});
+    else
+      if(user.code === 'student')
+        Meteor.users.update({'_id': Meteor.userId()}, {$set: {'profile.job': 'student'}});
   }
 });
 
@@ -33,6 +45,7 @@ var getFbPicture = function(accessToken) { // make async call to grab the pictur
 Accounts.onCreateUser(function(options, user) {
   if(options.profile) {
     options.profile.picture = getFbPicture(user.services.facebook.accessToken);
+    options.profile.job = '';
     user.profile = options.profile; // We still want the default 'profile' behavior.
   }
   return user;
@@ -48,7 +61,18 @@ Meteor.methods({
 
 //gửi mail
 Meteor.methods({
-      sendEmail: function (mailAdress, encryptedString) {
+      sendEmail: function (mailAdress) {
+        VertificateCode = (Math.floor(Math.random()*99999) + 10000).toString();
+
+        //khởi tạo đối tượng mã hóa
+        var Cryptr = require('cryptr'),
+        cryptr = new Cryptr('ntuquiz123');
+
+        //mã hóa mật khẩu
+        var content = '{"code":'+ '"' + VertificateCode + '"}';
+
+        //nội dung sau khi mã hóa
+        var encryptedString = cryptr.encrypt(content);
 
         //chuyen huong den template
         SSR.compileTemplate('emailText', Assets.getText("vertificateMail.html"));

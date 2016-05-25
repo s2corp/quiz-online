@@ -18,7 +18,7 @@ class Authenticated{
     var user = JSON.parse(decryptedString);
 
     //gọi method thêm user ở phía server
-    Meteor.call('insertUser', user);
+    Meteor.call('updateUser', user);
   }
 }
 
