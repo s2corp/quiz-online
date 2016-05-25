@@ -1,5 +1,7 @@
 import {Mongo} from 'meteor/mongo';
-export const Examination =new Mongo.Collection("examination");
+
+export const Examination = new Mongo.Collection("examination");
+
 Examination.allow({
   insert: function(){
     return true;

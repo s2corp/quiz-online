@@ -41,7 +41,6 @@ Accounts.onCreateUser(function(options, user) {
 //kiểm tra mail trùng lặp
 Meteor.methods({
   findUser: function(inMail){
-    //console.log(Meteor.users.find({mail: inMail}).count());
     var result = Meteor.users.find({mail: inMail}).count();
     return result;
   }
@@ -71,11 +70,8 @@ Meteor.methods({
   });
 
   Meteor.publish("userStatus", function() {
-    //console.log(Notification.find( { 'userId': Meteor.userId() } ).count());
     return Meteor.users.find({ "status.online": true });
   });
-
-
 
   Meteor.methods({
     finduser:function(userList){
@@ -86,7 +82,6 @@ Meteor.methods({
 
         data.push(user)
       }
-      console.log(data);
 
       return data;
     }

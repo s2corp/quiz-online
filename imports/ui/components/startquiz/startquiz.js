@@ -56,6 +56,7 @@ class StartQuiz{
         }
     document.getElementById('addtest').style.display = 'inline';
     document.getElementById('questionbank').style.display = 'none';
+    document.getElementById('share').style.visibility = 'visible';
     //Session.set('quizData', this.data);
   }
 
@@ -69,6 +70,7 @@ class StartQuiz{
         }
     document.getElementById('questionbank').style.display = 'inline';
     document.getElementById('addtest').style.display = 'none';
+    document.getElementById('share').style.visibility = 'hidden';
     //Session.set('quizData', this.data);
   }
 
@@ -106,7 +108,9 @@ class StartQuiz{
           quesdata[0].questionSet.forEach((elem) => {
             var data = {
               fields: this.fields,
-              question: elem
+              question: elem,
+              //được sử dụng để hiển thị kết quả ngẫu nhiên
+              randomValue: Math.random()
             }
             QuestionBankData.insert(data);
           });
@@ -148,6 +152,15 @@ function config($stateProvider) {
   $stateProvider
   	.state('startQuiz', {
   		url: '/startQuiz',
-  		template: '<startquiz></startquiz>'
+  		template: '<startquiz></startquiz>',
+      resolve: {
+      currentUser($q) {
+        if (Meteor.userId() === null) {
+          return $q.reject('AUTH_REQUIRED');
+        } else {
+          return $q.resolve();
+        }
+      }
+    }
   	});
 }

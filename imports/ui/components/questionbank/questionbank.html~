@@ -10,7 +10,7 @@
               <!-- <div class="questionbank-tab"> -->
                 <div layout-align="center" layout="column" ng-repeat="ques in questionbank.questions">
                   <div layout="row" layout-align="center">
-                    <md-button style="width: 60%" class="md-raised md-primary">
+                    <md-button style="width: 60%" ui-sref="questionDetail({ questionId: ques._id })" class="md-raised md-primary">
                       <strong>{{ques.title}} - {{ques.date}}</strong>
                     </md-button>
                     <md-button style="background-color: rgb(240, 121, 11)" class="md-raised md-primary" ng-click="questionbank.addQuestionPersonal(ques)"><strong>Chọn câu hỏi</strong></md-button>
@@ -134,3 +134,4 @@
 
     </md-tabs>
   </md-content>
+

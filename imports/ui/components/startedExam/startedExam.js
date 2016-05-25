@@ -25,7 +25,13 @@ class StartedExam {
     this.selectedRow = null;
     this.lengthquestion = 0;
     $scope.time =10;
-    Session.set("stoprun", $scope.time);
+    var exam = Examination.findOne({_id:$stateParams.exam_id});
+    if(exam !== null)
+        Session.set("stoprun", exam.time);
+    else {
+        Session.set("stoprun", 60);
+    }
+    document.getElementById('time').innerHTML = Session.get("stoprun");
     //ham tu dong kiem tra thoi gian
     this.autorun(() =>{
       var isstop = Meteor.setInterval(function(){
@@ -45,7 +51,7 @@ class StartedExam {
           document.getElementById('time').innerHTML = Session.get("stoprun");
         }
 
-      }, 1000);
+      },60000);
     });
 
     this.helpers({
@@ -56,7 +62,6 @@ class StartedExam {
         }
       },
       showquestion(){
-
 
         if(Question.find({"_id":$stateParams.question_id}).count() > 0)
         {
@@ -91,20 +96,16 @@ class StartedExam {
         document.getElementById('scored').innerHTML = result;
       }
     });
-
-          //console.log(val.questionSet.length);
+    //chuyen sang cau hoi tiep theo
         if (this.selectedIndex < (this.lengthquestion - 1)) {
           this.selectedIndex = this.selectedIndex + 1;
         }
         else {
           this.isend = false;
-          //this.state.go('home');
           this.state.go('scored-exam',{"exam_id":this.exam_id});
         }
         this.selectedRow = null;
-      //  ans = null;
   }
-
 }
 
 const name = 'startedExam';

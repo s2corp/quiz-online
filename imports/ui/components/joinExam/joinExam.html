@@ -1,17 +1,11 @@
-<div layout="row" layout-xs="column" layout-sm="column" layout-md="row" layout-padding id="content"  >
-  <div flex-offset="30" flex-offset-md="20" flex-md="60" flex-sm="100" flex="50" layout-align="center center" >
-    <md-card class="md-whiteframe-9dp" >
-      <img class="md-card-image" src="card-image.png" alt="image caption">
-      <md-card-content layout="column">
-        <md-input-container class="md-whiteframe-9dp">
-          <label>Vui lòng nhập mã để tham gia kì thi!</label>
-          <input type="text" ng-model="zipcode">
-        </md-input-container>
-      </md-card-content>
-      <div class="md-actions" layout="column"  layout-align="center center" style="background-color:rgba(24, 149, 145, 0.52)" >
-         <!-- <md-button ui-sref="test({test_id:zipcode})">JON NOW</md-button> -->
-         <md-button ng-click="joinExam.loginExam(zipcode)" >Vao Game</md-button>
+<md-content layout="row" layout-padding layout-wrap layout-margin layout-align="center end">
+    <md-whiteframe class="md-whiteframe-z1"  flex  flex-md="50" flex-lg="50" flex-gt-lg="33" layout-align="center center">
+      <md-input-container layout="column">
+        <label>Vui lòng nhập mã để tham gia kì thi!</label>
+        <input type="text" ng-model="zipcode">
+      </md-input-container>
+      <div layout="column" class="md-warm" >
+         <md-button  layout="column" ng-click="joinExam.loginExam(zipcode)" >Vào Thi Đấu</md-button>
        </div>
-    </md-card>
-  </div>
-</div>
+    </md-whiteframe>
+</md-content>

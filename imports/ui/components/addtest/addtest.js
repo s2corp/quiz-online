@@ -5,8 +5,6 @@ import ngMaterial from 'angular-material';
 import { Question } from '../../../api/question';
 
 import './addtest.html';
-//import { Users } from '../../../api/lists/user.js';
-
 
 class AddTest {
   constructor($scope, $reactive, $compile, $sce) {
@@ -14,7 +12,11 @@ class AddTest {
 
     $reactive(this).attach($scope);
     this.subscribe("question");
+
+    //mã câu hỏi sinh tự động
     this.code = (Math.floor(Math.random()*99999) + 10000).toString();
+
+    //khởi tạo nội dung câu hỏi
     this.data = {
       _id: this.code,
       questionSet: [
@@ -25,46 +27,41 @@ class AddTest {
           score: 1,
         }
       ],
-      //redo: false,
     };
-    //this.data.date = new Date();
-    //this.data.deadline = 30;
+
+    //số lượng câu trả lời hiện tại
     this.answer = 0;
+
+    //dùng để ẩn chức năng câu hỏi
+    this.disable = 0;
+
+    //số lượng câu hỏi hiện tại
     this.question = 0;
+
     this.compile = $compile;
+
     this.scope = $scope;
-    console.log(this.questionID);
+
+    //xóa dữ liệu trong questionId
+    delete Session.keys['questionId'];
   }
 
   //thêm đề
   addTest()
   {
     for(i = 0; i < this.data.questionSet.length; i++){
-      if(this.data.questionSet[i] == null){
-        var index = i;
-        this.data.questionSet.splice(index, 1)
+      if(this.data.questionSet[i] === null){
+        this.data.questionSet.splice(i, 1);
+        i--;
       }
-      for(j = 0; j < this.data.questionSet[i].answerSet.length; j++){
-        if(this.data.questionSet[i].answerSet[j] === ''){
-          var index = j;
-          this.data.questionSet[i].answerSet.splice(index, 1);
+      else
+        for(j = 0; j < this.data.questionSet[i].answerSet.length; j++){
+          if(this.data.questionSet[i].answerSet[j] === ''){
+            this.data.questionSet[i].answerSet.splice(j, 1);
+            j--;
+          }
         }
-      }
     }
-
-    // this.data.questionSet.forEach((elem) => {
-    //   if(elem == null){
-    //     var index = this.data.questionSet.indexOf(elem);
-    //     this.data.questionSet.splice(index, 1)
-    //   }
-    //   elem.answerSet.forEach((answer) => {
-    //     if(answer == ''){
-    //       var index = elem.answerSet.indexOf(answer);
-    //       elem.answerSet.splice(index, 1);
-    //     }
-    //   });
-    // });
-    //document.getElementById('correctAnswer').style.visibility = 'visible';
   }
 
   //thêm đáp án
@@ -75,7 +72,7 @@ class AddTest {
     '<div id=answer'+ this.question + '_' + answer + '>' +
       '<md-input-container class="md-block" flex-gt-sm>' +
         '<label>câu trả lời ' + answer + '</label>' +
-        '<input ng-model="addtest.data.questionSet[' + this.question + '].answerSet[' + answer + ']">' +
+        '<textarea ng-model="addtest.data.questionSet[' + this.question + '].answerSet[' + answer + ']" md-maxlength="500" rows="5" md-select-on-focus></textarea>' +
       '</md-input-container>' +
       '<input type="radio" name="gender" ng-click="addtest.insertCorrectAnswer(' + this.question + ', addtest.data.questionSet[' + this.question + '].answerSet[' + answer + '])"> Đáp án đúng <br>' +
       '<button id="#answer' + this.question + '_' + answer + '" ng-click="addtest.removeAnswer($event)">X</button>' +
@@ -100,14 +97,14 @@ class AddTest {
     var quesString = '<br><md-content id="question' + this.question + '" class="md-padding" style="background-color: rgb(209, 223, 227)">' +
                                 '<md-input-container class="md-block" flex-gt-sm>' +
                                       '<label>Câu hỏi thứ ' + this.question + '</label>' +
-                                      '<input ng-model="addtest.data.questionSet[' + this.question + '].question">' +
+                                      '<textarea ng-model="addtest.data.questionSet[' + this.question + '].question" md-maxlength="500" rows="5" md-select-on-focus></textarea>' +
                                 '</md-input-container>' +
                                 '<br>' +
                                 '<div id="answer' + this.question + '" layout-gt-sm="column">' +
                                   '<div id=answer'+ this.question + '_' + this.answer + '>' +
                                     '<md-input-container class="md-block" flex-gt-sm>' +
                                           '<label>Câu trả lời 1</label>' +
-                                          '<input ng-model="addtest.data.questionSet[' + this.question + '].answerSet[0]">' +
+                                          '<textarea ng-model="addtest.data.questionSet[' + this.question + '].answerSet[0]" md-maxlength="500" rows="5" md-select-on-focus></textarea>' +
                                     '</md-input-container>' +
                                     '<input type="radio" name="gender" ng-click="addtest.insertCorrectAnswer(' + this.question + ', addtest.data.questionSet[' + this.question + '].answerSet[' + this.answer + '])"> Đáp án đúng <br>' +
                                     '<button id="#answer' + this.question + '_' + this.answer + '" ng-click="addtest.removeAnswer($event)">X</button>' +
@@ -117,11 +114,12 @@ class AddTest {
                                   '<label>Điểm số</label>' +
                                   '<input ng-model="addtest.data.questionSet[' + this.question + '].score" style="width: 120px;" type="number" step="0.25">' +
                                 '</md-input-container><br>' +
-                                '<button id="#answer'+ this.question + '" class="md-primary md-hue-1" ng-click="addtest.appendAnswer($event)">Thêm câu trả lời</button>' +
+                                '<button id="#answer'+ this.question + '" class="md-primary md-hue-1" ng-click="addtest.appendAnswer($event)" ng-disabled="addtest.disable > '+ this.question +'">Thêm câu trả lời</button>' +
                                 '<button id="#question' + this.question + '" class="md-primary md-hue-1" ng-click="addtest.removeQuestion($event)">Xóa câu hỏi</button>' +
                           '</md-content>';
     var myEl = angular.element( document.querySelector( '#questionSet' ) );
     myEl.append(this.compile(quesString)(this.scope));
+    this.disable ++;
   }
 
   //lưu bộ câu hỏi vào cơ sở dữ liẹu
@@ -198,6 +196,14 @@ class AddTest {
      }
  }
 
+ //hiện và ẩn nội dung ứng với một câu hỏi trong tab xem lại
+ showhideQuestion(id){
+  if(document.getElementById(id).style.display === 'none')
+    document.getElementById(id).style.display = 'inline';
+  else
+    document.getElementById(id).style.display = 'none';
+ }
+
  //chặn việc chuyển tab
  foreChange()
  {
@@ -231,6 +237,7 @@ class AddTest {
 
     myEl.remove();
     this.data.questionSet[questionIndex] = null;
+    this.disable --;
   }
 }
 

@@ -10,12 +10,10 @@ class ScoredExam {
   constructor($scope,$reactive,$state,$stateParams) {
     'ngInject';
     $reactive(this).attach($scope);
-    //chu y phai subscribe no
     this.subscribe("examination");
     this.helpers({
       infor()
       {
-
         return Examination.findOne({_id:$stateParams.exam_id});
       }
     });

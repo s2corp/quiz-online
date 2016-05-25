@@ -23,45 +23,38 @@ class WaitExam {
     this.stateParams = $stateParams;
     this.data =[];
     this.stop;
-    this.time = 3;
-    var val ;
+    this.val= Examination.findOne({_id:$stateParams.exam_id});
+    var questionID = this.val.questionSetId;
     this.start =false;
     this.statusExam = false;
+    this.time =10;
     var query = Examination.find({"_id":$stateParams.exam_id});
-    console.log(query);
     var handle = query.observeChanges({
-      changed: function (newvalue , oldvalue) {
-        console.log("day phau lifldsfldk"+newvalue);
-        // if(newvalue.started === 1)
-        // {
-          $state.go("startedExam",{'exam_id':"69366",'question_id':"38529"});
-
-        // }
+      changed: function (id, fields) {
+        if(fields.started === 1)
+        {
+              var checkown = Question.find({"_id":questionID,"userId":Meteor.userId()}).count();
+                if(checkown > 0)
+                  $state.go("scored-exam",{"exam_id":$stateParams.exam_id});
+                  else {
+                    $state.go("startedExam",{'exam_id':$stateParams.exam_id,'question_id':questionID});
+                  }
+        }
       }
     });
     this.helpers({
       userinfor(){
-         this.val= Examination.findOne({_id:$stateParams.exam_id});
             Meteor.call("finduser", this.val.usersList, function(error, result){
               if(error){
                 console.log("error", error);
               }
               Session.set("profileUser", result);
             });
-
-
         this.data = Session.get("profileUser");
-            //this.data.push(Meteor.call("finduser", val.usersList[i].userId));
-      //  console.log("message");
-
-      ///  console.log(this.data);
         return this.data;
       },
       ownExam(){
-        //var us = Examination.find({"field":value});
-        //console.log(this.val.questionSetId);
         var us = Question.find({"_id":this.val.questionSetId, "userId":Meteor.userId()}).count();
-        //console.log(us);
         if(us > 0)
           this.start = true;
         return this.start;
@@ -73,12 +66,6 @@ class WaitExam {
   {
     this.statusExam = true;
     this.start = false;
-
-    Examination.update({_id:this.stateParams.exam_id}, {$set:{
-      "started":1
-    }});
-
-
     Session.set("stopTime", this.time);
     this.stop = Meteor.setInterval(function(){
       Meteor.call("timeRunOut", Session.get("stopTime"), function(error, result){
@@ -92,25 +79,14 @@ class WaitExam {
       if(Session.get("stopTime") < 1)
       {
         Meteor.clearInterval(this.stop);
-      var checkown = Question.find({"_id":this.val.questionSetId,"userId":Meteor.userId()}).count();
-        if(checkown > 0)
-          this.state.go("scored-exam",{"exam_id":this.stateParams.exam_id});
-          else {
-            this.state.go("startedExam",{'exam_id':this.stateParams.exam_id,'question_id':this.val.questionSetId});
-          }
-         //this.state.go("startedExam",{'exam_id':this.stateParams.exam_id,'question_id':this.val.questionSetId});
+        Examination.update({_id:this.stateParams.exam_id}, {$set:{
+          "started":1
+        }});
       }
       else {
-        this.time = Session.get("stopTime");
+        document.getElementById('wait').innerHTML = Session.get("stopTime");
       }
-
     });
-
-
-
-
-
-
   }
 }
 

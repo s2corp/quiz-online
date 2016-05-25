@@ -29,7 +29,7 @@
               <md-content id="question0" class="md-padding" style="background-color: rgb(209, 223, 227)">
                 <md-input-container id="a" class="md-block" flex-gt-sm>
                   <label>Câu hỏi thứ nhất</label>
-                  <input ng-model="addtest.data.questionSet[0].question">
+                  <textarea ng-model="addtest.data.questionSet[0].question" md-maxlength="500" rows="5" md-select-on-focus></textarea>
                   <br>
                 </md-input-container>
                 <br>
@@ -39,7 +39,7 @@
                       <div id="answer0_0">
                         <md-input-container class="md-block" flex-gt-sm>
                             <label>Câu trả lời 1</label>
-                            <input ng-model="addtest.data.questionSet[0].answerSet[0]">
+                            <textarea ng-model="addtest.data.questionSet[0].answerSet[0]" md-maxlength="500" rows="5" md-select-on-focus></textarea>
                         </md-input-container>
 
                         <!--Thêm câu trả lời đúng-->
@@ -57,7 +57,8 @@
                 </md-input-container>
 
                 <!--Thêm câu trả lời-->
-                <button id="#answer0" class="md-primary md-hue-1" ng-click="addtest.appendAnswer($event)">Thêm câu trả lời</button>
+                <button id="#answer0" class="md-primary md-hue-1" ng-click="addtest.appendAnswer($event)" ng-disabled="addtest.disable > 0">Thêm câu trả lời</button>
+
                 <!--xóa câu hỏi-->
                 <button id="#question0" class="md-primary md-hue-1" ng-click="addtest.removeQuestion($event)">Xóa câu hỏi</button>
               </md-content>
@@ -73,30 +74,63 @@
       <!--tab xem lại-->
       <md-tab label="Xem lại" md-on-select="addtest.foreChange()">
         <h1 class="md-display-2">Xem lại</h1>
-        <md-content>
-          <h2>{{addtest.data.title}}</h2>
-          <div ng-repeat="ques in addtest.data.questionSet" ng-if="ques != null" layout="column" layout-align="center">
-              <md-button class="md-raised" style="background-color: rgb(30, 73, 224)"><textarea rows="3" name="Text1" readonly>{{ques.question}}</textarea></md-button>
+        <div layout="row" layout-align="center">
+          <md-content style="width: 80%;">
+            <h2>{{questionbank.value.title}}</h2>
+            <div ng-repeat="ques in addtest.data.questionSet track by $index" layout="column" layout-align="center">
+              <div ng-if="ques != null">
+                <!-- Câu hỏi -->
+                <!-- <md-button class="md-raised" style="background-color: rgb(30, 73, 224)"><textarea rows="3" name="Text1" readonly>{{ques.question}}</textarea></md-button> -->
+                <div layout="row" layout-align="left left">
+                  <!--hiển thi câu hỏi-->
+                  <md-button class="md-raised" style="height: 50%; width: 95%;" ng-click="addtest.showhideQuestion(ques.question)">{{ques.question}}</md-button>
+
+                </div>
+
+                <!-- Nội dung bộ câu hỏi -->
+                <div id="{{ques.question}}" style="display: none; margin-left: 10px;">
+
+                  <!-- Nội dung câu hỏi -->
+                  <md-input-container id="a" class="md-block" flex-gt-sm style="width:80%;">
+                    <label>Câu hỏi</label>
+                    <textarea ng-model="ques.question" md-maxlength="500" rows="5" md-select-on-focus style="background-color: rgb(22, 71, 180)" readonly></textarea>
+                    <br>
+                  </md-input-container>
 
 
-              <!-- các lựa chọn -->
-              <div ng-repeat="answer in ques.answerSet" ng-if="answer != ''" layout="column" layout-align="center">
-                  <md-button class="md-raised"><textarea rows="3" name="Text1" readonly>{{answer}}</textarea></md-button>
+                  <!-- các lựa chọn -->
+                  <div ng-repeat="answer in ques.answerSet track by $index" ng-if="answer != ''" layout="column" layout-align="center">
+                      <!-- <md-button class="md-raised"><textarea rows="3" name="Text1" readonly>{{answer}}</textarea></md-button> -->
+                      <md-input-container id="a" class="md-block" flex-gt-sm style="width:80%;">
+                        <label>Lựa chọn</label>
+                        <textarea ng-model="answer" md-maxlength="500" rows="5" md-select-on-focus readonly></textarea>
+                        <br>
+                      </md-input-container>
+                  </div>
+
+                  <!-- đáp án -->
+                  <!-- <md-button class="md-raised" style="background-color: rgb(127, 83, 182)" ><textarea rows="3" name="Text1" readonly>{{ques.correctAnswer}}</textarea></md-button> -->
+                  <md-input-container id="a" class="md-block" flex-gt-sm style="width:80%;">
+                    <label>Đáp án</label>
+                    <textarea ng-model="ques.correctAnswer" md-maxlength="500" rows="5" md-select-on-focus style="background-color: rgb(212, 20, 89)" readonly></textarea>
+                    <br>
+                  </md-input-container>
+
+                  <!--Điểm số của câu hỏi-->
+                  <md-input-container class="md-block" flex-gt-sm>
+                      <label>Điểm số</label>
+                      <input ng-model="ques.score" style="width: 120px;" type="number" step="0.25" readonly>
+                  </md-input-container>
+                </div>
               </div>
 
-              <!-- đáp án -->
-              <md-button class="md-raised" style="background-color: rgb(127, 83, 182)" ><textarea rows="3" name="Text1" readonly>{{ques.correctAnswer}}</textarea></md-button>
 
-              <!--Điểm số của câu hỏi-->
-              <md-input-container class="md-block" flex-gt-sm>
-                  <label>Điểm số</label>
-                  <input ng-model="addtest.data.questionSet[0].score" style="width: 120px;" type="number" step="0.25" readonly>
-              </md-input-container>
-          </div>
-          <div layout="column" layout-align="center center">
-            <md-button class="md-raised md-primary" ng-click="addtest.buildTest()">Lưu câu hỏi</md-button>
-          </div>
-        </md-content>
+            </div>
+            <div layout="column" layout-align="center center">
+              <md-button class="md-raised md-primary" ng-click="addtest.buildTest()">Lưu câu hỏi</md-button>
+            </div>
+          </md-content>
+        </div>
       </md-tab>
     </md-tabs>
   </md-content>
