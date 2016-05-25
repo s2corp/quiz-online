@@ -11,7 +11,7 @@
                 <div layout-align="center" layout="column" ng-repeat="ques in questionbank.questions">
                   <div layout="row" layout-align="center">
                     <md-button style="width: 60%" class="md-raised md-primary">
-                      <strong>{{ques.title}} - {{ques.date}}</strong>
+                      <strong>{{ques.title}} - {{ques.date.getDate() + '/' + (ques.date.getMonth() + 1) + '/'+ ques.date.getFullYear()}}</strong>
                     </md-button>
                     <md-button style="background-color: rgb(240, 121, 11)" class="md-raised md-primary" ng-click="questionbank.addQuestionPersonal(ques)"><strong>Chọn câu hỏi</strong></md-button>
                     <md-button style="background-color: rgb(231, 19, 6); width: 50px;" ng-click="questionbank.remove(ques._id)">X</md-button>

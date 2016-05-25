@@ -26,12 +26,15 @@ class StartQuiz{
     this.fields = ''
     this.data = {
         _id: this.code,
+        date: new Date(),
         examName: '',
-        deadline: 0,
+        isTest: true,
         questionSetId: '',
         questionCount: 0,
         usersList: [],
         reallyCount: 0,
+        started: 0,
+        time: 0,
         userCount: 50,
     };
     this.disable = false;
@@ -94,6 +97,7 @@ class StartQuiz{
       }
 
       this.data.userId = Meteor.userId();
+      this.data.isTest = (this.data.isTest === 'true');
       if(this.data.questionSetId)
       {
         //thêm kì thi vào bảng examination
