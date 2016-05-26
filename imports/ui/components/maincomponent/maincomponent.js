@@ -88,6 +88,8 @@ function run($rootScope, $state) {
       }
       if (error === 'JOB_REQUIRED')
         alert('bạn cần có tài khoản giáo viên để có thể tạo đề thi')
+      if (error === 'VERTIFICATE_REQUIRED')
+        alert('một mail chứng thực đã được gửi đến email của bạn, đề nghị xác thực email trước khi thực hiện thao tác này');
     }
   );
 }

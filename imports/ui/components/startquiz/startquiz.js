@@ -33,7 +33,7 @@ class StartQuiz{
         questionCount: 0,
         usersList: [],
         reallyCount: 0,
-        started: 0,
+        started: false,
         time: 0,
         userCount: 50,
     };
@@ -162,10 +162,13 @@ function config($stateProvider) {
         if(Meteor.userId() === null)
           return $q.reject('AUTH_REQUIRED');
         else
-          if (Meteor.user().profile.job !== 'teacher')
+          if(Meteor.user().profile.job !== 'teacher')
             return $q.reject('JOB_REQUIRED');
           else
-            return $q.resolve();
+            if(!Meteor.user().emails[0].verified)
+              return $q.reject('VERTIFICATE_REQUIRED');
+            else
+              return $q.resolve();
         }
       }
   	});

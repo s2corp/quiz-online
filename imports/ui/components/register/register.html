@@ -1,11 +1,121 @@
-<p>
-  bạn là
-</p>
+<md-content layout="row" layout-align="center start" layout-fill layout-margin>
+  <md-whiteframe layout="column" flex flex-md="50" flex-lg="50" flex-gt-lg="33" class="md-whiteframe-z2" layout-fill>
 
-<!-- nếu bạn là giáo viên -->
-<a href="/register/teacher">Giáo Viên</a>
+    <md-toolbar class="md-primary md-tall" layout="column" layout-align="end" layout-fill>
+      <div layout="row" class="md-toolbar-tools md-toolbar-tools-bottom">
+        <h3 class="md-display-1">
+          Tạo tài khoản mới</h3>
+      </div>
+    </md-toolbar>
 
-<br>
+    <div layout="column" layout-fill layout-margin layout-padding>
 
-<!-- nếu bạn là sinh viên -->
-<a href="/register/student">Học sinh</a>
+      <div layout="row" layout-fill layout-margin>
+        <p class="md-body-2">Sử dụng mail?</p>
+      </div>
+
+      <div layout="row" layout-align="left" style="width: 100%;">
+        <label>Bạn là:</label>
+      </div>
+
+      <form name="registerForm" layout="column" layout-fill layout-padding layout-margin>
+
+        <!-- Chọn đối tượng nghiên cứu -->
+        <md-radio-group name="job" ng-model="register.credentials.profile.job" layout="row" required>
+          <md-radio-button value='teacher' ng-click="register.showEduMail()" aria-label="Teacher"><font size="3.5" color="gray">Giáo viên</font></md-radio-button>
+          <md-radio-button value='student' ng-click="register.showNormalMail()" aria-label="Student"><font size="3.5" color="gray">Học sinh</font></md-radio-button>
+        </md-radio-group>
+        <p class="error" role="alert" ng-show="loginModal.myForm.job.$error.required" style="color: red;">
+            trường này là bắt buộc
+        </p>
+        <br>
+
+        <!-- Nếu đối tượng nghiên cứu là giáo viên kích hoạt edu mail -->
+        <div id="eduMail" layout="column" layout-align="center center" style="display: none;">
+          <md-input-container class="md-block" flex-gt-sm>
+             <label>nhập mail education</label>
+             <input ng-model="register.user.eduMail" ng-change="register.checkEduMail()" placeholder="email" required>
+             <p style="color: red;">{{register.mailError}}</p>
+           </md-input-container>
+        </div>
+
+        <!-- Nếu đối tượng nghiên cứu là là học sinh kích hoạt mail thông thường -->
+        <div id="normalMail" layout="column" layout-align="center center" style="display: none;">
+          <md-input-container class="md-block" flex-gt-sm>
+            <label>Email</label>
+            <input ng-model="register.user.normalMail" ng-change="register.checkNormalMail()" placeholder="email" aria-label="email" required/>
+            <p style="color: red;">{{register.mailError}}</p>
+          </md-input-container>
+        </div>
+
+        <!-- Nhập họ tên -->
+        <md-input-container >
+          <label>
+            Họ và tên
+          </label>
+          <input type="text" ng-model="register.credentials.profile.name" placeholder="họ & tên" aria-label="email" required/>
+        </md-input-container>
+
+        <!-- Nhập mật khẩu -->
+        <md-input-container >
+          <label>
+            Mật khẩu
+          </label>
+          <input type="password" ng-model="register.credentials.password" placeholder="mật khẩu" aria-label="password" required/>
+        </md-input-container>
+
+        <!-- Nhập lại mật khẩu -->
+        <md-input-container >
+          <label>
+            Nhập lại mật khẩu
+          </label>
+          <input type="password" ng-model="register.user.passwordretype" placeholder="mật khẩu nhập lại" aria-label="password" ng-change="register.checkRetype()" required/>
+          <p id="passError" style="color: red; display: none">
+              mật khẩu nhập lại không chính xác
+          </p>
+        </md-input-container>
+
+        <!-- Đăng ký -->
+        <div layout="row" layout-align="end center">
+          <md-button class="md-raised md-primary" ng-click="register.register()" aria-label="login" ng-disabled="register.registerForm.$invalid()">Đăng ký</md-button>
+        </div>
+      </form>
+
+      <md-divider class="inset"></md-divider>
+
+      <div layout="row" layout-fill layout-margin>
+        <p class="md-body-2">
+          Sử dụng mạng xã hội
+        </p>
+      </div>
+
+      <div layout="row" layout-fill layout-margin layout-padding layout-wrap>
+        <md-button class="md-raised">
+          <md-icon md-svg-icon="social:ic_google_24px" style="color: #DC4A38;"></md-icon>
+          <span>
+            Google</span>
+        </md-button>
+        <md-button class="md-raised">
+          <md-icon md-svg-icon="social:ic_facebook_24px" style="color: #3F62B4;"></md-icon>
+          <span>Facebook
+          </span>
+        </md-button>
+        <md-button class="md-raised">
+          <md-icon md-svg-icon="social:ic_twitter_24px" style="color: #27AAE2;"></md-icon>
+          <span>Twitter
+          </span>
+        </md-button>
+      </div>
+      <md-toolbar ng-show="register.error" class="md-warn" layout="row" layout-fill layout-padding layout-margin>
+        <p class="md-body-1">{{ register.error }}</p>
+      </md-toolbar>
+
+      <md-divider></md-divider>
+      <div layout="row" layout-align="center">
+        <a class="md-button" href="/login">Bạn đã có tài khoản?</a>
+      </div>
+
+    </div>
+
+  </md-whiteframe>
+</md-content>

@@ -18,9 +18,13 @@ Meteor.methods({
 
 Meteor.methods({
   updateUser: function(user){
-    if(user.code === VertificateCode)
-      Meteor.users.update({'_id': Meteor.userId()}, {$set: {'profile.job': 'teacher'}});
-    else
+    if(user.code === VertificateCode){
+      var userFind = Meteor.users.findOne({'_id': Meteor.userId()});
+      if(userFind.profile.job !== '')
+        Meteor.users.update({'_id': Meteor.userId(), 'emails.address': user.email}, {$set: {'emails.$.verified': true}});
+      else
+        Meteor.users.update({'_id': Meteor.userId()}, {$set: {'profile.job': 'teacher'}});
+    }else
       if(user.code === 'student')
         Meteor.users.update({'_id': Meteor.userId()}, {$set: {'profile.job': 'student'}});
   }
@@ -43,11 +47,19 @@ var getFbPicture = function(accessToken) { // make async call to grab the pictur
 
 // during new account creation get user picture from Facebook and save it on user object
 Accounts.onCreateUser(function(options, user) {
-  if(options.profile) {
-    options.profile.picture = getFbPicture(user.services.facebook.accessToken);
-    options.profile.job = '';
-    user.profile = options.profile; // We still want the default 'profile' behavior.
-  }
+
+  user.profile = {};
+  // Assigns first and last names to the newly created user object
+  user.profile.name = options.profile.name;
+  user.profile.job = options.profile.job;
+  // Returns the user object
+
+  if(user.services.facebook)
+    if(options.profile) {
+      options.profile.picture = getFbPicture(user.services.facebook.accessToken);
+      options.profile.job = '';
+      user.profile = options.profile; // We still want the default 'profile' behavior.
+    }
   return user;
 });
 
@@ -61,7 +73,7 @@ Meteor.methods({
 
 //gửi mail
 Meteor.methods({
-      sendEmail: function (mailAdress) {
+      sendEmail: function (mailAddress) {
         VertificateCode = (Math.floor(Math.random()*99999) + 10000).toString();
 
         //khởi tạo đối tượng mã hóa
@@ -69,7 +81,7 @@ Meteor.methods({
         cryptr = new Cryptr('ntuquiz123');
 
         //mã hóa mật khẩu
-        var content = '{"code":'+ '"' + VertificateCode + '"}';
+        var content = '{"code": ' + '"' + VertificateCode + '", ' + '"email": ' + '"' + mailAddress + '"}';
 
         //nội dung sau khi mã hóa
         var encryptedString = cryptr.encrypt(content);
@@ -82,7 +94,7 @@ Meteor.methods({
 
         //nội dung mail
         var email = {
-          to: mailAdress,
+          to: mailAddress,
           from: 'sanghuynhnt95@gmail.com',
           subject: "test email",
           html: html

@@ -37,9 +37,9 @@ class Login {
         this.$state.go('home');
       }
     })
-
+    //console.log(Meteor.user().profile.job)
     //chọn đối tượng nghiên cứu và chứng thực user
-    if(Meteor.user().profile.job === '')
+    //if(Meteor.user().profile.job === '')
       this.$mdDialog.show({
         controller($mdDialog) {
           'ngInject';
@@ -69,6 +69,7 @@ class Login {
             var re = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.+-]+((\.edu+\.[a-zA-Z]{2,3})|(\.edu))$/;
             if(!re.test(this.user.mail)){
               this.errorMail = "địa chỉ mail không hợp lệ";
+              return false;
             }
             else
               this.errorMail = "";
