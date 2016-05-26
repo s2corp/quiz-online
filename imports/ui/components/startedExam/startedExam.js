@@ -24,7 +24,6 @@ class StartedExam {
     this.state=$state;
     this.selectedRow = null;
     this.lengthquestion = 0;
-    $scope.time =10;
     var exam = Examination.findOne({_id:$stateParams.exam_id});
     if(exam !== null)
         Session.set("stoprun", exam.time);
@@ -47,11 +46,9 @@ class StartedExam {
          $state.go("scored-exam",{"exam_id": $stateParams.exam_id});
         }
         else {
-          $scope.time = Session.get("stoprun");
           document.getElementById('time').innerHTML = Session.get("stoprun");
         }
-
-      },60000);
+      },1000);
     });
 
     this.helpers({
@@ -92,8 +89,9 @@ class StartedExam {
         console.log("error", error);
       }
       if(result){
-        console.log(result);
+        //console.log(result);
         document.getElementById('scored').innerHTML = result;
+        Session.set("scored", result);
       }
     });
     //chuyen sang cau hoi tiep theo

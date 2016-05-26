@@ -134,3 +134,9 @@ Meteor.methods({
         }});
       }
     });
+
+      Meteor.methods({
+        updateScored:function(id){
+           return Examination.findOne({"_id":id});
+        }
+      });

@@ -27,10 +27,10 @@ class JoinExam {
         else {
           //console.log(zipcode);
           var queryExam = Examination.findOne({_id:zipcode});
-          if(queryExam.practice !== 1)
+          if(queryExam.isTest === true)
           {
             var checkisownQuestion = Question.find({$and:[{"_id":queryExam.questionSetId},{"userId":Meteor.userId()}]}).count();
-            var val  = Examination.find({$and:[{"_id":zipcode},{"started":0}]},{fields:{'questionSetId':1,"_id":0}}).count();
+            var val  = Examination.find({$and:[{"_id":zipcode},{"started":false}]},{fields:{'questionSetId':1,"_id":0}}).count();
             if(val > 0){
               if(checkisownQuestion === 0)
               {

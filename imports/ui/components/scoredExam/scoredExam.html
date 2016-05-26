@@ -7,8 +7,8 @@
       Danh sách người chơi và kết quả.
     </p>
   </div>
-  <md-table-container class="md-whiteframe-9dp">
-    <table md-table>
+  <div class="md-whiteframe-9dp">
+    <table md-table >
       <thead md-head >
         <tr md-row>
           <th md-column >User</th>
@@ -19,8 +19,10 @@
         <!-- xap xep giam dan thi them (-) vao truoc va lay truong thoi ko co inf.scored -->
         <tr ng-repeat="inf in scoredExam.infor.usersList | orderBy:'-scored' " >
           <td md-cell>{{inf.userId}}</td>
-          <td md-cell>{{inf.scored}}</td></tr>
+          <td md-cell>{{inf.scored}}</td>
+        </tr>
       </tbody>
     </table>
-  </md-table-container>
+  </div>
+
 </div>

@@ -11,10 +11,12 @@ class ScoredExam {
     'ngInject';
     $reactive(this).attach($scope);
     this.subscribe("examination");
+    this.stateParams = $stateParams;
     this.helpers({
       infor()
       {
-        return Examination.findOne({_id:$stateParams.exam_id});
+        var data = Examination.findOne({'_id':$stateParams.exam_id});
+        return data;
       }
     });
   }
@@ -36,7 +38,7 @@ function config($stateProvider){
   'ngInject';
   $stateProvider
   .state('scored-exam', {
-    url: '/sored/:exam_id',
+    url: '/scored/:exam_id',
     template: '<scored-exam></scored-exam>'
   })
 }
