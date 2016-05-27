@@ -72,21 +72,17 @@ Meteor.methods({
   Meteor.publish("userStatus", function() {
     return Meteor.users.find({ "status.online": true });
   });
-
+  //thong tin user cua ki thi
   Meteor.methods({
     finduser:function(userList){
       var data = [];
       for (var i = 0; i < userList.length; i++) {
-
         var user = Meteor.users.findOne({_id:userList[i].userId});
-
         data.push(user)
       }
-
       return data;
     }
   });
-
   //countTime
   Meteor.methods({
     timeRunOut:function(time){
@@ -138,5 +134,23 @@ Meteor.methods({
       Meteor.methods({
         updateScored:function(id){
            return Examination.findOne({"_id":id});
+        }
+      });
+
+      //in ra diem va thong tin cua ki thi
+      Meteor.methods({
+        scoredUserInf:function(exam){
+          var contain = [];
+          var ob = {};
+          for (var i = 0; i < exam.usersList.length; i++) {
+            var user = Meteor.users.findOne({_id:exam.usersList[i].userId});
+          //  console.log(user);
+            ob.name = user.profile.name;
+            ob.email = user.services.facebook.email;
+            ob.scored = exam.usersList[i].scored;
+            contain.push(ob);
+            ob ={};
+          }
+          return contain;
         }
       });

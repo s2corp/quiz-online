@@ -33,7 +33,7 @@ class StartedExam {
     document.getElementById('time').innerHTML = Session.get("stoprun");
     //ham tu dong kiem tra thoi gian
     this.autorun(() =>{
-      var isstop = Meteor.setInterval(function(){
+      this.isstop =setInterval(function(){
         Meteor.call("timeRunOut", Session.get("stoprun"), function(error, result){
           if(error){
             console.log("error", error);
@@ -42,8 +42,8 @@ class StartedExam {
         });
         if(Session.get("stoprun") < 1)
         {
-          Meteor.clearInterval(isstop);
-         $state.go("scored-exam",{"exam_id": $stateParams.exam_id});
+          Meteor.clearInterval(this.isstop);
+         $state.go("scored-exam",{"exam_id":$stateParams.exam_id});
         }
         else {
           document.getElementById('time').innerHTML = Session.get("stoprun");
@@ -100,6 +100,7 @@ class StartedExam {
         }
         else {
           this.isend = false;
+          Meteor.clearInterval(this.isstop);
           this.state.go('scored-exam',{"exam_id":this.exam_id});
         }
         this.selectedRow = null;

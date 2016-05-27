@@ -1,7 +1,7 @@
 <div layout="column" layout-padding layout-margin>
   <div layout="column" layout-align="center center">
     <p>
-      {{scoredExam.infor.examName}}
+      <!-- {{scoredExam.examName}} -->
     </p>
     <p layout-align="center center">
       Danh sách người chơi và kết quả.
@@ -11,14 +11,18 @@
     <table md-table >
       <thead md-head >
         <tr md-row>
-          <th md-column >User</th>
+          <th md-column >Vị thứ</th>
+          <th md-column >Tên thí sinh</th>
+          <th md-column >Địa chỉ Email</th>
           <th md-column >score</th>
         </tr>
       </thead>
       <tbody md-body>
         <!-- xap xep giam dan thi them (-) vao truoc va lay truong thoi ko co inf.scored -->
-        <tr ng-repeat="inf in scoredExam.infor.usersList | orderBy:'-scored' " >
-          <td md-cell>{{inf.userId}}</td>
+        <tr ng-repeat="inf in scoredExam.infor | orderBy:'-scored' " >
+          <td md-cell>{{$index+1}}</td>
+          <td md-cell>{{inf.name}}</td>
+            <td md-cell>{{inf.email}}</td>
           <td md-cell>{{inf.scored}}</td>
         </tr>
       </tbody>

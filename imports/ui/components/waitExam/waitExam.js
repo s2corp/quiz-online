@@ -25,6 +25,7 @@ class WaitExam {
     this.questionID = this.val.questionSetId;
     Session.set("exam", this.val)
     this.start =false;
+    this.own = false;
     this.statusExam = false;
     var query = Examination.find({"_id":$stateParams.exam_id});
      this.handle = query.observeChanges({
@@ -41,12 +42,12 @@ class WaitExam {
             });
           }, 1000);
           Meteor.autorun(function(){
-            if(Session.get("stopTime") < 1)
+            if(Session.get("stopTime") < 0)
             {
               clearInterval(stop);
             }
             else {
-              document.getElementById('wait').innerHTML = Session.get("stopTime");
+              document.getElementById('wait').innerHTML ="Kì thi sẽ bắt đầu sau "+ Session.get("stopTime")+"s";
             }
           });
         }
@@ -54,7 +55,7 @@ class WaitExam {
     });
 
     this.autorun(function(){
-      if(Session.get("stopTime") < 1)
+      if(Session.get("stopTime") < 0)
       {
         var checkown = Question.find({$and:[{"_id":this.questionID},{"userId":Meteor.userId()}]}).count();
           if(checkown <= 0)
@@ -68,7 +69,7 @@ class WaitExam {
     this.helpers({
       userinfor(){
       var tam = Examination.findOne({_id:$stateParams.exam_id});
-      Meteor.call("finduser", tam.usersList, function(error, result){
+      Meteor.call("finduser",tam.usersList, function(error, result){
         if(error){
           console.log("error", error);
         }
@@ -82,7 +83,11 @@ class WaitExam {
       ownExam(){
         var us = Question.find({"_id":this.val.questionSetId, "userId":Meteor.userId()}).count();
         if(us > 0)
+        {
+          this.own = true;
           this.start = true;
+        }
+
         return this.start;
       }
     });

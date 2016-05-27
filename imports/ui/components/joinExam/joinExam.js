@@ -14,7 +14,7 @@ class JoinExam {
     this.state = $state;
     this.subscribe("question");
     this.subscribe("examination");
-
+    var queryExam;
   }
 
   loginExam(zipcode){
@@ -26,26 +26,12 @@ class JoinExam {
         }
         else {
           //console.log(zipcode);
-          var queryExam = Examination.findOne({_id:zipcode});
+           queryExam = Examination.findOne({_id:zipcode});
           if(queryExam.isTest === true)
           {
-            var checkisownQuestion = Question.find({$and:[{"_id":queryExam.questionSetId},{"userId":Meteor.userId()}]}).count();
             var val  = Examination.find({$and:[{"_id":zipcode},{"started":false}]},{fields:{'questionSetId':1,"_id":0}}).count();
             if(val > 0){
-              if(checkisownQuestion === 0)
-              {
-                Meteor.call("updateExam",zipcode,Meteor.userId(),0);
-                var checkexit = Examination.find({$and:[{_id:zipcode},{"usersList":{$elemMatch:{"userId":Meteor.userId()}}}]}).count();
-                if(checkexit > 0){
-                  Meteor.call("updateExam",zipcode,Meteor.userId(),0);
-
-                }
-                else {
-                  Examination.update({_id:zipcode}, {$push:{
-                    "usersList":{"userId":Meteor.userId(),"scored":0}
-                  }});
-                }
-              }
+              this.updateUserExam(zipcode);
               this.state.go("waitExam",{'exam_id':zipcode});
             }
             else {
@@ -53,6 +39,7 @@ class JoinExam {
             }
           }
           else {
+            this.updateUserExam(zipcode);
             var checkown = Question.find({"_id":queryExam.questionSetId,"userId":Meteor.userId()}).count();
               if(checkown > 0)
                 this.state.go("scored-exam",{"exam_id":zipcode});
@@ -63,6 +50,24 @@ class JoinExam {
         }
       }
   }
+
+  updateUserExam(zipcode)
+  {
+    var checkisownQuestion = Question.find({$and:[{"_id":queryExam.questionSetId},{"userId":Meteor.userId()}]}).count();
+    if(checkisownQuestion === 0)
+    {
+      var checkexit = Examination.find({$and:[{_id:zipcode},{"usersList":{$elemMatch:{"userId":Meteor.userId()}}}]}).count();
+      if(checkexit > 0){
+        Meteor.call("updateExam",zipcode,Meteor.userId(),0);
+      }
+      else {
+        Examination.update({_id:zipcode}, {$push:{
+          "usersList":{"userId":Meteor.userId(),"scored":0}
+        }});
+      }
+    }
+  }
+
 }
 const name = 'joinExam';
 export default angular.module(name,[
