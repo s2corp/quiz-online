@@ -27,6 +27,10 @@ class Auth {
       },
       currentUser() {
         return Meteor.user();
+      },
+      userImage(){
+        return Meteor.users.find({ "status.online": true });
+        //return (user.profile.picture);
       }
     });
   }

@@ -14,7 +14,6 @@ class Register {
 
     $reactive(this).attach($scope);
     this.user = {
-      job: 'student',
       eduMail: '',
       normalMail: '',
       passwordretype: ''
@@ -24,7 +23,7 @@ class Register {
       password: '',
       profile: {
         name: '',
-        job: ''
+        job: 'student'
       }
     };
 

@@ -1,6 +1,25 @@
 <div layout="row">
-  <md-button flex ui-sref="login" ng-hide="auth.isLoggedIn" aria-label="login">Đăng nhập</md-button>
-  <md-button flex ui-sref="register" ng-hide="auth.isLoggedIn" aria-label="register">Đăng ký</md-button>
-  <md-button flex ng-click="auth.logout()" ng-show="auth.isLoggedIn" aria-label="logout">Đăng xuất</md-button>
-  <div ng-show="auth.isLoggedIn">{{ auth.currentUser | displayNameFilter }}</div>
+  <md-button class="md-raised" ui-sref="login" ng-hide="auth.isLoggedIn" aria-label="login">
+    <strong style="color: #ff8a00; font-weight: bold">
+      Đăng nhập
+    </strong>
+  </md-button>
+
+  <md-button class="md-raised auth" ui-sref="register" ng-hide="auth.isLoggedIn" aria-label="register">
+    <strong>
+      Đăng ký
+    </strong>
+  </md-button>
+  <div layout="row" layout-align="center center">
+    <md-button class="md-fab" ng-repeat="user in auth.userImage">
+      <img src="{{ user.profile.picture }}" alt="">
+    </md-button>
+    <div ng-show="auth.isLoggedIn">{{ auth.currentUser | displayNameFilter }}</div>
+    <md-button class="md-raised" flex ng-click="auth.logout()" ng-show="auth.isLoggedIn" aria-label="logout">
+      <strong>
+        Đăng xuất
+      </strong>
+    </md-button>
+  </div>
+
 </div>

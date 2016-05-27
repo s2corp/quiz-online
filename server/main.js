@@ -109,6 +109,11 @@ Meteor.methods({
     return Meteor.users.find({ "status.online": true });
   });
 
+  Meteor.publish("user", function() {
+    return Meteor.users.find({ });
+  });
+
+
   Meteor.methods({
     finduser:function(userList){
       var data = [];
