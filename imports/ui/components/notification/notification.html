@@ -3,7 +3,7 @@
   <div id="noteTab" class="notification" style="overflow: scroll; overflow-x: hidden;">
     <md-content flex layout-padding ng-repeat="note in notification.notes" layout="row">
       <p>{{note.notification}}  ngày: {{note.date}}</p>
-      <md-button style="height: 40px; width: 20px;" ng-click="notification.removeNote(note)">X</md-button>
+      <md-button style="height: 40px; width: 20px;" ng-click="notification.removeNote(note)" aria-label="delete">X</md-button>
     </md-content>
   </div>
 </div>

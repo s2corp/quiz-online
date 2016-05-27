@@ -1,6 +1,5 @@
-<p>
-  {{startedExam.score}}
-</p>
+<h1 id="scored">0</h1>
+<h2 id ="time">0</h2>
 <div layout="column" layout-align="center" flex-offset="10">
   <h3>{{startedExam.showquestion.title}} </h3>
 </div>
@@ -30,13 +29,9 @@
       </md-card-content>
       <!-- bat su kien next truyen vao vi tri cau hoi, cau hoi va cau tra loi -->
       <div class="md-actions" layout="column" layout-align="center" style="background-color:rgb(245, 16, 30)">
-         <md-button ng-click="startedExam.checkanswer(q.question,data.group1,vitri)">NEXT</md-button>
+         <md-button ng-click="startedExam.checkanswer(q.question,data.group1,vitri)" aria-label="next">NEXT</md-button>
        </div>
     </md-card>
   </div>
   </div>
 </md-content>
-<a href="/startedExam/scored">xem diem</a>
-<a href="/questionlist/tam">tam</a>
-<a href="/login">Login di may</a>
-<a href="/startedExam">show Information</a>

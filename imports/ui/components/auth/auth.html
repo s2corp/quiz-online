@@ -1,6 +1,6 @@
 <div layout="row">
-  <md-button flex ui-sref="login" ng-hide="auth.isLoggedIn">Đăng nhập</md-button>
-  <md-button flex ui-sref="register" ng-hide="auth.isLoggedIn">Đăng ký</md-button>
-  <md-button flex ng-click="auth.logout()" ng-show="auth.isLoggedIn">Đăng xuất</md-button>
+  <md-button flex ui-sref="login" ng-hide="auth.isLoggedIn" aria-label="login">Đăng nhập</md-button>
+  <md-button flex ui-sref="register" ng-hide="auth.isLoggedIn" aria-label="register">Đăng ký</md-button>
+  <md-button flex ng-click="auth.logout()" ng-show="auth.isLoggedIn" aria-label="logout">Đăng xuất</md-button>
   <div ng-show="auth.isLoggedIn">{{ auth.currentUser | displayNameFilter }}</div>
 </div>

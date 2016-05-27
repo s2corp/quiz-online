@@ -14,13 +14,13 @@
             <img src="image/green-glossy-icon-md.png" alt="" style="width: 13px; height: 13px;">
           </td>
           <td>
-            <md-button id="sendCode" class="md-raised md-primary" style="width: 50px;" ng-click="sendCode.sendCode(user._id, $event)">Mời</md-button>
+            <md-button id="sendCode" class="md-raised md-primary" style="width: 50px;" ng-click="sendCode.sendCode(user._id, $event)" aria-label="sendCode">Mời</md-button>
           </td>
         </tr>
     </table>
   </div>
 
   <div layout="row" layout-align="center">
-    <md-button id="sendCodeAll" class="md-raised md-primary" style="width: 80%; margin-left: 10%;" ng-click="sendCode.inviteAll()">Mời tất cả mọi người</md-button>
+    <md-button id="sendCodeAll" class="md-raised md-primary" style="width: 80%; margin-left: 10%;" ng-click="sendCode.inviteAll()" aria-label="inviteAll">Mời tất cả mọi người</md-button>
   </div>
 </div>

@@ -1,7 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import { Email } from 'meteor/email';
 import { Session } from 'meteor/session';
-
+import {Promise} from 'meteor/promise';
 import { NotificationData } from '../imports/api/notificationdata';
 import { Examination } from '../imports/api/examination';
 import { Question } from '../imports/api/question';
@@ -109,15 +109,6 @@ Meteor.methods({
     return Meteor.users.find({ "status.online": true });
   });
 
-
-  Meteor.methods({
-    updateExam:function(id,user,scored){
-      Examination.update({_id:id,"usersList.userId":user}, {$set:{
-          "usersList.$.scored":scored
-      }});
-    }
-  });
-
   Meteor.methods({
     finduser:function(userList){
       var data = [];
@@ -139,21 +130,49 @@ Meteor.methods({
        return time;
     }
   });
-
-
-  //kiem tra cau tra loi
   Meteor.methods({
-    checkanswer:function(question_id,question,answer,index){
-      var tam = Question.find({$and:[{"_id":question_id}
-        ,{"questionSet": { $elemMatch: { "question":question,"correctAnswerSet":answer}}}]}).count();
-      if(tam > 0)
-      {
-        console.log(tam)
-        return tam;
-      }
-      else {
-        console.log("-1");
-        return -1;
-      }
+    timeRun:function(time){
+       time--;
+       return time;
     }
   });
+
+
+  //kiem tra cau tra loi va cap nhap lai diem so
+  Meteor.methods({
+    checkanswer:function(id,user,question_id,question,answer,index){
+      var tam = Question.findOne({$and:[{"_id":question_id}
+        ,{"questionSet": { $elemMatch: { "question":question,"correctAnswerSet":answer}}}]});
+      if(tam !== null)
+      {
+        Examination.update({_id:id,"usersList.userId":user}, {$inc:{
+            "usersList.$.scored":tam.questionSet[index].scored
+        }});
+      }
+
+
+      var score = 0;
+      var val = Examination.findOne({$and:[{"_id":id},{"usersList.userId":user}]});
+      for (var i = 0; i < val.usersList.length; i++) {
+        if(val.usersList[i].userId === user)
+        {
+            score = val.usersList[i].scored;
+        }
+      }
+        return score;
+}
+  });
+
+    Meteor.methods({
+      updateExam:function(id,user,scored){
+        Examination.update({_id:id,"usersList.userId":user}, {$set:{
+            "usersList.$.scored":scored
+        }});
+      }
+    });
+
+      Meteor.methods({
+        updateScored:function(id){
+           return Examination.findOne({"_id":id});
+        }
+      });

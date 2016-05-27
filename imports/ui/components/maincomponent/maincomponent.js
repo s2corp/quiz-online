@@ -5,22 +5,23 @@ import ngMaterial from 'angular-material';
 
 import { name as Home } from '../home/home';
 import { name as Register } from '../register/register';
-import { name as RegisterStudent } from '../register_student/registerStudent';
-import { name as RegisterTeacher } from '../register_teacher/registerTeacher';
 import { name as Navigation } from '../navigation/navigation';
 import { name as Authenticated } from '../authenticated/authenticated';
-import { name as QuestionDetail } from '../questiondetail/questiondetail';
 import { name as StartQuiz } from '../startquiz/startquiz';
 import { name as Notification } from '../notification/notification';
 import { name as NotificateButton} from '../notificateButton/notificateButton';
 import { name as joinExam} from '../joinExam/joinExam';
 import { name as waitExam} from '../waitExam/waitExam';
 import { name as startedExam} from '../startedExam/startedExam';
+import { name as scoredExam} from '../scoredExam/scoredExam';
 import { name as Auth } from '../auth/auth';
-
 import './maincomponent.html';
 
-class Main{}
+class Main{
+  constructor(){
+
+  }
+}
 
 const name = 'maincomponent';
 
@@ -30,16 +31,14 @@ export default  angular.module(name, [
     Register,
     Navigation,
     uiRouter,
-    RegisterTeacher,
-    RegisterStudent,
     Authenticated,
     NotificateButton,
-    QuestionDetail,
     StartQuiz,
     Notification,
     joinExam,
     waitExam,
     startedExam,
+    scoredExam,
     Auth
     ///ngMaterial
   ]
@@ -83,11 +82,11 @@ function run($rootScope, $state) {
   $rootScope.$on('$stateChangeError',
     (event, toState, toParams, fromState, fromParams, error) => {
       if (error === 'AUTH_REQUIRED') {
-        alert('bạn cần đăng nhập trước khi tạo đề thi');
+        alert('bạn cần đăng nhập trước khi thực hiện thao tác này');
         $state.go('login');
       }
       if (error === 'JOB_REQUIRED')
-        alert('bạn cần có tài khoản giáo viên để có thể tạo đề thi')
+        alert('bạn cần có tài khoản giáo viên để có thể thực hiện thao tác này')
       if (error === 'VERTIFICATE_REQUIRED')
         alert('một mail chứng thực đã được gửi đến email của bạn, đề nghị xác thực email trước khi thực hiện thao tác này');
     }

@@ -158,17 +158,15 @@ function config($stateProvider) {
   		url: '/startQuiz',
   		template: '<startquiz></startquiz>',
       resolve: {
-      currentUser($q) {
-        if(Meteor.userId() === null)
-          return $q.reject('AUTH_REQUIRED');
-        else
+        currentUser($q) {
+          if(Meteor.userId() === null)
+            return $q.reject('AUTH_REQUIRED');
           if(Meteor.user().profile.job !== 'teacher')
             return $q.reject('JOB_REQUIRED');
-          else
+          if(Meteor.user().emails)
             if(!Meteor.user().emails[0].verified)
               return $q.reject('VERTIFICATE_REQUIRED');
-            else
-              return $q.resolve();
+          return $q.resolve();
         }
       }
   	});

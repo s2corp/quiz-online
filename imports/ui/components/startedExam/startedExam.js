@@ -13,6 +13,7 @@ class StartedExam {
     'ngInject';
     $reactive(this).attach($scope);
     this.subscribe('question');
+    this.subscribe("examination");
     this.score=0;
     this.selectedIndex = 0 ;//hien ra cau hoi thu i
     this.isend = true;//kiem tra het cau hoi chua
@@ -23,6 +24,33 @@ class StartedExam {
     this.state=$state;
     this.selectedRow = null;
     this.lengthquestion = 0;
+    var exam = Examination.findOne({_id:$stateParams.exam_id});
+    if(exam !== null)
+        Session.set("stoprun", exam.time);
+    else {
+        Session.set("stoprun", 60);
+    }
+    document.getElementById('time').innerHTML = Session.get("stoprun");
+    //ham tu dong kiem tra thoi gian
+    this.autorun(() =>{
+      var isstop = Meteor.setInterval(function(){
+        Meteor.call("timeRunOut", Session.get("stoprun"), function(error, result){
+          if(error){
+            console.log("error", error);
+          }
+            Session.set("stoprun", result);
+        });
+        if(Session.get("stoprun") < 1)
+        {
+          Meteor.clearInterval(isstop);
+         $state.go("scored-exam",{"exam_id": $stateParams.exam_id});
+        }
+        else {
+          document.getElementById('time').innerHTML = Session.get("stoprun");
+        }
+      },1000);
+    });
+
     this.helpers({
       getuser(){
         if(Meteor.userId() === null)
@@ -41,7 +69,7 @@ class StartedExam {
           return Question.findOne({"_id":$stateParams.question_id});
         }
           else {
-           $state.go('home');
+           this.state.go('home');
           }
     }
   });
@@ -55,53 +83,27 @@ class StartedExam {
 
   checkanswer(que,data,vitri)
   {
-    //console.log(this.question_id);
-    // var ans=Question.find({$and:[{"_id":this.question_id}
-    //   ,{"questionSet": { $elemMatch: { "question":{$not:{$ne:que}},"correctAnswerSet":data}}}]}).count();
-    //   console.log(ans);
-
-    Meteor.call("checkanswer",this.question_id,que,data,vitri , function(error, result){
+    var userscored =
+    Meteor.call("checkanswer",this.exam_id,Meteor.userId(),this.question_id,que,data,vitri , function(error, result){
       if(error){
         console.log("error", error);
       }
-
       if(result){
-      console.log("ket qua");
-       console.log(result);
-        Session.set("valueresult", result);
+        //console.log(result);
+        document.getElementById('scored').innerHTML = result;
+        Session.set("scored", result);
       }
-    })
-    
-
-    console.log("correctAnswerSet");
-    console.log(Session.get("valueresult"));
-    // if(Session.get("valueresult") == null)
-    //   console.log("null valueresult");
-
-
-    //  console.log(ans.questionSet[vitri].scored);
-      // if(ans > 0){
-      //   console.log("dung");
-      //
-      //         this.score =this.score + val.questionSet[vitri].scored;
-      //         Meteor.call("updateExam",this.exam_id,Meteor.userId(),this.score);
-      //    }
-      //    else {
-      //      console.log("sai");
-      //    }
-          //console.log(val.questionSet.length);
+    });
+    //chuyen sang cau hoi tiep theo
         if (this.selectedIndex < (this.lengthquestion - 1)) {
           this.selectedIndex = this.selectedIndex + 1;
         }
         else {
           this.isend = false;
-          //this.state.go('home');
-          //this.state.go('scored-exam',{"exam_id":this.exam_id});
+          this.state.go('scored-exam',{"exam_id":this.exam_id});
         }
         this.selectedRow = null;
-      //  ans = null;
   }
-
 }
 
 const name = 'startedExam';

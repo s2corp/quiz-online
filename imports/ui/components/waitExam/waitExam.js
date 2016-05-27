@@ -6,79 +6,95 @@ import { Meteor } from 'meteor/meteor';
 import {Examination} from '../../../api/examination';
 import {Question} from '../../../api/question';
 import {Session} from 'meteor/session';
-
-//import { name as displayProfileUser } from '../../filters/displayProfileUser';
+import  mdDataTable from 'angular-material-data-table';
 import './waitExam.html';
 import '../../../api/users';
 class WaitExam {
-  constructor($scope,$reactive,$stateParams,$state,$compile) {
+  constructor($scope,$reactive,$stateParams,$state) {
     'ngInject';
     $reactive(this).attach($scope);
     this.subscribe("usersList");//show all user
-    this.subscribe("examination", () => [$stateParams.exam_id] );//phai subscribe
+    this.subscribe("examination");//phai subscribe
     this.subscribe("question");
-
-    this.compile = $compile;
-    this.scope = $scope;
+    this.scope=$scope;
     this.state = $state;
     this.stateParams = $stateParams;
-    this.data = [];
-    this.stop;
-    var val ;
-
-    this.helpers({
-      userinfor(){
-        //console.log("message");
-        //var val = Exam.findOne({"_id":$stateParams.exam_id});
-
-         this.val= Examination.findOne({_id:$stateParams.exam_id});
-            Meteor.call("finduser", this.val.usersList, function(error, result){
+    this.idExam = $stateParams.exam_id;
+    this.data =[];
+    this.val= Examination.findOne({_id:$stateParams.exam_id});
+    this.questionID = this.val.questionSetId;
+    Session.set("exam", this.val)
+    this.start =false;
+    this.statusExam = false;
+    var query = Examination.find({"_id":$stateParams.exam_id});
+     this.handle = query.observeChanges({
+      changed: function (id, fields) {
+        if(fields.started === true)
+        {
+          Session.set("stopTime", 5);
+          var stop = setInterval(function(){
+            Meteor.call("timeRunOut", Session.get("stopTime"), function(error, result){
               if(error){
                 console.log("error", error);
               }
-              Session.set("sang", result);
+                Session.set("stopTime", result);
             });
-
-
-        this.data = Session.get("sang");
-        return this.data;
-      },
-      ownExam(){
-        //var us = Examination.find({"field":value});
-        console.log(this.val.questionSetId);
-        var us = Question.find({"_id":this.val.questionSetId, "userId":Meteor.userId()}).count();
-        console.log(us);
-        if(us > 0)
-          return true;
-        return false;
-      }
-    });
-}
-  runTime()
-  {
-    Session.set("stopTime", 2);
-    this.stop = Meteor.setInterval(function(){
-      Meteor.call("timeRunOut", Session.get("stopTime"), function(error, result){
-        if(error){
-          console.log("error", error);
+          }, 1000);
+          Meteor.autorun(function(){
+            if(Session.get("stopTime") < 1)
+            {
+              clearInterval(stop);
+            }
+            else {
+              document.getElementById('wait').innerHTML = Session.get("stopTime");
+            }
+          });
         }
-          console.log(result);
-          Session.set("stopTime", result);
+    }
+    });
 
-      });
-    }, 1000);
     this.autorun(function(){
       if(Session.get("stopTime") < 1)
       {
-        Meteor.clearInterval(this.stop);
-        //console.log(this.stateParams.exam_id);
-        //console.log(this.val.questionSetId);
-
-        this.state.go("startedExam",{'exam_id':this.stateParams.exam_id,'question_id':this.val.questionSetId});
-        //this.state.go("home");
+        var checkown = Question.find({$and:[{"_id":this.questionID},{"userId":Meteor.userId()}]}).count();
+          if(checkown <= 0)
+          {
+              this.state.go("startedExam",{'exam_id':this.stateParams.exam_id,'question_id':this.questionID});
+          }
+          this.handle.stop();
       }
-
     });
+
+    this.helpers({
+      userinfor(){
+      var tam = Examination.findOne({_id:$stateParams.exam_id});
+      Meteor.call("finduser", tam.usersList, function(error, result){
+        if(error){
+          console.log("error", error);
+        }
+        if(result){
+          Session.set("profileUser", result);
+        }
+      });
+      var data = Session.get("profileUser");
+      return data;
+      },
+      ownExam(){
+        var us = Question.find({"_id":this.val.questionSetId, "userId":Meteor.userId()}).count();
+        if(us > 0)
+          this.start = true;
+        return this.start;
+      }
+    });
+}
+
+  runTime()
+  {
+    this.statusExam = true;
+    this.start = false;
+    Examination.update({_id:this.stateParams.exam_id}, {$set:{
+         "started":true
+       }});
   }
 }
 
@@ -86,7 +102,8 @@ const name = 'waitExam';
 export default angular.module(name,[
   angularMeteor,
   uiRouter,
-  ngMaterial
+  ngMaterial,
+  mdDataTable
 ])
 .component(name,{
   templateUrl:'imports/ui/components/waitExam/waitExam.html',
