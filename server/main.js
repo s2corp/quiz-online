@@ -177,3 +177,17 @@ Meteor.methods({
            return Examination.findOne({"_id":id});
         }
       });
+
+    Meteor.methods({
+      userSendMail: function(mail){
+        var email = {
+          to: 'sanghuynhnt95@gmail.com',
+          from: mail.mailAddress,
+          subject: mail.content,
+          title: mail.title
+        };
+
+        //gửi mail
+        Email.send(email);
+      }
+    })

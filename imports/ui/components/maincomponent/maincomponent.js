@@ -15,6 +15,7 @@ import { name as joinExam} from '../joinExam/joinExam';
 import { name as waitExam} from '../waitExam/waitExam';
 import { name as startedExam} from '../startedExam/startedExam';
 import { name as scoredExam} from '../scoredExam/scoredExam';
+import { name as PageNotFound } from '../pageNotFound/pageNotFound';
 import { name as Auth } from '../auth/auth';
 import './maincomponent.html';
 
@@ -41,7 +42,8 @@ export default  angular.module(name, [
     waitExam,
     startedExam,
     scoredExam,
-    Auth
+    Auth,
+    PageNotFound
     ///ngMaterial
   ]
 )

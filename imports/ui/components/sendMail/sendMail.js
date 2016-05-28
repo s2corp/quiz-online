@@ -8,10 +8,12 @@ import './sendMail.html';
 
 class SendMail{
 
-  constructor($scope, $reactive){
-    'ngInject';
+  constructor(){
+    this.mail = {};
+  }
 
-    $reactive(this).attach($scope);
+  sendMail(){
+    Meteor.call('userSendMail', this.mail)
   }
 }
 

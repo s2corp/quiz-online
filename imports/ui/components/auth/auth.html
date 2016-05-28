@@ -11,7 +11,7 @@
     </strong>
   </md-button>
   <div layout="row" layout-align="center center">
-    <md-button class="md-fab">
+    <md-button ng-show="auth.isLoggedIn" class="md-fab">
       <img src="{{ auth.userImage }}" alt="">
     </md-button>
     <p>{{ auth.image }}</p>

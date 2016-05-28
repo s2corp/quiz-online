@@ -36,8 +36,9 @@ class Login {
         if (err) {
           // handle error
       } else {
+        alert('ban da dang nhap thanh cong');
         this.$state.go('home');
-        this.showVertificate();
+        this.showVertificateForm();
       }
     })
 
@@ -47,13 +48,14 @@ class Login {
   }
 
   //chọn đối tượng nghiên cứu và chứng thực user
-  showVertificate() {
+  showVertificateForm() {
+    console.log(Meteor.user());
     if(Meteor.user())
-      if(Meteor.user().profile.job === '')
+      if(Meteor.user().profile.job === ''){
         this.$mdDialog.show({
           controller($mdDialog) {
             'ngInject';
-
+            alert("something");
             this.close = () => {
               $mdDialog.hide();
             },
@@ -111,6 +113,7 @@ class Login {
             //clickOutsideToClose: true,
             fullscreen: this.$mdMedia('lg')
           });
+        }
   }
 
   loginGG(){
