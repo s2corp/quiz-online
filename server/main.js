@@ -10,12 +10,7 @@ process.env.MAIL_URL = 'smtp://sanghuynhnt95@gmail.com:123581321tuongmo@smtp.gma
 
 var VertificateCode = '';
 
-Meteor.methods({
-  insertUser: function(user){
-    Meteor.users.insert(user)
-  }
-});
-
+//Sử dụng để update lại job của user đối với các đối tượng login bằng fb
 Meteor.methods({
   updateUser: function(user){
     if(user.code === VertificateCode){
@@ -63,14 +58,6 @@ Accounts.onCreateUser(function(options, user) {
   return user;
 });
 
-//kiểm tra mail trùng lặp
-Meteor.methods({
-  findUser: function(inMail){
-    var result = Meteor.users.find({mail: inMail}).count();
-    return result;
-  }
-});
-
 //gửi mail
 Meteor.methods({
       sendEmail: function (mailAddress) {
@@ -110,7 +97,7 @@ Meteor.methods({
   });
 
 
-  Meteor.methods({
+Meteor.methods ({
     finduser:function(userList){
       var data = [];
       for (var i = 0; i < userList.length; i++) {
@@ -120,74 +107,75 @@ Meteor.methods({
         data.push(user)
       }
 
-      return data;
-    }
-  });
-
-  //countTime
-  Meteor.methods({
-    timeRunOut:function(time){
-       time--;
-       return time;
-    }
-  });
-  Meteor.methods({
-    timeRun:function(time){
-       time--;
-       return time;
-    }
-  });
+    return data;
+  }
+});
 
 
-  //kiem tra cau tra loi va cap nhap lai diem so
-  Meteor.methods({
-    checkanswer:function(id,user,question_id,question,answer,index){
-      var tam = Question.findOne({$and:[{"_id":question_id}
-        ,{"questionSet": { $elemMatch: { "question":question,"correctAnswerSet":answer}}}]});
-      if(tam !== null)
+//kiem tra cau tra loi va cap nhap lai diem so
+Meteor.methods({
+  checkanswer:function(id,user,question_id,question,answer,index){
+    var tam = Question.findOne({$and:[{"_id":question_id}
+      ,{"questionSet": { $elemMatch: { "question":question,"correctAnswerSet":answer}}}]});
+    if(tam !== null)
+    {
+      Examination.update({_id:id,"usersList.userId":user}, {$inc:{
+          "usersList.$.scored":tam.questionSet[index].scored
+      }});
+    }
+
+
+    var score = 0;
+    var val = Examination.findOne({$and:[{"_id":id},{"usersList.userId":user}]});
+    for (var i = 0; i < val.usersList.length; i++) {
+      if(val.usersList[i].userId === user)
       {
-        Examination.update({_id:id,"usersList.userId":user}, {$inc:{
-            "usersList.$.scored":tam.questionSet[index].scored
-        }});
+          score = val.usersList[i].scored;
       }
+    }
+    return score;
+  }
+});
 
+Meteor.methods({
+    updateExam:function(id,user,scored){
+      Examination.update({_id:id,"usersList.userId":user}, {$set:{
+          "usersList.$.scored":scored
+      }});
+    }
+});
 
-      var score = 0;
-      var val = Examination.findOne({$and:[{"_id":id},{"usersList.userId":user}]});
-      for (var i = 0; i < val.usersList.length; i++) {
-        if(val.usersList[i].userId === user)
-        {
-            score = val.usersList[i].scored;
-        }
-      }
-        return score;
-}
-  });
+Meteor.methods({
+    updateScored:function(id){
+        return Examination.findOne({"_id":id});
+    }
+});
 
-    Meteor.methods({
-      updateExam:function(id,user,scored){
-        Examination.update({_id:id,"usersList.userId":user}, {$set:{
-            "usersList.$.scored":scored
-        }});
-      }
-    });
-
-      Meteor.methods({
-        updateScored:function(id){
-           return Examination.findOne({"_id":id});
-        }
-      });
-
-    Meteor.methods({
-      userSendMail: function(mail){
-        var email = {
-          to: 'sanghuynhnt95@gmail.com',
-          from: mail.mailAddress,
-          subject: mail.content,
-          title: mail.title
-        };
+Meteor.methods({
+    userSendMail: function(mail){
+      var email = {
+        to: 'sanghuynhnt95@gmail.com',
+        from: mail.mailAddress,
+        subject: mail.content,
+        title: mail.title
+      };
 
         //gửi mail
-        Email.send(email);
-      }
-    })
+    Email.send(email);
+    }
+})
+
+Meteor.methods({
+  timeRun:function(time){
+     time--;
+     return time;
+  }
+});
+
+//countTime
+Meteor.methods({
+  timeRunOut:function(time){
+     time--;
+     return time;
+  }
+});

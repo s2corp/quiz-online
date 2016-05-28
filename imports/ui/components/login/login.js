@@ -22,8 +22,6 @@ class Login {
       password: ''
     };
 
-    console.log(Meteor.userId());
-
     this.error = '';
   }
 
@@ -36,15 +34,10 @@ class Login {
         if (err) {
           // handle error
       } else {
-        alert('ban da dang nhap thanh cong');
         this.$state.go('home');
         this.showVertificateForm();
       }
     })
-
-    //Meteor.setTimeout(this.showVertificate(), 7000);
-    //console.log(Meteor.user().profile.job)
-    //Session.set('user', Meteor.userId());
   }
 
   //chọn đối tượng nghiên cứu và chứng thực user
@@ -55,7 +48,6 @@ class Login {
         this.$mdDialog.show({
           controller($mdDialog) {
             'ngInject';
-            alert("something");
             this.close = () => {
               $mdDialog.hide();
             },
@@ -69,13 +61,6 @@ class Login {
             },
 
             this.checkMail = () => {
-            //Kiểm tra mail có tồn tại hay không
-            // if(!Meteor.call('findUser', this.user.mail)){
-            //    this.errorMail = "mail đã được đăng ký, quên mật khẩu?";
-            //    return false;
-            // }
-            // else
-            //    this.errorMail = "";
 
             //Kiểm tra mail có hợp lệ hay không
               var re = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.+-]+((\.edu+\.[a-zA-Z]{2,3})|(\.edu))$/;
