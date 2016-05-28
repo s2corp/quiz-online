@@ -1,0 +1,40 @@
+<md-dialog id="notification" aria-label="New party" ng-cloak>
+  <md-toolbar>
+    <div class="md-toolbar-tools">
+      <h2>Thông báo</h2>
+      <span flex></span>
+      <!-- <md-button ng-click="loginModal.close()">
+        Đóng
+      </md-button> -->
+    </div>
+  </md-toolbar>
+  <md-dialog-content>
+    <div class="md-dialog-content">
+      <!--Loại đề thi-->
+      <form name="loginModal.myForm">
+        <div layout="column" layout-align="center center">
+          <div layout="row" layout-align="left" style="width: 100%;">
+            <label>Bạn là:</label>
+          </div>
+          <br>
+          <md-radio-group name="job" ng-model="loginModal.user.code" layout="row" required>
+            <md-radio-button value='teacher' ng-click="loginModal.showVertificate()" aria-label="Teacher"><font size="3.5" color="gray">Giáo viên</font></md-radio-button>
+            <md-radio-button value='student' ng-click="loginModal.hideVertificate()" aria-label="Student"><font size="3.5" color="gray">Học sinh</font></md-radio-button>
+          </md-radio-group>
+          <p class="error" role="alert" ng-show="loginModal.myForm.job.$error.required" style="color: red;">
+              trường này là bắt buộc
+          </p>
+          <br>
+          <div id="vertificate" layout="column" layout-align="center center" style="visibility: hidden;">
+            <md-input-container class="md-block" flex-gt-sm>
+               <label>nhập mail education để kích hoạt tài khoản</label>
+               <input ng-model="loginModal.user.mail" ng-change="loginModal.checkMail()">
+               <p style="color: red;">{{loginModal.errorMail}}</p>
+             </md-input-container>
+          </div>
+          <md-button class="md-raised md-primary" ng-click="loginModal.vertificate()">Xác thực</md-button>
+        </div>
+      </form>
+    </div>
+  </md-dialog-content>
+</md-dialog>

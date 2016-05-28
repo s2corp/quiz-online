@@ -66,8 +66,8 @@
         </form>
 
         <div layout="column" layout-align="center center">
-          <md-button class="md-primary md-hue-1" ng-click="addtest.appendQuestion()">Thêm câu hỏi</md-button>
-          <md-button class="md-raised md-primary" ng-click="addtest.changeTab()" >Hoàn Thành</md-button>
+          <md-button class="md-primary md-hue-1" ng-click="addtest.appendQuestion()" aria-label="addAnswer">Thêm câu hỏi</md-button>
+          <md-button class="md-raised md-primary" ng-click="addtest.changeTab()" aria-label="finish">Hoàn Thành</md-button>
         </div>
       </md-tab>
 
@@ -83,7 +83,7 @@
                 <!-- <md-button class="md-raised" style="background-color: rgb(30, 73, 224)"><textarea rows="3" name="Text1" readonly>{{ques.question}}</textarea></md-button> -->
                 <div layout="row" layout-align="left left">
                   <!--hiển thi câu hỏi-->
-                  <md-button class="md-raised" style="height: 50%; width: 95%;" ng-click="addtest.showhideQuestion(ques.question)">{{ques.question}}</md-button>
+                  <md-button class="md-raised" style="height: 50%; width: 95%;" ng-click="addtest.showhideQuestion(ques.question)" aria-label="showQuestion">{{ques.question}}</md-button>
 
                 </div>
 
@@ -127,7 +127,7 @@
 
             </div>
             <div layout="column" layout-align="center center">
-              <md-button class="md-raised md-primary" ng-click="addtest.buildTest()">Lưu câu hỏi</md-button>
+              <md-button class="md-raised md-primary" ng-click="addtest.buildTest()" aria-label="saveQuestion">Lưu câu hỏi</md-button>
             </div>
           </md-content>
         </div>

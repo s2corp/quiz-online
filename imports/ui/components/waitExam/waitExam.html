@@ -1,35 +1,29 @@
 <md-content layout-padding layout-wrap>
     <div layout="row">
       <div flex layout="column" layout-align="start">
-        <md-button ng-show="waitExam.own" class="md-raised md-primary" layout-align="center center" href="/scored/{{waitExam.idExam}}" >Xem  Điểm</md-button>
+        <md-button ng-show="waitExam.own"  style="background-color:#ff8a00" layout-align="center center" href="/scored/{{waitExam.idExam}}" >Xem  Điểm</md-button>
       </div>
       <div flex layout="column" layout-align="start">
-          <md-button ng-show="waitExam.own"  layout-align="end" class="md-raised md-primary" ng-disabled="!waitExam.start" ng-click="waitExam.runTime()" >Bắt Đầu</md-button>
+          <md-button ng-show="waitExam.own"  layout-align="end" style="background-color:#ff8a00" ng-disabled="!waitExam.start" ng-click="waitExam.runTime()" >Bắt Đầu</md-button>
       </div>
     </div>
     <div layout="row" layout-align="center center">
-        <h2 class="md-raised md-primary" ng-show="!waitExam.start" id="wait">Vui lòng chờ tới khi bắt đầu!</h2>
+        <h2 class="md-raised md-primary"  ng-show="!waitExam.start" id="wait">Vui lòng chờ tới khi bắt đầu!</h2>
     </div>
-    <div layout="column" layout-padding>
-      <md-table-container>
-        <table md-table multiple>
-          <thead md-head >
-            <tr md-row>
-              <th md-column md-numeric>Số thứ tự</th>
-              <th md-column md-numeric>Tên thí sinh</th>
-              <th md-column md-numeric>Địa chỉ Email</th>
-              <th md-column md-numeric>Trạng thái</th>
-            </tr>
-          </thead>
-          <tbody md-body>
-            <tr md-row ng-repeat="u in waitExam.userinfor" style="height:20px;" >
-              <td md-cell>{{$index+1}}</td>
-              <td md-cell>{{u.profile.name}}</td>
-              <td md-cell>{{u.services.facebook.email}}</td>
-              <td md-cell>{{u.status.online}}</td>
-            </tr>
-          </tbody>
+    <div layout="column" class="md-whiteframe-z1" layout-margin layout-padding style="overflow-x:auto;">
+        <table>
+          <tr>
+            <th >Số thứ tự</th>
+            <th >Tên thí sinh</th>
+            <th >Địa chỉ Email</th>
+            <th >Trạng thái</th>
+          </tr>
+          <tr ng-repeat="u in waitExam.userinfor"  >
+            <td >{{$index+1}}</td>
+            <td >{{u.profile.name}}</td>
+            <td >{{u.services.facebook.email}}</td>
+            <td >{{u.status.online}}</td>
+          </tr>
         </table>
-    </md-table-container>
     </div>
 </md-content>

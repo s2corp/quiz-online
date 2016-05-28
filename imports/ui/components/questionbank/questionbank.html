@@ -10,11 +10,11 @@
               <!-- <div class="questionbank-tab"> -->
                 <div layout-align="center" layout="column" ng-repeat="ques in questionbank.questions">
                   <div layout="row" layout-align="center">
-                    <md-button style="width: 60%" class="md-raised md-primary">
-                      <strong>{{ques.title}} - {{ques.date}}</strong>
+                    <md-button style="width: 60%" class="md-raised md-primary" aria-label="show">
+                      <strong>{{ques.title}} - {{ques.date.getDate() + '/' + (ques.date.getMonth() + 1) + '/'+ ques.date.getFullYear()}}</strong>
                     </md-button>
-                    <md-button style="background-color: rgb(240, 121, 11)" class="md-raised md-primary" ng-click="questionbank.addQuestionPersonal(ques)"><strong>Chọn câu hỏi</strong></md-button>
-                    <md-button style="background-color: rgb(231, 19, 6); width: 50px;" ng-click="questionbank.remove(ques._id)">X</md-button>
+                    <md-button style="background-color: rgb(240, 121, 11)" class="md-raised md-primary" ng-click="questionbank.addQuestionPersonal(ques)" aria-label="add"><strong>Chọn câu hỏi</strong></md-button>
+                    <md-button style="background-color: rgb(231, 19, 6); width: 50px;" ng-click="questionbank.remove(ques._id)" aria-label="delete">X</md-button>
                   </div>
                 </div>
             </div>
@@ -58,7 +58,7 @@
                 </md-input-container>
 
                 <div layout="row" layout-align="center">
-                  <md-button class="md-raised md-primary" style="width: 80%;" ng-click="questionbank.addQuestionPublic()">Chọn câu hỏi</md-button>
+                  <md-button class="md-raised md-primary" style="width: 80%;" ng-click="questionbank.addQuestionPublic()" aria-label="choseQuestion">Chọn câu hỏi</md-button>
                 </div>
               </div>
             </div>
@@ -77,13 +77,13 @@
               <!-- <md-button class="md-raised" style="background-color: rgb(30, 73, 224)"><textarea rows="3" name="Text1" readonly>{{ques.question}}</textarea></md-button> -->
               <div layout="row" layout-align="left left">
                 <!--hiển thi câu hỏi-->
-                <md-button class="md-raised" style="height: 50%; width: 95%;" ng-click="questionbank.showhideQuestion(ques.question)">{{ques.question}}</md-button>
+                <md-button class="md-raised" style="height: 50%; width: 95%;" ng-click="questionbank.showhideQuestion(ques.question)" aria-label="showQuestion">{{ques.question}}</md-button>
 
                 <!-- Thay thế câu hỏi -->
                 <md-button class="md-raised md-primary" style="margin-left: 10px; height: 50%; background-color: rgb(240, 121, 11)" ng-click="questionbank.changeQuestion(ques.question)" ng-disabled="questionbank.disableButton == true">Thay thế</md-button>
 
                 <!-- Xóa câu hỏi -->
-                <md-button class="md-raised md-primary" style="margin-left: 10px; height: 50%; background-color: rgb(231, 19, 6);" ng-click="questionbank.removeQuestion(ques.$index)" ng-disabled="questionbank.disableButton == true">X</md-button>
+                <md-button class="md-raised md-primary" style="margin-left: 10px; height: 50%; background-color: rgb(231, 19, 6);" ng-click="questionbank.removeQuestion(ques.$index)" ng-disabled="questionbank.disableButton == true" aria-label="deleteQuestion">X</md-button>
               </div>
 
               <!-- Nội dung bộ câu hỏi -->
@@ -125,7 +125,7 @@
             </div>
 
             <div layout="column" layout-align="center center">
-              <md-button class="md-raised md-primary" ng-click="questionbank.buildTest()">Lưu câu hỏi</md-button>
+              <md-button class="md-raised md-primary" ng-click="questionbank.buildTest()" aria-label="bultTest">Lưu câu hỏi</md-button>
             </div>
           </md-content>
         </div>

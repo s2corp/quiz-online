@@ -40,8 +40,8 @@
 
                 <!--Chọn câu hỏi từ-->
                 <div layout-gt-md="row" layout-md="column" layout-align="center center" layout-fill style="width: 80%;">
-                  <md-button id="bank" class="md-raised md-primary" style="width: 60%;" ng-click="startquiz.changeTabBank()">Ngân hàng câu hỏi</md-button>
-                  <md-button id="create" class="md-raised md-primary" style="width: 60%;" ng-click="startquiz.changeTabCreate()">Câu hỏi tự tạo</md-button>
+                  <md-button id="bank" class="md-raised md-primary" style="width: 60%;" ng-click="startquiz.changeTabBank()" aria-label="questionBank">Ngân hàng câu hỏi</md-button>
+                  <md-button id="create" class="md-raised md-primary" style="width: 60%;" ng-click="startquiz.changeTabCreate()" aria-label="questionCreate">Câu hỏi tự tạo</md-button>
                 </div>
 
               </div>
@@ -77,11 +77,11 @@
                 <label>Tổng thời gian cho kì thi (theo phút)</label>
               </div>
               <div layout-gt-md="row" layout-md="column" style="width: 80%;">
-                <md-slider flex min="0" max="180" ng-model="startquiz.data.deadline" aria-label="red" id="red-slider" class>
+                <md-slider flex min="0" max="180" ng-model="startquiz.data.time" aria-label="red" id="red-slider" class>
                 </md-slider>
                 <br>
                 <div flex="20" style="margin-left: 10px" layout layout-align="center center">
-                  <input flex type="number" ng-model="startquiz.data.deadline" aria-label="red" aria-controls="red-slider">
+                  <input flex type="number" ng-model="startquiz.data.time" aria-label="red" aria-controls="red-slider">
                 </div>
               </div>
 
@@ -98,6 +98,17 @@
                 </div>
               </div>
 
+              <!--Loại đề thi-->
+              <div layout="row" layout-align="left" style="width: 80%;">
+                <label>Đề thi của bạn được sử dụng để:</label>
+              </div>
+              <div id="name">
+                <md-radio-group ng-model="startquiz.data.isTest" layout="row">
+                  <md-radio-button value=false class="md-primary" type="radio"><font size="3.5" color="gray">Ôn tập</font></md-radio-button>
+                  <md-radio-button value=true type="radio"><font size="3.5" color="gray">Kiểm tra</font></md-radio-button>
+                </md-radio-group>
+              </div>
+
               <!-- Chia sẽ với cộng đồng -->
               <div id="share" layout="column" layout-align="left" style="width: 80%;">
                 <md-switch ng-model="startquiz.public" aria-label="Switch 1" ng-change="startquiz.publicQuestion()">
@@ -110,7 +121,7 @@
               </div>
 
               <!-- Lưu kì thi -->
-              <md-button class="md-raised md-primary" style="width: 60%;" ui-sref="waitExam({exam_id: startquiz.code})" ng-click="startquiz.insertExam()">Hoàn tất</md-button>
+              <md-button class="md-raised md-primary" style="width: 60%;" ui-sref="waitExam({exam_id: startquiz.code})" ng-click="startquiz.insertExam()" aria-label="finish">Hoàn tất</md-button>
             </div>
           </div>
             <send-code-button id="send-code" style="display:"></send-code-button>

@@ -48,7 +48,7 @@ class StartedExam {
         else {
           document.getElementById('time').innerHTML = Session.get("stoprun");
         }
-      },1000);
+      },60000);
     });
 
     this.helpers({

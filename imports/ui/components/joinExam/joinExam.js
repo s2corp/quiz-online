@@ -62,7 +62,7 @@ class JoinExam {
       }
       else {
         Examination.update({_id:zipcode}, {$push:{
-          "usersList":{"userId":Meteor.userId(),"scored":0}
+          "usersList":{"userId":Meteor.userId(),"score":0}
         }});
       }
     }
@@ -87,6 +87,16 @@ function config($stateProvider){
   $stateProvider
     .state('joinExam', {
       url: '/joinExam',
-      template: '<join-exam></join-exam>'
+      template: '<join-exam></join-exam>',
+      resolve: {
+        currentUser($q) {
+          if(Meteor.userId() === null)
+            return $q.reject('AUTH_REQUIRED');
+          if(Meteor.user().emails)
+            if(!Meteor.user().emails[0].verified)
+              return $q.reject('VERTIFICATE_REQUIRED');
+          return $q.resolve();
+        }
+      }
     });
 }

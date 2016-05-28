@@ -1,72 +1,84 @@
 <md-content layout="row" layout-align="center start" layout-fill layout-margin>
 
-  <md-whiteframe layout="column" flex flex-md="50" flex-lg="50" flex-gt-lg="33" class="md-whiteframe-z2" layout-fill>
+  <md-whiteframe layout="column" flex flex-md="50" flex-lg="50" flex-gt-lg="33" class="md-whiteframe-z2 loginFrame" layout-fill>
 
-    <md-toolbar class="md-primary md-tall" layout="column" layout-align="end" layout-fill>
-      <div layout="row" class="md-toolbar-tools md-toolbar-tools-bottom">
-        <h3 class="md-display-1">
-          Đăng nhập
-        </h3>
-      </div>
-    </md-toolbar>
+    <!-- <md-toolbar class="md-primary md-tall" layout="column" layout-align="end" layout-fill> -->
 
-    <div layout="column" layout-fill layout-margin layout-padding>
-      <div layout="row" layout-fill layout-margin>
-        <p class="md-body-2">
-          Đăng nhập với tài khoản xã hội</p>
+    <!-- </md-toolbar> -->
+
+    <div layout="column" layot-align="center center" layout-fill layout-margin layout-padding>
+      <!-- <div layout="row" layout-fill layout-margin> -->
+        <!-- <p class="md-body-2">
+          Đăng nhập với tài khoản xã hội</p> -->
+      <!-- </div> -->
+      <div layout="row" layout-align="center center" class="md-toolbar-tools md-toolbar-tools-bottom">
+        <strong class="md-display-1">
+          Đăng nhập bằng mail
+        </strong>
       </div>
-      <div layout="column" layout-fill layout-margin layout-padding layout-wrap>
-        <md-button class="md-raised" ng-click="login.loginGG()">
-          <md-icon md-svg-icon="social:ic_google_24px" style="color: #DC4A38;"></md-icon>
-          <span>
-            Google</span>
-        </md-button>
-        <md-button class="md-raised" ng-click="login.loginFB()">
+      <form name="loginForm" layout="column" layout-fill layout-padding layout-margin>
+        <md-input-container style="width: 85%;">
+          <label>
+            Email
+          </label>
+          <md-icon md-svg-icon="content:ic_mail_24px"></md-icon>
+          <input type="text" ng-model="login.credentials.email" aria-label="email" required/>
+        </md-input-container>
+        <md-input-container style="width: 85%;">
+          <label>
+            Password
+          </label>
+          <md-icon md-svg-icon="action:ic_lock_24px"></md-icon>
+          <input type="password" ng-model="login.credentials.password" aria-label="password" required/>
+        </md-input-container>
+        <div layout="row" layout-align="space-between top">
+          <md-button class="md-raised md-primary" style="background-color: #ff8a00; width: 30%; padding: 7px;" ng-click="login.login()" aria-label="login" ng-disabled="login.loginForm.$invalid()">
+            <strong>
+                ĐĂNG NHẬP
+            </strong>
+          </md-button>
+          <a class="md-button" href="/password">Quên mật khẩu?</a>
+        </div>
+      </form>
+      <div layout="row" layout-align="center center" class="md-toolbar-tools md-toolbar-tools-bottom">
+        <strong class="md-display-1">
+          Hoặc đăng nhập với
+        </strong>
+      </div>
+      <div class="loginFrame" layout="column" layout-align="center center" layout-fill layout-margin layout-padding layout-wrap>
+        <md-button class="md-raised" style="background-color: #52289e; width: 60%;" ng-click="login.loginFB()" aria-label="fbLogin">
           <md-icon md-svg-icon="social:ic_facebook_24px" style="color: #3F62B4;"></md-icon>
           <span>Facebook
           </span>
         </md-button>
-        <md-button class="md-raised">
+        <md-button class="md-raised" style="background-color: #e90000; width: 60%;" ng-click="login.loginGG()" aria-label="ggLogin">
+          <md-icon md-svg-icon="social:ic_google_24px" style="color: #DC4A38;"></md-icon>
+          <span>
+            Google</span>
+        </md-button>
+        <!-- <md-button class="md-raised" aria-label="ttLogin">
           <md-icon md-svg-icon="social:ic_twitter_24px" style="color: #27AAE2;"></md-icon>
           <span>Twitter
           </span>
-        </md-button>
+        </md-button> -->
       </div>
-      <md-divider class="inset"></md-divider>
+      <!-- <md-divider class="inset"></md-divider> -->
 
-      <div layout="row" layout-fill layout-margin>
+      <!-- <div layout="row" layout-fill layout-margin>
         <br>
-        <br>
-        <!-- <p class="md-body-2">
-          Sign in with your email</p> -->
-      </div>
+        <br> -->
+        <!-- <p class="md-body-2">-->
+          <!--Sign in with your email</p> -->
+      <!--</div> -->
 
-      <!--<form name="loginForm" layout="column" layout-fill layout-padding layout-margin>
-        <md-input-container>
-          <label>
-            Email
-          </label>
-          <input type="text" ng-model="login.credentials.email" aria-label="email" required/>
-        </md-input-container>
-        <md-input-container>
-          <label>
-            Password
-          </label>
-          <input type="password" ng-model="login.credentials.password" aria-label="password" required/>
-        </md-input-container>
-        <div layout="row" layout-align="space-between center">
-          <a class="md-button" href="/password">Forgot password?</a>
-          <md-button class="md-raised md-primary" ng-click="login.login()" aria-label="login" ng-disabled="login.loginForm.$invalid()">Sign In
-          </md-button>
-        </div>
-      </form>
+
       <md-toolbar ng-show="login.error" class="md-warn" layout="row" layout-fill layout-padding layout-margin>
         <p class="md-body-1">{{ login.error }}</p>
       </md-toolbar>
       <md-divider></md-divider>
       <div layout="row" layout-align="center">
-        <a class="md-button" href="/register">Need an account?</a>
-      </div> -->
+        <a class="md-button" href="/register">Bạn chưa có tài khoản?</a>
+      </div>
 
     </div>
 

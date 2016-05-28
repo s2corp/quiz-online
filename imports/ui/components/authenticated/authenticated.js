@@ -16,9 +16,9 @@ class Authenticated{
     //giải mã thông tin user được chứa trong đường link
     var decryptedString = cryptr.decrypt($stateParams.info);
     var user = JSON.parse(decryptedString);
-
+    console.log(user);
     //gọi method thêm user ở phía server
-    Meteor.call('insertUser', user);
+    Meteor.call('updateUser', user);
   }
 }
 

@@ -7,26 +7,20 @@
       Danh sách người chơi và kết quả.
     </p>
   </div>
-  <div class="md-whiteframe-9dp">
-    <table md-table >
-      <thead md-head >
-        <tr md-row>
-          <th md-column >Vị thứ</th>
-          <th md-column >Tên thí sinh</th>
-          <th md-column >Địa chỉ Email</th>
-          <th md-column >score</th>
+  <div layout="column" class="md-whiteframe-z1" layout-margin layout-padding style="overflow-x:auto;">
+      <table>
+        <tr>
+          <th>Vị thứ</th>
+          <th>Tên thí sinh</th>
+          <th>Địa chỉ Email</th>
+          <th>score</th>
         </tr>
-      </thead>
-      <tbody md-body>
-        <!-- xap xep giam dan thi them (-) vao truoc va lay truong thoi ko co inf.scored -->
-        <tr ng-repeat="inf in scoredExam.infor | orderBy:'-scored' " >
-          <td md-cell>{{$index+1}}</td>
-          <td md-cell>{{inf.name}}</td>
-            <td md-cell>{{inf.email}}</td>
-          <td md-cell>{{inf.scored}}</td>
+      <tr ng-repeat="inf in scoredExam.infor | orderBy:'-scored' " >
+        <td>{{$index+1}}</td>
+        <td>{{inf.name}}</td>
+        <td>{{inf.email}}</td>
+        <td>{{inf.scored}}</td>
         </tr>
-      </tbody>
-    </table>
+      </table>
   </div>
-
 </div>
