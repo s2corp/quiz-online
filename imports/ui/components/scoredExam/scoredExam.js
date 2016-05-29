@@ -12,11 +12,22 @@ class ScoredExam {
     $reactive(this).attach($scope);
     this.subscribe("examination");
     this.stateParams = $stateParams;
+    this.examName;
+    this.data = [];
     this.helpers({
       infor()
       {
-        var data = Examination.findOne({'_id':$stateParams.exam_id});
-        return data;
+        var tam1 = Examination.findOne({"_id":$stateParams.exam_id});
+        Meteor.call("scoredUserInf",tam1, function(error, result){
+          if(error){
+            console.log("error", error);
+          }
+          if(result){
+            Session.set("scoredUser", result);
+          }
+        });
+        this.data =Session.get("scoredUser");
+        return this.data;
       }
     });
   }

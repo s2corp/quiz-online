@@ -32,7 +32,6 @@ class Auth {
         if (Meteor.user()){
           return Meteor.user().profile.picture;
         }
-        //return (Meteor.user().profile.picture);
       }
     });
   }

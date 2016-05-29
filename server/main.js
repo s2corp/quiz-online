@@ -10,7 +10,12 @@ process.env.MAIL_URL = 'smtp://sanghuynhnt95@gmail.com:123581321tuongmo@smtp.gma
 
 var VertificateCode = '';
 
-//Sử dụng để update lại job của user đối với các đối tượng login bằng fb
+Meteor.methods({
+  insertUser: function(user){
+    Meteor.users.insert(user)
+  }
+});
+
 Meteor.methods({
   updateUser: function(user){
     if(user.code === VertificateCode){
@@ -58,6 +63,14 @@ Accounts.onCreateUser(function(options, user) {
   return user;
 });
 
+//kiểm tra mail trùng lặp
+Meteor.methods({
+  findUser: function(inMail){
+    var result = Meteor.users.find({mail: inMail}).count();
+    return result;
+  }
+});
+
 //gửi mail
 Meteor.methods({
       sendEmail: function (mailAddress) {
@@ -92,22 +105,39 @@ Meteor.methods({
       }
   });
 
-  Meteor.publish("userStatus", function() {
-    return Meteor.users.find({ "status.online": true });
-  });
+Meteor.publish("userStatus", function() {
+  return Meteor.users.find({ "status.online": true });
+});
 
+Meteor.publish("user", function() {
+  return Meteor.users.find({ });
+});
 
-Meteor.methods ({
-    finduser:function(userList){
-      var data = [];
-      for (var i = 0; i < userList.length; i++) {
-
-        var user = Meteor.users.findOne({_id:userList[i].userId});
-
-        data.push(user)
-      }
-
+    //thong tin user cua ki thi
+Meteor.methods({
+  finduser:function(exam){
+    var data = [];
+    console.log(exam);
+    for (var i = 0; i < exam.usersList.length; i++) {
+      var user = Meteor.users.findOne({_id:exam.usersList[i].userId});
+      data.push(user)
+    }
     return data;
+  }
+});
+
+//countTime
+Meteor.methods({
+  timeRunOut:function(time){
+     time--;
+     return time;
+  }
+});
+
+Meteor.methods({
+  timeRun:function(time){
+     time--;
+     return time;
   }
 });
 
@@ -116,11 +146,11 @@ Meteor.methods ({
 Meteor.methods({
   checkanswer:function(id,user,question_id,question,answer,index){
     var tam = Question.findOne({$and:[{"_id":question_id}
-      ,{"questionSet": { $elemMatch: { "question":question,"correctAnswerSet":answer}}}]});
+      ,{"questionSet": { $elemMatch: { "question":question,"correctAnswer":answer}}}]});
     if(tam !== null)
     {
       Examination.update({_id:id,"usersList.userId":user}, {$inc:{
-          "usersList.$.scored":tam.questionSet[index].scored
+          "usersList.$.score":tam.questionSet[index].score
       }});
     }
 
@@ -130,52 +160,50 @@ Meteor.methods({
     for (var i = 0; i < val.usersList.length; i++) {
       if(val.usersList[i].userId === user)
       {
-          score = val.usersList[i].scored;
+          score = val.usersList[i].score;
       }
     }
-    return score;
+      return score;
   }
 });
 
 Meteor.methods({
-    updateExam:function(id,user,scored){
-      Examination.update({_id:id,"usersList.userId":user}, {$set:{
-          "usersList.$.scored":scored
+  updateExam:function(id,user,scored){
+  Examination.update({_id:id,"usersList.userId":user}, {$set:{
+        "usersList.$.score":scored
       }});
-    }
-});
-
-Meteor.methods({
-    updateScored:function(id){
-        return Examination.findOne({"_id":id});
-    }
-});
-
-Meteor.methods({
-    userSendMail: function(mail){
-      var email = {
-        to: 'sanghuynhnt95@gmail.com',
-        from: mail.mailAddress,
-        subject: mail.content,
-        title: mail.title
-      };
-
-        //gửi mail
-    Email.send(email);
-    }
-})
-
-Meteor.methods({
-  timeRun:function(time){
-     time--;
-     return time;
   }
 });
 
-//countTime
 Meteor.methods({
-  timeRunOut:function(time){
-     time--;
-     return time;
+  updateScored:function(id){
+      return Examination.findOne({"_id":id});
+  }
+});
+
+//in ra diem va thong tin cua ki thi
+Meteor.methods({
+  scoredUserInf:function(exam){
+    var contain = [];
+    var ob = {};
+    for (var i = 0; i < exam.usersList.length; i++) {
+      var user = Meteor.users.findOne({_id:exam.usersList[i].userId});
+    //  console.log(user);
+      ob.name = user.profile.name;
+      if(user.services.facebook.email)
+      {
+          ob.email = user.services.facebook.email;
+      }
+      else if (user.services.google.email) {
+          ob.email = user.services.google.email;
+      }
+      else {
+          ob.email = user.emails[0].address;
+      }
+      ob.scored = exam.usersList[i].score;
+      contain.push(ob);
+          ob ={};
+    }
+    return contain;
   }
 });

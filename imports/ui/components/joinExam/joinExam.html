@@ -1,11 +1,11 @@
 <md-content layout="row" layout-padding layout-wrap layout-margin layout-align="center end">
-    <md-whiteframe class="md-whiteframe-z1"  flex  flex-md="50" flex-lg="50" flex-gt-lg="33" layout-align="center center">
+    <md-whiteframe class="md-whiteframe-z1"  flex  flex-md="60" flex-lg="60" flex-gt-lg="40" layout-align="center center">
       <md-input-container layout="column">
         <label>Vui lòng nhập mã để tham gia kì thi!</label>
         <input type="text" ng-model="zipcode">
       </md-input-container>
-      <div layout="column" class="md-warm" >
-         <md-button  layout="column" ng-click="joinExam.loginExam(zipcode)" aria-label="joinExam">Vào Thi Đấu</md-button>
+      <div layout layout-align="center center" >
+         <md-button class="md-raised md-warn" ng-click="joinExam.loginExam(zipcode)" aria-label="joinExam">Vào Thi Đấu</md-button>
        </div>
     </md-whiteframe>
 </md-content>
