@@ -20,7 +20,6 @@ import './maincomponent.html';
 
 class Main{
   constructor(){
-
   }
 }
 

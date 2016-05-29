@@ -24,13 +24,14 @@ class StartedExam {
     this.state=$state;
     this.selectedRow = null;
     this.lengthquestion = 0;
+    document.getElementById('scored').innerHTML ="Số điểm hiện tại: 0.";
     var exam = Examination.findOne({_id:$stateParams.exam_id});
     if(exam !== null)
-        Session.set("stoprun", exam.time);
+        Session.set("stoprun", exam.time -1);
     else {
         Session.set("stoprun", 60);
     }
-    document.getElementById('time').innerHTML = Session.get("stoprun");
+    document.getElementById('time').innerHTML = "Thời gian còn lại :"+ Session.get("stoprun") +"phút.";
     //ham tu dong kiem tra thoi gian
     this.autorun(() =>{
       this.isstop =setInterval(function(){
@@ -40,13 +41,13 @@ class StartedExam {
           }
             Session.set("stoprun", result);
         });
-        if(Session.get("stoprun") < 1)
+        if(Session.get("stoprun") <= 0)
         {
           Meteor.clearInterval(this.isstop);
          $state.go("scored-exam",{"exam_id":$stateParams.exam_id});
         }
         else {
-          document.getElementById('time').innerHTML = Session.get("stoprun");
+          document.getElementById('time').innerHTML = "Thời gian còn lại :"+ Session.get("stoprun") +"phút.";
         }
       },60000);
     });
@@ -90,7 +91,7 @@ class StartedExam {
       }
       if(result){
         //console.log(result);
-        document.getElementById('scored').innerHTML = result;
+        document.getElementById('scored').innerHTML ="Số điểm hiện tại:"+ result+".";
         Session.set("scored", result);
       }
     });

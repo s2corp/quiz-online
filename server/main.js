@@ -115,10 +115,11 @@ Meteor.methods({
 
     //thong tin user cua ki thi
   Meteor.methods({
-    finduser:function(userList){
+    finduser:function(exam){
       var data = [];
-      for (var i = 0; i < userList.length; i++) {
-        var user = Meteor.users.findOne({_id:userList[i].userId});
+      console.log(exam);
+      for (var i = 0; i < exam.usersList.length; i++) {
+        var user = Meteor.users.findOne({_id:exam.usersList[i].userId});
         data.push(user)
       }
       return data;

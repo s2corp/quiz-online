@@ -1,16 +1,21 @@
-<h1 id="scored">0</h1>
-<h2 id ="time">0</h2>
-<div layout="column" layout-align="center" flex-offset="10">
-  <h3>{{startedExam.showquestion.title}} </h3>
-</div>
 <md-content layout-padding layout-wrap ng-show="startedExam.isend">
+  <div layout="row">
+    <div flex>
+        <h3 id="scored">Số điểm hiện tại: 0</h3>
+    </div>
+    <div flex>
+      <h3 id ="time">Số điểm hiện tại: 0</h3>
+    </div>
+  </div>
+  <div layout="row" layout-align="center center">
+    <h3>{{startedExam.showquestion.title}} </h3>
+  </div>
   <div layout="column" ng-repeat="q in startedExam.showquestion.questionSet" flex="80" flex-offset="10" ng-init="vitri = $index">
     <div ng-show="$index == startedExam.selectedIndex">
     <md-card>
       <md-card-title>
           <md-card-title-text style="min-height:50px; padding-left:5px;">
             <h4>Câu {{$index +1}}. {{q.question}}</h4>
-
           </md-card-title-text>
         </md-card-title>
         <md-divider></md-divider>
@@ -21,15 +26,10 @@
           <md-radio-button id="radi"  ng-repeat="an in q.answerSet" ng-value="an" class="md-warm" ng-class="{selected:$index == startedExam.selectedRow}" ng-click="startedExam.setClickedRow($index)">{{an}}</md-radio-button>
           <md-divider></md-divider>
         </md-radio-group>
-
-        <!-- <div class="radio-toolbar" ng-repeat="an in q.answers">
-          <input type="radio" ng-model="data.group1">
-          <label>{{an.text}}</label>
-        </div> -->
       </md-card-content>
       <!-- bat su kien next truyen vao vi tri cau hoi, cau hoi va cau tra loi -->
-      <div class="md-actions" layout="column" layout-align="center" style="background-color:rgb(245, 16, 30)">
-         <md-button ng-click="startedExam.checkanswer(q.question,data.group1,vitri)" aria-label="next">NEXT</md-button>
+       <div layout="row" layout-padding layout-align="end" >
+         <md-button class="md-raised md-warn" ng-click="startedExam.checkanswer(q.question,data.group1,vitri)" aria-label="next">TIẾP THEO</md-button>
        </div>
     </md-card>
   </div>

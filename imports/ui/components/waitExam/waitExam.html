@@ -7,10 +7,10 @@
           <md-button ng-show="waitExam.own"  layout-align="end" style="background-color:#ff8a00" ng-disabled="!waitExam.start" ng-click="waitExam.runTime()" >Bắt Đầu</md-button>
       </div>
     </div>
-    <div layout="row" layout-align="center center">
-        <h2 class="md-raised md-primary"  ng-show="!waitExam.start" id="wait">Vui lòng chờ tới khi bắt đầu!</h2>
+    <div ng-show="!waitExam.start" layout="row" layout-align="center center">
+        <h2 class="md-raised md-primary"   id="wait">Vui lòng chờ tới khi bắt đầu!</h2>
     </div>
-    <div layout="column" class="md-whiteframe-z1" layout-margin layout-padding style="overflow-x:auto;">
+    <div layout="column" layout-margin layout-padding style="overflow-x:auto;">
         <table>
           <tr>
             <th >Số thứ tự</th>
@@ -22,7 +22,7 @@
             <td >{{$index+1}}</td>
             <td >{{u.profile.name}}</td>
             <td >{{u.services.facebook.email}}</td>
-            <td >{{u.status.online}}</td>
+            <td >{{u.status.online ? "Online":"Offline"}}</td>
           </tr>
         </table>
     </div>

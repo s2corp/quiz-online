@@ -1,15 +1,24 @@
+
 <md-toolbar>
   <div class="md-toolbar-tools" layout="row" layout-align="center center">
-    <img src="image/logo.png" alt="">
+    <img src="images/logo.png" alt="">
+
     <span flex></span>
-    <h2>
-      <span ui-sref="home">
-        TRANG CHỦ
-      </span>
-    </h2>
+
+    <!-- trang chu -->
+    <md-button ui-sref="home" style="background-color: Transparent; border: none; cursor:pointer; overflow: hidden; outline:none;" id="noteButton" class="md-fab" aria-label="notification" ng-click="notificateButton.open($event)">
+      <md-icon md-svg-icon="social:ic_notifications_24px"></md-icon>
+    </md-button>
+
+    <!-- gui mail -->
     <send-mail-button></send-mail-button>
+
+    <!-- thong bao -->
     <notificate-button></notificate-button>
+
     <span flex></span>
+
+    <!-- dang nhap dang ky -->
     <auth></auth>
 
     <!-- <md-button class="md-raised md-primary" ui-sref="login">Đăng nhập</md-button> -->
