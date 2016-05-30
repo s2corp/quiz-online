@@ -1,10 +1,47 @@
 import angular from 'angular';
 import angularMeteor from 'angular-meteor';
 import uiRouter from "angular-ui-router";
+
 import { name as Notification } from '../notification/notification';
+
+import { Responsive } from '../../../api/responsive';
+
 import './home.html';
 
-class Home{}
+Meteor.subscribe('user')
+
+class Home {
+  constructor($scope, $reactive) {
+    'ngInject';
+
+    $reactive(this).attach($scope);
+
+    this.helpers({
+      responsiver() {
+
+
+        var respondList = [];
+
+        var responsives = Responsive.find({}).fetch();
+        for(i = 0; i < responsives.length; i ++){
+
+          var responser = {
+            userMail: responsives[i].mailAddress,
+            userProfile: Meteor.users.findOne( { _id: responsives[i].userId } ),
+            title: responsives[i].title,
+            content: responsives[i].content
+          }
+
+          console.log(responser);
+
+          respondList.push(responser);
+        }
+
+        return respondList;
+      }
+    })
+  }
+}
 
 const name = 'home';
 

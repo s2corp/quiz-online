@@ -4,6 +4,7 @@ import { Session } from 'meteor/session';
 import {Promise} from 'meteor/promise';
 import { NotificationData } from '../imports/api/notificationdata';
 import { Examination } from '../imports/api/examination';
+import { Responsive } from '../imports/api/responsive';
 import { Question } from '../imports/api/question';
 import { QuestionBankData } from '../imports/api/questionbankdata';
 process.env.MAIL_URL = 'smtp://sanghuynhnt95@gmail.com:123581321tuongmo@smtp.gmail.com:465/';
@@ -30,20 +31,21 @@ Meteor.methods({
   }
 });
 
-//save facebook user avatar
-var getFbPicture = function(accessToken) { // make async call to grab the picture from facebook
-    var result;
-    result = Meteor.http.get("https://graph.facebook.com/me", {
-      params: {
-        access_token: accessToken,
-        fields: 'picture'
-      }
-    });
-    if(result.error) {
-      throw result.error;
-    }
-    return result.data.picture.data.url; // return the picture's url
-  };
+// //save facebook user avatar
+// var getFbPicture = function(accessToken) { // make async call to grab the picture from facebook
+//     var result;
+//     result = Meteor.http.get("https://graph.facebook.com/me", {
+//       params: {
+//         access_token: accessToken,
+//         fields: 'picture'
+//       }
+//     });
+//     if(result.error) {
+//       throw result.error;
+//     }
+//     console.log(result.data.picture.data.url);
+//     return result.data.picture.data.url; // return the picture's url
+//   };
 
 // during new account creation get user picture from Facebook and save it on user object
 Accounts.onCreateUser(function(options, user) {
@@ -56,7 +58,7 @@ Accounts.onCreateUser(function(options, user) {
 
   if(user.services.facebook)
     if(options.profile) {
-      options.profile.picture = getFbPicture(user.services.facebook.accessToken);
+      options.profile.picture = "http://graph.facebook.com/" + user.services.facebook.id + "/picture/?type=large";
       options.profile.job = '';
       user.profile = options.profile; // We still want the default 'profile' behavior.
     }
