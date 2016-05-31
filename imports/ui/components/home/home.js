@@ -22,7 +22,7 @@ class Home {
 
         var respondList = [];
 
-        var responsives = Responsive.find({}).fetch();
+        var responsives = Responsive.find({}, {limit: 4}).fetch();
         for(i = 0; i < responsives.length; i ++){
 
           var responser = {
