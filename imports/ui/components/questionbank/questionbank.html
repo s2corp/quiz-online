@@ -58,7 +58,7 @@
                 </md-input-container>
 
                 <div layout="row" layout-align="center">
-                  <md-button class="md-raised md-primary" style="width: 80%;" ng-click="questionbank.addQuestionPublic()" aria-label="choseQuestion">Chọn câu hỏi</md-button>
+                  <md-button class="md-raised md-primary" style="width: 80%; background-color: #ff8a00;" ng-click="questionbank.addQuestionPublic()" aria-label="choseQuestion">Chọn câu hỏi</md-button>
                 </div>
               </div>
             </div>
@@ -92,7 +92,7 @@
                 <!-- Nội dung câu hỏi -->
                 <md-input-container id="a" class="md-block" flex-gt-sm style="width:80%;">
                   <label>Câu hỏi</label>
-                  <textarea ng-model="ques.question" md-maxlength="500" rows="5" md-select-on-focus style="background-color: rgb(22, 71, 180)" readonly></textarea>
+                  <textarea ng-model="ques.question" md-maxlength="500" rows="5" md-select-on-focus style="background-color: #ff8a00; color: #ffffff" readonly></textarea>
                   <br>
                 </md-input-container>
 
@@ -111,7 +111,7 @@
                 <!-- <md-button class="md-raised" style="background-color: rgb(127, 83, 182)" ><textarea rows="3" name="Text1" readonly>{{ques.correctAnswer}}</textarea></md-button> -->
                 <md-input-container id="a" class="md-block" flex-gt-sm style="width:80%;">
                   <label>Đáp án</label>
-                  <textarea ng-model="ques.correctAnswer" md-maxlength="500" rows="5" md-select-on-focus style="background-color: rgb(212, 20, 89)" readonly></textarea>
+                  <textarea ng-model="ques.correctAnswer" md-maxlength="500" rows="5" md-select-on-focus style="background-color: rgb(212, 20, 89); color: #ffffff" readonly></textarea>
                   <br>
                 </md-input-container>
 
@@ -125,7 +125,7 @@
             </div>
 
             <div layout="column" layout-align="center center">
-              <md-button class="md-raised md-primary" ng-click="questionbank.buildTest()" aria-label="bultTest">Lưu câu hỏi</md-button>
+              <md-button class="md-raised md-primary" style="background-color: #ff8a00" ng-click="questionbank.buildTest()" aria-label="bultTest">Lưu câu hỏi</md-button>
             </div>
           </md-content>
         </div>

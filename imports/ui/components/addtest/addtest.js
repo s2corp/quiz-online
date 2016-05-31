@@ -24,13 +24,16 @@ class AddTest {
           question: '',
           answerSet: [],
           correctAnswer: '',
-          score: 1,
+          score: 1
         }
       ],
     };
 
     //số lượng câu trả lời hiện tại
     this.answer = 0;
+
+    //sử dụng để hiển thị confirm log
+    this.confirm = false;
 
     //dùng để ẩn chức năng câu hỏi
     this.disable = 0;
@@ -84,11 +87,24 @@ class AddTest {
   //thêm câu hỏi
   appendQuestion()
   {
+    if( this.data.questionSet.length === this.questionCount && !this.confirm)
+      if(confirm('bạn đã nhập đủ số lượng câu hỏi khai báo là ' + this.questionCount + ' tiếp tục nhập?')){
+        this.data.questionSet [ questionSet.length - 1 ] = null;
+        this.confirm = true;
+      }
+
+    if( this.data.questionSet.length >= this.questionCount ) {
+      this.questionCount += 5;
+      this.scoreDivide = this.score / this.questionCount;
+      for(i = 0; i < this.data.questionSet.length; i++)
+        this.data.questionSet[i].score = this.scoreDivide;
+    }
+
     var question = {
         question: '',
         answerSet: [],
         correctAnswer: '',
-        score: 1,
+        score: this.scoreDivide
     }
 
     this.data.questionSet.push(question);
@@ -120,6 +136,13 @@ class AddTest {
     var myEl = angular.element( document.querySelector( '#questionSet' ) );
     myEl.append(this.compile(quesString)(this.scope));
     this.disable ++;
+  }
+
+  //gán điểm số mặt định
+  setDefaultScore(){
+    this.scoreDivide = this.score / this.questionCount;
+    this.data.questionSet[0].score = this.scoreDivide;
+    this.selectedTab ++;
   }
 
   //lưu bộ câu hỏi vào cơ sở dữ liẹu
