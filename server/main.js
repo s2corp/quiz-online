@@ -117,7 +117,6 @@ Meteor.methods({
   Meteor.methods({
     finduser:function(exam){
       var data = [];
-      console.log(exam);
       for (var i = 0; i < exam.usersList.length; i++) {
         var user = Meteor.users.findOne({_id:exam.usersList[i].userId});
         data.push(user)
