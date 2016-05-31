@@ -1,4 +1,4 @@
-<md-content layout-padding layout-wrap>
+<md-content  layout-padding layout-wrap>
     <div layout="row">
       <div flex layout="column" layout-align="start">
         <md-button ng-show="waitExam.own"  style="background-color:#ff8a00" layout-align="center center" href="/scored/{{waitExam.idExam}}" >Xem  Điểm</md-button>
@@ -7,7 +7,7 @@
           <md-button ng-show="waitExam.own"  layout-align="end" style="background-color:#ff8a00" ng-disabled="!waitExam.start" ng-click="waitExam.runTime()" >Bắt Đầu</md-button>
       </div>
     </div>
-    <div ng-show="!waitExam.start" layout="row" layout-align="center center">
+    <div ng-show="!waitExam.own" layout="row" layout-align="center center">
         <h2 class="md-raised md-primary"   id="wait">Vui lòng chờ tới khi bắt đầu!</h2>
     </div>
     <div layout="column" layout-margin layout-padding style="overflow-x:auto;">

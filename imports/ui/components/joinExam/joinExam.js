@@ -18,12 +18,10 @@ class JoinExam {
   }
 
   loginExam(zipcode){
-    if(Meteor.userId() === null)
-      this.state.go("home");
-      else {
-        if (zipcode == null) {
-          this.state.go("home");
-        }
+    if(Meteor.userId() === null || zipcode == null)
+    {
+        this.state.go("home");
+    }
         else {
           //console.log(zipcode);
            queryExam = Examination.findOne({_id:zipcode});
@@ -48,7 +46,6 @@ class JoinExam {
                 }
           }
         }
-      }
   }
 
   updateUserExam(zipcode)

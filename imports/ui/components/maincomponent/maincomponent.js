@@ -16,6 +16,9 @@ import { name as waitExam} from '../waitExam/waitExam';
 import { name as startedExam} from '../startedExam/startedExam';
 import { name as scoredExam} from '../scoredExam/scoredExam';
 import { name as Auth } from '../auth/auth';
+import {name as profileExam} from '../profileExam/profileExam';
+import {name as detailExam} from '../detailExam/detailExam';
+import {name as tutorial} from '../tutorial/tutorial';
 import './maincomponent.html';
 
 class Main{
@@ -40,7 +43,10 @@ export default  angular.module(name, [
     waitExam,
     startedExam,
     scoredExam,
-    Auth
+    Auth,
+    profileExam,
+    detailExam,
+    tutorial
     ///ngMaterial
   ]
 )

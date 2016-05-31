@@ -1,0 +1,27 @@
+<div layout="column" layout-padding>
+  <div layout="column" layout-gt-sm="row"  layout-padding>
+    <form flex="50" layout="column">
+      <md-input-container>
+        <label>Tên kì thi</label>
+        <input ng-model="detailExam.exam.examName">
+      </md-input-container>
+
+      <md-input-container>
+        <label>Mô tả</label>
+        <input ng-model="detailExam.exam.examDescrip">
+      </md-input-container>
+
+      <div >
+        <md-radio-group ng-model="detailExam.exam.isTest" layout="row">
+          <md-radio-button ng-value="detailExam.exam.isTest">Ôn tập</md-radio-button>
+          <md-radio-button ng-value="detailExam.exam.isTest">Kiểm tra</md-radio-button>
+        </md-radio-group>
+      </div>
+
+      <div>
+        <md-button ng-click="partyDetails.save()" class="md-primary md-raised">Xóa</md-button>
+        <md-button ng-click="partyDetails.save()" class="md-primary md-raised">Cập nhập</md-button>
+      </div>
+    </form>
+  </div>
+</div>

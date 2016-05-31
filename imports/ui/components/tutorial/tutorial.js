@@ -4,39 +4,33 @@ import uiRouter from 'angular-ui-router';
 import ngMaterial from 'angular-material';
 import {Question} from '../../../api/question';
 import {Examination} from '../../../api/examination';
-import './profileExam.html';
-class ProfileExam {
+import './tutorial.html';
+class Tutorial {
   constructor($scope,$reactive,$state,$stateParams) {
     'ngInject';
     $reactive(this).attach($scope);
     this.subscribe("examination");
     this.stateParams = $stateParams;
-    this.helpers({
-      exam(){
-        var data = Examination.find({"userId":Meteor.userId()});
-        console.log(data);
-        return data;
-      }
-    });
+
   }
 }
-const name = "profileExam";
+const name = "tutorial";
 export default angular.module(name,[
   angularMeteor,
   uiRouter,
   ngMaterial
 ])
 .component(name,{
-  templateUrl:'imports/ui/components/profileExam/profileExam.html',
+  templateUrl:'imports/ui/components/tutorial/tutorial.html',
   controllerAs: name,
-  controller: ProfileExam
+  controller: Tutorial
 })
 .config(config);
 function config($stateProvider){
   'ngInject';
   $stateProvider
-  .state('profileExam', {
-    url: '/profileExam',
-    template: '<profile-exam></profile-exam>'
+  .state('tutorial', {
+    url: '/tutorial',
+    template: '<tutorial></tutorial>'
   })
 }

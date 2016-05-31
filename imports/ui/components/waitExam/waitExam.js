@@ -21,7 +21,7 @@ class WaitExam {
     this.stateParams = $stateParams;
     this.idExam = $stateParams.exam_id;
     this.data =[];
-    this.start =false;
+    this.start =true;
     this.own = false;
     this.statusExam = false;
     var query = Examination.find({"_id":$stateParams.exam_id});
@@ -42,7 +42,7 @@ class WaitExam {
             if(Session.get("stopTime") < 0)
             {
               clearInterval(stop);
-              document.getElementById('wait').innerHTML ="";
+              document.getElementById('wait').innerHTML ="Kì thi đang diễn ra.";
             }
             else {
               document.getElementById('wait').innerHTML ="Kì thi sẽ bắt đầu sau "+ Session.get("stopTime")+"s";
@@ -79,16 +79,17 @@ class WaitExam {
       var data = Session.get("profileUser");
       return data;
       },
+
+
       ownExam(){
         var exam2 = Examination.findOne({_id:$stateParams.exam_id});
         var us = Question.find({"_id":exam2.questionSetId, "userId":Meteor.userId()}).count();
         if(us > 0)
         {
           this.own = true;
-          this.start = true;
         }
 
-        return this.start;
+        return this.own;
       }
     });
 }

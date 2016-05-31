@@ -23,7 +23,7 @@
       <md-card-content>
         <md-radio-group ng-model="data.group1" layout="column" >
           <md-divider></md-divider>
-          <md-radio-button id="radi"  ng-repeat="an in q.answerSet" ng-value="an" class="md-warm" ng-class="{selected:$index == startedExam.selectedRow}" ng-click="startedExam.setClickedRow($index)">{{an}}</md-radio-button>
+          <md-radio-button id="radi" ng-repeat="an in q.answerSet" ng-value="an" ng-class="{selected:$index == startedExam.selectedRow}" ng-click="startedExam.setClickedRow($index)">{{an}}</md-radio-button>
           <md-divider></md-divider>
         </md-radio-group>
       </md-card-content>

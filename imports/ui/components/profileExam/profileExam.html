@@ -1,0 +1,15 @@
+<md-content layout="row" layout-padding layout-wrap layout-margin layout-align="center center">
+  <div  flex  flex-md="60" flex-lg="60" flex-gt-lg="40" layout-align="center center">
+    <h2 layout="column">DANH SÁCH CÁC KÌ THI</h2>
+    <md-list>
+      <md-list-item class="md-3-line md-long-text" ng-click="null" ng-repeat="item in profileExam.exam">
+        <div class="md-list-item-text">
+          <h3>Tên: {{item.examName}}</h3>
+          <p>Mô tả: {{item.examDescrip}}</p>
+        </div>
+        <md-button class="md-secondary" style="background-color:#ff8a00" href="/detailExam/{{item._id}}">CHỈNH SỬA</md-button>
+        <md-divider ng-if="!$last"></md-divider>
+      </md-list-item>
+    </md-list>
+  </div>
+  </md-content>
