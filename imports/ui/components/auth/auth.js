@@ -9,7 +9,7 @@ import { name as DisplayNameFilter } from '../../filters/displayNameFilter';
 import { name as Login } from '../login/login';
 import { name as Register } from '../register/register';
 import { name as Password } from '../password/password';
-
+Meteor.subscribe('userStatus');
 
 const name = 'auth';
 
@@ -20,18 +20,18 @@ class Auth {
     $reactive(this).attach($scope);
 
     this.state = $state;
-
     this.helpers({
       isLoggedIn() {
         return !!Meteor.userId();
       },
       currentUser() {
-        return Meteor.user();
+        if (Meteor.user())
+          return Meteor.user();
       },
       userImage(){
-        if(Meteor.user())
+        if (Meteor.user()){
           return Meteor.user().profile.picture;
-        //return (user.profile.picture);
+        }
       }
     });
   }

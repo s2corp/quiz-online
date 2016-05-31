@@ -4,6 +4,7 @@ import { Session } from 'meteor/session';
 import {Promise} from 'meteor/promise';
 import { NotificationData } from '../imports/api/notificationdata';
 import { Examination } from '../imports/api/examination';
+import { Responsive } from '../imports/api/responsive';
 import { Question } from '../imports/api/question';
 import { QuestionBankData } from '../imports/api/questionbankdata';
 process.env.MAIL_URL = 'smtp://sanghuynhnt95@gmail.com:123581321tuongmo@smtp.gmail.com:465/';
@@ -30,20 +31,21 @@ Meteor.methods({
   }
 });
 
-//save facebook user avatar
-var getFbPicture = function(accessToken) { // make async call to grab the picture from facebook
-    var result;
-    result = Meteor.http.get("https://graph.facebook.com/me", {
-      params: {
-        access_token: accessToken,
-        fields: 'picture'
-      }
-    });
-    if(result.error) {
-      throw result.error;
-    }
-    return result.data.picture.data.url; // return the picture's url
-  };
+// //save facebook user avatar
+// var getFbPicture = function(accessToken) { // make async call to grab the picture from facebook
+//     var result;
+//     result = Meteor.http.get("https://graph.facebook.com/me", {
+//       params: {
+//         access_token: accessToken,
+//         fields: 'picture'
+//       }
+//     });
+//     if(result.error) {
+//       throw result.error;
+//     }
+//     console.log(result.data.picture.data.url);
+//     return result.data.picture.data.url; // return the picture's url
+//   };
 
 // during new account creation get user picture from Facebook and save it on user object
 Accounts.onCreateUser(function(options, user) {
@@ -56,7 +58,7 @@ Accounts.onCreateUser(function(options, user) {
 
   if(user.services.facebook)
     if(options.profile) {
-      options.profile.picture = getFbPicture(user.services.facebook.accessToken);
+      options.profile.picture = "http://graph.facebook.com/" + user.services.facebook.id + "/picture/?type=large";
       options.profile.job = '';
       user.profile = options.profile; // We still want the default 'profile' behavior.
     }
@@ -105,16 +107,16 @@ Meteor.methods({
       }
   });
 
-  Meteor.publish("userStatus", function() {
-    return Meteor.users.find({ "status.online": true });
-  });
+Meteor.publish("userStatus", function() {
+  return Meteor.users.find({ "status.online": true });
+});
 
-  Meteor.publish("user", function() {
-    return Meteor.users.find({ });
-  });
+Meteor.publish("user", function() {
+  return Meteor.users.find({ });
+});
 
     //thong tin user cua ki thi
-  Meteor.methods({
+Meteor.methods({
     finduser:function(exam){
       var data = [];
       for (var i = 0; i < exam.usersList.length; i++) {
@@ -124,83 +126,84 @@ Meteor.methods({
       return data;
     }
   });
-  //countTime
-  Meteor.methods({
-    timeRunOut:function(time){
-       time--;
-       return time;
-    }
-  });
-  Meteor.methods({
-    timeRun:function(time){
-       time--;
-       return time;
-    }
-  });
+//countTime
+Meteor.methods({
+  timeRunOut:function(time){
+     time--;
+     return time;
+  }
+});
+
+Meteor.methods({
+  timeRun:function(time){
+     time--;
+     return time;
+  }
+});
 
 
-  //kiem tra cau tra loi va cap nhap lai diem so
-  Meteor.methods({
-    checkanswer:function(id,user,question_id,question,answer,index){
-      var tam = Question.findOne({$and:[{"_id":question_id}
-        ,{"questionSet": { $elemMatch: { "question":question,"correctAnswer":answer}}}]});
-      if(tam !== null)
+//kiem tra cau tra loi va cap nhap lai diem so
+Meteor.methods({
+  checkanswer:function(id,user,question_id,question,answer,index){
+    var tam = Question.findOne({$and:[{"_id":question_id}
+      ,{"questionSet": { $elemMatch: { "question":question,"correctAnswer":answer}}}]});
+    if(tam !== null)
+    {
+      Examination.update({_id:id,"usersList.userId":user}, {$inc:{
+          "usersList.$.score":tam.questionSet[index].score
+      }});
+    }
+
+
+    var score = 0;
+    var val = Examination.findOne({$and:[{"_id":id},{"usersList.userId":user}]});
+    for (var i = 0; i < val.usersList.length; i++) {
+      if(val.usersList[i].userId === user)
       {
-        Examination.update({_id:id,"usersList.userId":user}, {$inc:{
-            "usersList.$.score":tam.questionSet[index].score
-        }});
+          score = val.usersList[i].score;
       }
+    }
+      return score;
+  }
+});
 
+Meteor.methods({
+  updateExam:function(id,user,scored){
+  Examination.update({_id:id,"usersList.userId":user}, {$set:{
+        "usersList.$.score":scored
+      }});
+  }
+});
 
-      var score = 0;
-      var val = Examination.findOne({$and:[{"_id":id},{"usersList.userId":user}]});
-      for (var i = 0; i < val.usersList.length; i++) {
-        if(val.usersList[i].userId === user)
-        {
-            score = val.usersList[i].score;
-        }
+Meteor.methods({
+  updateScored:function(id){
+      return Examination.findOne({"_id":id});
+  }
+});
+
+//in ra diem va thong tin cua ki thi
+Meteor.methods({
+  scoredUserInf:function(exam){
+    var contain = [];
+    var ob = {};
+    for (var i = 0; i < exam.usersList.length; i++) {
+      var user = Meteor.users.findOne({_id:exam.usersList[i].userId});
+    //  console.log(user);
+      ob.name = user.profile.name;
+      if(user.services.facebook.email)
+      {
+          ob.email = user.services.facebook.email;
       }
-        return score;
-}
-  });
-
-    Meteor.methods({
-      updateExam:function(id,user,scored){
-        Examination.update({_id:id,"usersList.userId":user}, {$set:{
-            "usersList.$.score":scored
-        }});
+      else if (user.services.google.email) {
+          ob.email = user.services.google.email;
       }
-    });
-
-      Meteor.methods({
-        updateScored:function(id){
-           return Examination.findOne({"_id":id});
-        }
-      });
-
-      //in ra diem va thong tin cua ki thi
-      Meteor.methods({
-        scoredUserInf:function(exam){
-          var contain = [];
-          var ob = {};
-          for (var i = 0; i < exam.usersList.length; i++) {
-            var user = Meteor.users.findOne({_id:exam.usersList[i].userId});
-          //  console.log(user);
-            ob.name = user.profile.name;
-            if(user.services.facebook.email)
-            {
-                ob.email = user.services.facebook.email;
-            }
-            else if (user.services.google.email) {
-                ob.email = user.services.google.email;
-            }
-            else {
-                ob.email = user.emails[0].address;
-            }
-            ob.scored = exam.usersList[i].score;
-            contain.push(ob);
-            ob ={};
-          }
-          return contain;
-        }
-      });
+      else {
+          ob.email = user.emails[0].address;
+      }
+      ob.scored = exam.usersList[i].score;
+      contain.push(ob);
+          ob ={};
+    }
+    return contain;
+  }
+});

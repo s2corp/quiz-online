@@ -1,8 +1,8 @@
 <!-- <a href="/startQuiz">Tạo kì thi</a>
 <a href="/joinExam">Ứng thi</a> -->
 <md-content layout="column">
-  <div id="intro" layout="column" layout-align="center left">
-    <div>
+  <div id="intro" layout="column" layout-align="center center">
+    <div layout="column" layout-align="center left">
       <p class="intro">
         Bạn là sinh viên ? Bạn cần môi trường năng động, thi đua mà trong đó vừa học vừa chơi rất phù hợp?
       </p>
@@ -102,9 +102,17 @@
     <div layout="row" layout-align="center center">
       <h1>PHẢN HỒI NGƯỜI DÙNG</h1>
     </div>
-    <div layout="row" layout-padding layout-align="space-around center">
+    <div  layout="row" layout-align="space-around center">
 
-      <div layout="column" class="respond"  layout-align="center center">
+      <div ng-repeat="res in home.responsiver track by $index" layout="column" class="respond"  layout-align="center center">
+        <md-button layout="row" layout-align="center" class="md-fab userRespond" style="background-image: url('images/user-default.png'); background-size: 200px 200px; width: 200px; height: 200px;">
+          <img src="{{res.userProfile.profile.picture + res.userProfile.services.google.picture }}" alt="">
+        </md-button>
+        <h4>{{ res.userMail }}</h4>
+        <p class="userRespond">{{res.content }}</p>
+      </div>
+
+      <!-- <div layout="column" class="respond"  layout-align="center center">
         <img src="images/img0002.png" id="Shape1" alt="">
         <h4>Học tập</h4>
       </div>
@@ -122,12 +130,7 @@
       <div layout="column" class="respond"  layout-align="center center">
         <img src="images/img0002.png" id="Shape1" alt="">
         <h4>Học tập</h4>
-      </div>
-
-      <div layout="column" class="respond"  layout-align="center center">
-        <img src="images/img0002.png" id="Shape1" alt="">
-        <h4>Học tập</h4>
-      </div>
+      </div> -->
     </div>
   </div>
 
@@ -180,9 +183,12 @@
       </p>
 
       <div style="width: 50%;" layout="row" layout-align="space-around center">
-        <img src="images/img0011.png" alt="">
-        <img src="images/img0011.png" alt="">
-        <img src="images/img0011.png" alt="">
+        <md-button href="https://www.facebook.com/huynhngoc.sang.334" target="_blank" class="md-fab userRespond" style="background-image: url('images/sang_huynh.jpg'); background-size: 100px 100px; height: 100px; width: 100px">
+        </md-button>
+        <md-button href="https://www.facebook.com/profile.php?id=100010113151598&fref=ts" target="_blank" class="md-fab userRespond" style="background-image: url('images/xuan_vinh.jpg'); background-size: 100px 100px; height: 100px; width: 100px;">
+        </md-button>
+        <md-button href="https://www.facebook.com/pekrom94?fref=ts" target="_blank" class="md-fab userRespond" style="background-image: url('images/bich_thuan.jpg'); background-size: 100px 100px; height: 100px; width: 100px">
+        </md-button>
       </div>
 
     </div>

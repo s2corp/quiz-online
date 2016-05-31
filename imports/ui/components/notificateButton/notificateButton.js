@@ -28,7 +28,7 @@ class NotificateButton {
   }
 
   open(event) {
-    document.getElementById('noteButton').style.backgroundColor = '';
+    document.getElementById('noteButton').style.backgroundColor = 'transparent';
     this.$mdDialog.show({
       controller($mdDialog) {
         'ngInject';

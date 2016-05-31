@@ -3,15 +3,26 @@ import angularMeteor from 'angular-meteor';
 import uiRouter from 'angular-ui-router';
 
 import './sendMail.html';
-//import { NotificationData } from '../../../api/notificationdata';
+import { Responsive } from '../../../api/responsive';
 //import { Users } from '../../../api/lists/user.js';
+Meteor.subscribe('responsive')
 
 class SendMail{
 
-  constructor($scope, $reactive){
-    'ngInject';
+  constructor(){
+    this.mail = {
+      userId: '',
+      mailAddress: '',
+      title: '',
+      content: ''
+    };
 
-    $reactive(this).attach($scope);
+    if(Meteor.userId())
+      this.mail.userId = Meteor.userId();
+  }
+
+  sendMail(){
+    Responsive.insert(this.mail);
   }
 }
 

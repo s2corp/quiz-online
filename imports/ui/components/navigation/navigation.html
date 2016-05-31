@@ -1,21 +1,20 @@
 
 <md-toolbar>
   <div class="md-toolbar-tools" layout="row" layout-align="center center">
-    <a href="/home" title="NTU Challenge"><img src="images/logo.png" alt="Trang chủ" ></a>
-
-
+    <img src="images/logo.png" alt="">
+    <menu></menu>
     <span flex></span>
-
+    
     <!-- trang chu -->
-    <md-button ui-sref="/home" style="background-color: Transparent; border: none; cursor:pointer; overflow: hidden; outline:none;" id="noteButton" class="md-fab" aria-label="notification" ng-click="notificateButton.open($event)">
-      <md-icon md-svg-icon="social:ic_notifications_24px"></md-icon>
+    <md-button title="trang chủ" ui-sref="home" style="background-color: Transparent; border: none; cursor:pointer; overflow: hidden; outline:none;" class="md-fab" aria-label="home">
+      <md-icon style="color: #ff8a00;" md-svg-icon="action:ic_home_24px"></md-icon>
     </md-button>
 
     <!-- gui mail -->
-    <send-mail-button></send-mail-button>
+    <send-mail-button title="gửi mail"></send-mail-button>
 
     <!-- thong bao -->
-    <notificate-button></notificate-button>
+    <notificate-button title="thông báo"></notificate-button>
 
     <span flex></span>
 
