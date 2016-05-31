@@ -25,8 +25,10 @@ class AddTest {
           answerSet: [],
           correctAnswer: '',
           score: 1,
+          countCorrect:0
         }
       ],
+
     };
 
     //số lượng câu trả lời hiện tại
@@ -89,6 +91,7 @@ class AddTest {
         answerSet: [],
         correctAnswer: '',
         score: 1,
+        countCorrect:0
     }
 
     this.data.questionSet.push(question);

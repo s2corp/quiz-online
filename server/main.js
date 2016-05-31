@@ -152,6 +152,11 @@ Meteor.methods({
       Examination.update({_id:id,"usersList.userId":user}, {$inc:{
           "usersList.$.score":tam.questionSet[index].score
       }});
+      Question.update({_id:question_id,"questionSet.question":question}, {$inc:{
+        "questionSet.$.countCorrect":1
+    }});
+
+
     }
 
 
@@ -207,3 +212,49 @@ Meteor.methods({
     return contain;
   }
 });
+
+//thong ke chi tiet ki thi
+  Meteor.methods({
+    detailstatis:function(id){
+      var contain=[];
+      var ob={};
+      var data= Question.findOne({_id:id});
+      var total = data.questionSet.length;
+      for (var i = 0; i < total; i++) {
+        ob.question = data.questionSet[i].question;
+        ob.rate = data.questionSet[i].countCorrect / total;
+        contain.push(ob);
+        ob ={};
+      }
+      return contain;
+    }
+  });
+
+  //thong ke ki thi dang bieu do
+  Meteor.methods({
+      statis:function(id){
+        var ob = {};
+        var easy = 0;
+        var normal = 0;
+        var hardly =0;
+        var exam = Examination.findOne({_id:id});
+        var totaluser = exam.usersList.length;
+        var data= Question.findOne({_id:exam.questionSetId});
+        var totalquestion = data.questionSet.length;
+        for (var i = 0; i < totalquestion; i++) {
+          var check = data.questionSet[i].countCorrect / totaluser;
+          if(check >= 0.6)
+            easy = easy + 1;
+            else if (check >=0.3 && check < 0.6) {
+              normal = normal +1;
+            }
+            else {
+              hardly = hardly + 1;
+            }
+        }
+        ob.easy = easy;
+        ob.normal = normal;
+        ob.hardly = hardly;
+        return ob;
+    }
+  });
