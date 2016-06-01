@@ -17,7 +17,7 @@
     <p>{{ auth.image }}</p>
     <div ng-show="auth.isLoggedIn">{{ auth.currentUser | displayNameFilter }}</div>
     <md-button title="đăng xuất" class="md-fab" style="background-color: transparent" flex ng-click="auth.logout()" ng-show="auth.isLoggedIn" aria-label="logout">
-      <md-icon style="color: #ff8a00;" md-svg-icon="action:ic_power_settings_new_24px"></md-icon>
+      <md-icon md-svg-icon="action:ic_power_settings_new_24px"></md-icon>
     </md-button>
   </div>
 

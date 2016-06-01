@@ -10,13 +10,69 @@
               <!-- <div class="questionbank-tab"> -->
                 <div layout-align="center" layout="column" ng-repeat="ques in questionbank.questions">
                   <div layout="row" layout-align="center">
-                    <md-button style="width: 60%" class="md-raised md-primary" aria-label="show">
+                    <md-button style="width: 60%" class="md-raised md-primary" aria-label="show" ng-click="questionbank.showhideQuestion(ques.title)">
                       <strong>{{ques.title}} - {{ques.date.getDate() + '/' + (ques.date.getMonth() + 1) + '/'+ ques.date.getFullYear()}}</strong>
                     </md-button>
-                    <md-button style="background-color: rgb(240, 121, 11)" class="md-raised md-primary" ng-click="questionbank.addQuestionPersonal(ques)" aria-label="add"><strong>Chọn câu hỏi</strong></md-button>
+                    <md-button style="background-color: rgb(240, 121, 11)" class="md-raised md-primary" ng-click="questionbank.addQuestionPersonal(ques)" aria-label="add"><strong>Chọn bộ câu hỏi</strong></md-button>
                     <md-button style="background-color: rgb(231, 19, 6); width: 50px;" ng-click="questionbank.remove(ques._id)" aria-label="delete">X</md-button>
                   </div>
+                  <!-- Nội dung bộ câu hỏi -->
+                  <div id="{{ques.title}}" style="display: none">
+                    <div ng-repeat="q in ques.questionSet">
+                      <div layout="row" layout-align="center">
+                        <md-button class="md-raised" style="height: 50%; width: 60%;" ng-click="questionbank.showhideQuestion(q.question)" aria-label="showQuestion">{{q.question}}</md-button>
+                        <!-- <md-button title="chọn câu hỏi" style="background-color: transparent" ng-click="questionbank.addSubQuestion(q)" aria-label="add"><md-icon style="color: #57b947" md-svg-icon="action:ic_check_circle_24px"></md-icon></md-button> -->
+                        <md-checkbox ng-click="questionbank.addSubQuestion(q)">
+                        </md-checkbox>
+                      </div>
+
+
+                      <div id="{{ q.question }}" style="display:none;" layout="column" layout-align="center center">
+                        <!-- Nội dung câu hỏi -->
+                        <md-input-container id="a" class="md-block" flex-gt-sm style="width:80%; margin-left: 10%">
+                          <label>Câu hỏi</label>
+                          <textarea ng-model="q.question" md-maxlength="500" rows="5" md-select-on-focus style="background-color: #ff8a00; color: #ffffff" readonly></textarea>
+                          <br>
+                        </md-input-container>
+
+
+                        <!-- các lựa chọn -->
+                        <div ng-repeat="answer in q.answerSet" ng-if="answer != ''" layout="column" layout-align="center">
+                            <!-- <md-button class="md-raised"><textarea rows="3" name="Text1" readonly>{{answer}}</textarea></md-button> -->
+                            <md-input-container id="a" class="md-block" flex-gt-sm style="width:80%; margin-left: 10%">
+                              <label>Lựa chọn</label>
+                              <textarea ng-model="answer" md-maxlength="500" rows="5" md-select-on-focus readonly></textarea>
+                              <br>
+                            </md-input-container>
+                        </div>
+
+                        <!-- đáp án -->
+                        <!-- <md-button class="md-raised" style="background-color: rgb(127, 83, 182)" ><textarea rows="3" name="Text1" readonly>{{ques.correctAnswer}}</textarea></md-button> -->
+                        <md-input-container id="a" class="md-block" flex-gt-sm style="width:80%; margin-left: 10%">
+                          <label>Đáp án</label>
+                          <textarea ng-model="q.correctAnswer" md-maxlength="500" rows="5" md-select-on-focus style="background-color: rgb(212, 20, 89); color: #ffffff" readonly></textarea>
+                          <br>
+                        </md-input-container>
+
+                        <!--Điểm số của câu hỏi-->
+                        <md-input-container class="md-block" flex-gt-sm style="margin-left: 10%">
+                            <label>Điểm số</label>
+                            <input ng-model="q.score" style="width: 120px;" type="number" step="0.25" readonly>
+                        </md-input-container>
+
+                        <!--Tỉ lệ trả lời đúng-->
+                        <md-input-container class="md-block" flex-gt-sm style="margin-left: 10%">
+                            <label>Tỉ lệ trả lời đúng</label>
+                            <input ng-model="q.rate" style="width: 120px;" type="number" step="0.25" readonly>
+                        </md-input-container>
+                      </div>
+
+                    </div>
+                  </div>
                 </div>
+            </div>
+            <div layout="row" layout-align="center">
+              <md-button style="background-color: rgb(240, 121, 11)" class="md-raised md-primary" ng-click="questionbank.changeTabPersonal()" aria-label="add"><strong>Tiếp tục</strong></md-button>
             </div>
             <!-- </div> -->
         </md-content>
@@ -72,12 +128,12 @@
         <div layout="row" layout-align="center">
           <md-content style="width: 80%;">
             <h2>{{questionbank.value.title}}</h2>
-            <div ng-repeat="ques in questionbank.value.questionSet" layout="column" layout-align="center">
+            <div ng-repeat="ques in questionbank.value.questionSet track by $index" layout="column" layout-align="center">
               <!-- Câu hỏi -->
               <!-- <md-button class="md-raised" style="background-color: rgb(30, 73, 224)"><textarea rows="3" name="Text1" readonly>{{ques.question}}</textarea></md-button> -->
               <div layout="row" layout-align="left left">
                 <!--hiển thi câu hỏi-->
-                <md-button class="md-raised" style="height: 50%; width: 95%;" ng-click="questionbank.showhideQuestion(ques.question)" aria-label="showQuestion">{{ques.question}}</md-button>
+                <md-button class="md-raised" style="height: 50%; width: 95%;" ng-click="questionbank.showhideQuestion(ques.question + '#')" aria-label="showQuestion">{{ques.question}}</md-button>
 
                 <!-- Thay thế câu hỏi -->
                 <md-button class="md-raised md-primary" style="margin-left: 10px; height: 50%; background-color: rgb(240, 121, 11)" ng-click="questionbank.changeQuestion(ques.question)" ng-disabled="questionbank.disableButton == true">Thay thế</md-button>
@@ -87,7 +143,7 @@
               </div>
 
               <!-- Nội dung bộ câu hỏi -->
-              <div id="{{ques.question}}" style="display: none; margin-left: 10px;">
+              <div id="{{ques.question + '#'}}" style="display: none; margin-left: 10px;">
 
                 <!-- Nội dung câu hỏi -->
                 <md-input-container id="a" class="md-block" flex-gt-sm style="width:80%;">
@@ -98,7 +154,7 @@
 
 
                 <!-- các lựa chọn -->
-                <div ng-repeat="answer in ques.answerSet" ng-if="answer != ''" layout="column" layout-align="center">
+                <div ng-repeat="answer in ques.answerSet track by $index" ng-if="answer != ''" layout="column" layout-align="center">
                     <!-- <md-button class="md-raised"><textarea rows="3" name="Text1" readonly>{{answer}}</textarea></md-button> -->
                     <md-input-container id="a" class="md-block" flex-gt-sm style="width:80%;">
                       <label>Lựa chọn</label>

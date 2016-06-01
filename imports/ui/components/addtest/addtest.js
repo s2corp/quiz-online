@@ -24,7 +24,8 @@ class AddTest {
           question: '',
           answerSet: [],
           correctAnswer: '',
-          score: 1
+          score: 1,
+          rate: 0
         }
       ],
     };
@@ -104,7 +105,8 @@ class AddTest {
         question: '',
         answerSet: [],
         correctAnswer: '',
-        score: this.scoreDivide
+        score: this.scoreDivide,
+        rate: 0
     }
 
     this.data.questionSet.push(question);

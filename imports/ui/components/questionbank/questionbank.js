@@ -41,7 +41,8 @@ class QuestionBank {
       _id: this.code,
       title: 'câu hỏi cộng đồng',
       questionSet: [],
-      date: new Date()
+      date: new Date(),
+      userId: Meteor.userId()
     }
 
     //xóa dữ liệu trong questionId
@@ -103,6 +104,20 @@ class QuestionBank {
     this.changeTab();
   }
 
+  //thêm câu hỏi vào bộ câu hỏi từ 1 hoặc nhiều đề
+  addSubQuestion(question){
+    var index = -1
+    for(i = 0; i < this.value.questionSet.length; i++){
+      if(this.value.questionSet[i] === question)
+        index = i;
+    }
+    if(index >= 0){
+      this.value.questionSet.splice(index, 1);
+    }
+    else
+      this.value.questionSet.push(question)
+  }
+
   buildTest(){
 
     //insert phần tử vào bảng Question
@@ -132,6 +147,12 @@ class QuestionBank {
         else {
             this.selectedTab++;
         }
+  }
+
+  changeTabPersonal(){
+    this.selectedTab = 2;
+
+    this.disableButton = true;
   }
 
 
