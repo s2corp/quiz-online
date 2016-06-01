@@ -86,6 +86,22 @@ class QuestionBank {
             if(this.questionSet[i].question === this.questionSet[j].question)
                 this.questionSet.splice(j, 1);
 
+        this.easySet = [];
+        this.normalSet = [];
+        this.hardSet = [];
+
+        for(i = 0; i < this.questionSet.length; i++)
+          if(this.questionSet[i].rate >= 0.6)
+            this.easySet.push(this.questionSet[i]);
+          else
+            if(this.questionSet[i].rate >= 0.3)
+              this.normalSet.push(this.questionSet[i]);
+            else
+              this.hardSet.push(this.questionSet[i]);
+
+        this.maxEasy = this.easySet.length;
+        this.maxNormal = this.normalSet.length;
+        this.maxHard = this.hardSet.length;
         this.maxUserCount = this.questionSet.length;
       }
     });
@@ -105,17 +121,21 @@ class QuestionBank {
     Session.set('questionCount', question.questionSet.length);
   }
 
-  addQuestionRandom(){
-    var easySet = [];
-    var normalSet = [];
-    
-    for(i = 0; i < this.questionSet.length; i++)
-      if(this.questionSet[i].rate >= 0.6)
-        easySet.push(this.questionSet[i]);
-      else
-        if(this.questionSet[i].rate >= 0.3)
-
-  }
+  // addQuestionRandom(){
+  //   var easySet = [];
+  //   var normalSet = [];
+  //   var hardSet = [];
+  //
+  //   for(i = 0; i < this.questionSet.length; i++)
+  //     if(this.questionSet[i].rate >= 0.6)
+  //       easySet.push(this.questionSet[i]);
+  //     else
+  //       if(this.questionSet[i].rate >= 0.3)
+  //         normalSet.push(this.questionSet[i]);
+  //       else
+  //         hardSet.push(this.questionSet[i]);
+  //
+  // }
 
   addQuestionPublic(){
     this.questionChose = [];
@@ -147,7 +167,7 @@ class QuestionBank {
   }
 
   //thêm câu hỏi vào bộ câu hỏi từ 1 hoặc nhiều đề
-  addSubQuestion(question){
+  addSubQuestion(question) {
     var index = -1
     for(i = 0; i < this.value.questionSet.length; i++){
       if(this.value.questionSet[i] === question)
@@ -158,6 +178,44 @@ class QuestionBank {
     }
     else
       this.value.questionSet.push(question)
+  }
+
+  //thêm câu hỏi bằng chức năng chọn ngẫu nhiên của cá nhân
+  addQuestionRandom() {
+    this.value.questionSet = [];
+    var randomIndexEasy = this.shuffle(this.maxEasy);
+    var randomIndexNormal = this.shuffle(this.maxNormal);
+    var randomIndexHard = this.shuffle(this.maxHard);
+
+    var t = 0;
+    for(i = 0; i < randomIndexEasy.length; i++)
+    {
+      this.value.questionSet.push(this.easySet[randomIndexEasy[i]]);
+      t ++;
+      if(t === this.easyCount)
+        break;
+    }
+
+    t = 0;
+    for(i = 0; i < randomIndexNormal.length; i++)
+    {
+      this.value.questionSet.push(this.normalSet[randomIndexNormal[i]]);
+      t ++;
+      if(t === this.normalCount)
+        break;
+    }
+
+    t = 0;
+    for(i = 0; i < randomIndexHard.length; i++)
+    {
+      this.value.questionSet.push(this.hardSet[randomIndexHard[i]]);
+      t ++;
+      if(t === this.hardCount)
+        break;
+    }
+
+    this.selectedTab = 2;
+    this.disableButton = true;
   }
 
   buildTest(){
@@ -314,6 +372,21 @@ class QuestionBank {
    showMaxCount(){
      this.maxCount = QuestionBankData.find({'fields': this.fields}).count();
    }
+
+  //tạo mảng vị trí random
+  shuffle(count) {
+    var array = [];
+    for(i = 0; i < count; i++)
+      array[i] = i
+    var tmp, current, top = array.length;
+    if(top) while(--top) {
+      current = Math.floor(Math.random() * (top + 1));
+      tmp = array[current];
+      array[current] = array[top];
+      array[top] = tmp;
+    }
+    return array;
+  }
 
 }
 

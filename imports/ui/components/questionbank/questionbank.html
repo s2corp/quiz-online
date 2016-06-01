@@ -95,6 +95,24 @@
                               <input name="maxQuestion" type="number" ng-model="questionbank.maxUserCount" readonly>
                       </md-input-container>
 
+                      <!-- Số lượng câu hỏi dễ tối đa thuộc lĩnh vực-->
+                      <md-input-container class="md-block" flex-gt-sm style="width: 80%; margin-left: 10%;">
+                              <label>Số lượng câu hỏi dễ tối đa</label>
+                              <input name="maxEasy" type="number" ng-model="questionbank.maxEasy" readonly>
+                      </md-input-container>
+
+                      <!-- Số lượng câu hỏi trung bình tối đa thuộc lĩnh vực-->
+                      <md-input-container class="md-block" flex-gt-sm style="width: 80%; margin-left: 10%;">
+                              <label>Số lượng câu hỏi trung bình tối đa</label>
+                              <input name="maxNormal" type="number" ng-model="questionbank.maxNormal" readonly>
+                      </md-input-container>
+
+                      <!-- Số lượng câu hỏi dễ tối đa thuộc lĩnh vực-->
+                      <md-input-container class="md-block" flex-gt-sm style="width: 80%; margin-left: 10%;">
+                              <label>Số lượng câu hỏi khó tối đa</label>
+                              <input name="maxHard" type="number" ng-model="questionbank.maxHard" readonly>
+                      </md-input-container>
+
                       <!-- Nhập số lượng câu hỏi -->
                       <md-input-container class="md-block" flex-gt-sm style="width: 80%; margin-left: 10%;">
                               <label>số lượng câu hỏi</label>
@@ -108,10 +126,13 @@
                       <!-- Nhập số lượng câu hỏi dễ -->
                       <md-input-container class="md-block" flex-gt-sm style="width: 80%; margin-left: 10%;">
                               <label>số lượng câu hỏi dễ</label>
-                              <input name="easyCount" type="number" ng-model="questionbank.easyCount" ng-change="questionbank.countUserQuestion()" required>
+                              <input name="easyCount" type="number" ng-model="questionbank.easyCount" ng-change="questionbank.countUserQuestion()" ng-max="questionbank.maxEasy" required>
                               <br>
                               <p role="alert" class="error" ng-show="questionbank.randomForm.easyCount.$error.required" style="color: red">
-                                  Số lượng câu hỏi là bắt buộc
+                                  Số lượng câu hỏi dễ là bắt buộc
+                              </p>
+                              <p role="alert" class="error" ng-show="questionbank.randomForm.easyCount.$error.max" style="color: red">
+                                  Số lượng câu hỏi dễ phải nhỏ hơn số lượng tối đa
                               </p>
                               <!-- <p role="alert" class="error" ng-show="questionbank.myForm.numberQuestion.$error.max" style="color: red">
                                   Số lượng câu hỏi phải nhỏ hơn số lượng tối đa
@@ -121,10 +142,13 @@
                       <!-- Nhập số lượng câu hỏi trung bình-->
                       <md-input-container class="md-block" flex-gt-sm style="width: 80%; margin-left: 10%;">
                               <label>số lượng câu hỏi trung bình</label>
-                              <input name="normalCount" type="number" ng-model="questionbank.normalCount" ng-change="questionbank.countUserQuestion()" required>
+                              <input name="normalCount" type="number" ng-model="questionbank.normalCount" ng-change="questionbank.countUserQuestion()" ng-max="questionbank.maxNormal" required>
                               <br>
                               <p role="alert" class="error" ng-show="questionbank.randomForm.normalCount.$error.required" style="color: red">
-                                  Số lượng câu hỏi là bắt buộc
+                                  Số lượng câu hỏi trung bình là bắt buộc
+                              </p>
+                              <p role="alert" class="error" ng-show="questionbank.randomForm.normalCount.$error.max" style="color: red">
+                                  Số lượng câu hỏi trung bình phải nhỏ hơn số lượng tối đa
                               </p>
                               <!-- <p role="alert" class="error" ng-show="questionbank.myForm.numberQuestion.$error.max" style="color: red">
                                   Số lượng câu hỏi phải nhỏ hơn số lượng tối đa
@@ -134,10 +158,13 @@
                       <!-- Nhập số lượng câu hỏi khó-->
                       <md-input-container class="md-block" flex-gt-sm style="width: 80%; margin-left: 10%;">
                               <label>số lượng câu hỏi khó</label>
-                              <input name="hardCount" type="number" ng-model="questionbank.hardCount" ng-change="questionbank.countUserQuestion()" required>
+                              <input name="hardCount" type="number" ng-model="questionbank.hardCount" ng-change="questionbank.countUserQuestion()" ng-max="questionbank.maxHard" required>
                               <br>
                               <p role="alert" class="error" ng-show="questionbank.randomForm.hardCount.$error.required" style="color: red">
-                                  Số lượng câu hỏi là bắt buộc
+                                  Số lượng câu hỏi khó là bắt buộc
+                              </p>
+                              <p role="alert" class="error" ng-show="questionbank.randomForm.hardCount.$error.max" style="color: red">
+                                  Số lượng câu hỏi khó phải nhỏ hơn số lượng tối đa
                               </p>
                               <!-- <p role="alert" class="error" ng-show="questionbank.myForm.numberQuestion.$error.max" style="color: red">
                                   Số lượng câu hỏi phải nhỏ hơn số lượng tối đa
@@ -145,7 +172,7 @@
                       </md-input-container>
 
                       <div layout="row" layout-align="center">
-                        <md-button class="md-raised md-primary" style="width: 80%; background-color: #ff8a00;" ng-click="questionbank.addQuestionPublic()" aria-label="choseQuestion">Chọn câu hỏi</md-button>
+                        <md-button class="md-raised md-primary" style="width: 80%; background-color: #ff8a00;" ng-click="questionbank.addQuestionRandom()" aria-label="choseQuestion">Chọn câu hỏi</md-button>
                       </div>
                     </div>
                 </div>
@@ -210,7 +237,7 @@
               <!-- <md-button class="md-raised" style="background-color: rgb(30, 73, 224)"><textarea rows="3" name="Text1" readonly>{{ques.question}}</textarea></md-button> -->
               <div layout="row" layout-align="left left">
                 <!--hiển thi câu hỏi-->
-                <md-button class="md-raised" style="height: 50%; width: 95%;" ng-click="questionbank.showhideQuestion(ques.question + '#')" aria-label="showQuestion">{{ques.question}}</md-button>
+                <md-button class="md-raised" style="height: 50%; width: 95%;" ng-click="questionbank.showhideQuestion(ques.question + '#')" aria-label="showQuestion">{{ques.question + ' | ' + ques.rate}}</md-button>
 
                 <!-- Thay thế câu hỏi -->
                 <md-button class="md-raised md-primary" style="margin-left: 10px; height: 50%; background-color: rgb(240, 121, 11)" ng-click="questionbank.changeQuestion(ques.question)" ng-disabled="questionbank.disableButton == true">Thay thế</md-button>
