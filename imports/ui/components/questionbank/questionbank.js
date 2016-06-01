@@ -27,6 +27,18 @@ class QuestionBank {
     //số lượng câu hỏi tối đa của lĩnh vực được chọn
     this.maxCount = 0;
 
+    //số lượng câu hỏi tối đa của người dùng
+    this.maxUserCount = 0;
+
+    //số lượng câu hỏi dễ
+    this.easyCount = 0;
+
+    //số lượng câu hỏi trung bình
+    this.normalCount = 0;
+
+    //số lượng câu hỏi khó
+    this.hardCount = 0;
+
     //chứa các câu hỏi đã chọn trong changeQuestion
     this.questionChose = [];
 
@@ -49,14 +61,32 @@ class QuestionBank {
     delete Session.keys['questionId'];
 
     this.helpers({
+
       questions() {
         return Question.find({"userId": Meteor.userId()}, {sort: {date: -1}});
       },
+
       data() {
         var data = QuestionBankData.find().fetch();
         var distinctData = _.uniq(data, false, function(d) {return d.fields});
         var disctinctValues = _.pluck(distinctData, 'fields');
         return disctinctValues;
+      },
+
+      questionUsers() {
+        this.questionSet = [];
+        var questions = Question.find({"userId": Meteor.userId()}, {sort: {date: -1}}).fetch();
+
+        for(i = 0; i < questions.length; i ++)
+          for(j = 0; j < questions[i].questionSet.length; j++)
+              this.questionSet.push ( questions[i].questionSet[j] );
+
+        for(i = 0; i < this.questionSet.length - 1; i ++)
+          for(j = i + 1; j < this.questionSet.length; j ++)
+            if(this.questionSet[i].question === this.questionSet[j].question)
+                this.questionSet.splice(j, 1);
+
+        this.maxUserCount = this.questionSet.length;
       }
     });
   }
@@ -73,6 +103,18 @@ class QuestionBank {
 
     Session.set('questionId', question._id);
     Session.set('questionCount', question.questionSet.length);
+  }
+
+  addQuestionRandom(){
+    var easySet = [];
+    var normalSet = [];
+    
+    for(i = 0; i < this.questionSet.length; i++)
+      if(this.questionSet[i].rate >= 0.6)
+        easySet.push(this.questionSet[i]);
+      else
+        if(this.questionSet[i].rate >= 0.3)
+
   }
 
   addQuestionPublic(){
@@ -149,6 +191,10 @@ class QuestionBank {
         }
   }
 
+  countUserQuestion(){
+    this.questionCount = this.easyCount + this.normalCount + this.hardCount;
+  }
+
   changeTabPersonal(){
     this.selectedTab = 2;
 
@@ -159,7 +205,7 @@ class QuestionBank {
   //sử dụng để lọc điều kiện tìm kiếm trong changeQuestion
   countValue(condition){
     var count = 1;
-    for(i=1; i<condition.length; i++)
+    for(i = 1; i < condition.length; i++)
         if(condition[i] !== condition[i - 1])
           count ++;
     return count;
