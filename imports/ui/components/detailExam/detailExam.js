@@ -11,12 +11,40 @@ class DetailExam {
     $reactive(this).attach($scope);
     this.subscribe("examination");
     this.stateParams = $stateParams;
+    this.state=$state;
+    this.istest="false" ;
+    this.isStart="false" ;
     this.helpers({
       exam: function(){
-        var data =Examination.findOne({_id:$stateParams.exam_id});
+        var raceCursor = Examination.find({_id:$stateParams.exam_id});
+        var races = raceCursor.fetch();
+        for (var i=0; i<races.length; i++) {
+          console.log(races[i].isTest);
+          if(races[i].isTest === true)
+            this.istest="true";
+          if(races[i].started === true )
+            this.isStart == true;
+        }
+        var data = races[0];
+        console.log(this.istest);
         return data;
       }
     });
+  }
+  save()
+  {
+    console.log(this.exam.examName);
+    var test = false;
+    var start = false;
+    if(this.istest === "true")
+      test = true;
+    if(this.isStart === "true")
+      start = true;
+    Examination.update({_id:this.stateParams.exam_id}, {$set:{
+      "examName":this.exam.examName,"examDescrip":this.exam.examDescrip,
+      "started":start,"isTest":test,"usersList":[]
+    }});
+    this.state.go("profileExam");
   }
 }
 const name = "detailExam";

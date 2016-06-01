@@ -14,11 +14,7 @@ class DetailStatistics {
     this.stateParams = $stateParams;
     this.helpers({
       info: function(){
-        // console.log($stateParams.question_id);
-        //
-        // var data = Question.findOne({_id:$stateParams.question_id});
-        // console.log(data);
-        Meteor.call("detailstatis", $stateParams.question_id, function(error, result){
+        Meteor.call("detailstatis", $stateParams.exam_id, function(error, result){
           if(error){
             console.log("error", error);
           }
@@ -29,10 +25,10 @@ class DetailStatistics {
         });
         var data= Session.get("detailstatis");
         console.log(data);
-
-
-        //console.log(data.questionSet.length);
-
+        return data;
+      },
+      exam(){
+          return   Examination.findOne({_id:$stateParams.exam_id});
       }
     });
   }
@@ -53,7 +49,7 @@ function config($stateProvider){
   'ngInject';
   $stateProvider
   .state('detailStatistics', {
-    url: '/detailStatistics/:question_id',
+    url: '/detailStatistics/:exam_id',
     template: '<detail-statistics></detail-statistics>'
   })
 }

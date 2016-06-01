@@ -4,6 +4,7 @@ import uiRouter from 'angular-ui-router';
 import ngMaterial from 'angular-material';
 import {Question} from '../../../api/question';
 import {Examination} from '../../../api/examination';
+
 import './statistics.html';
 class Statistics {
   constructor($scope,$reactive,$state,$stateParams) {
@@ -12,30 +13,20 @@ class Statistics {
     this.subscribe("examination");
     this.subscribe("question");
     this.stateParams = $stateParams;
+    this.exam = $stateParams.exam_id  ;
     this.helpers({
       info: function(){
-        // console.log($stateParams.question_id);
-        //
-        // var data = Question.findOne({_id:$stateParams.question_id});
-        // console.log(data);
         Meteor.call("statis", $stateParams.exam_id, function(error, result){
           if(error){
             console.log("error", error);
           }
           if(result){
             Session.set("statis", result);
-
           }
         });
         var data= Session.get("statis");
         console.log(data);
-        for(var key in data) {
-            console.log(data[key]);
-          }
-
-
-        //console.log(data.questionSet.length);
-
+        return data;
       }
     });
   }

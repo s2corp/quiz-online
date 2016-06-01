@@ -1,1 +1,21 @@
-
+<!-- <canvas id="myChart" width="400" height="400"></canvas> -->
+  <md-content id="mychart" layout="column" layout-padding  layout-align="space-between stretch">
+    <md-slider-container layout="row">
+      <span>Mức độ dễ</span>
+      <md-slider ng-readonly="true" md-discrete flex min="0" max="500" ng-model="statistics.info.easy" >
+      </md-slider>
+    </md-slider-container>
+    <md-slider-container layout="row">
+      <span>Mức độ trung bình</span>
+      <md-slider md-discrete flex ng-model="statistics.info.normal" min="0" max="500"  class="md-accent">
+      </md-slider>
+    </md-slider-container>
+    <md-slider-container layout="row">
+      <span class="md-body-1">Mức độ khó</span>
+      <md-slider  md-discrete flex ng-model="statistics.info.hardly"  min="0" max="500"  class="md-primary">
+      </md-slider>
+    </md-slider-container>
+    <div layout="column" layout-align="center center">
+      <md-button class="md-raised md-primary" href="/detailStatistics/{{statistics.exam}}" >XEM CHI TIẾT</md-button>
+    </div>
+  </md-content>
