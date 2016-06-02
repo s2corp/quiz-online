@@ -142,9 +142,11 @@ class AddTest {
 
   //gán điểm số mặt định
   setDefaultScore(){
-    this.scoreDivide = this.score / this.questionCount;
-    this.data.questionSet[0].score = this.scoreDivide;
-    this.selectedTab ++;
+    if(this.startForm.$valid){
+      this.scoreDivide = this.score / this.questionCount;
+      this.data.questionSet[0].score = this.scoreDivide;
+      this.selectedTab ++;
+    }
   }
 
   //lưu bộ câu hỏi vào cơ sở dữ liẹu
