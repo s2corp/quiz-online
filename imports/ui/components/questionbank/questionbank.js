@@ -48,6 +48,9 @@ class QuestionBank {
     //danh sách chứa tên các câu hỏi đã thêm
     this.questionName = [];
 
+    // dùng để hiện aannr tab xem lại
+    this.showReview = 'hidden';
+
     //chứa tất cả nội dung của kì thi
     this.value = {
       _id: this.code,
@@ -113,6 +116,8 @@ class QuestionBank {
     this.value.title = questions[0].title;
     this.value.questionSet = questions[0].questionSet;
 
+    this.showReview = "show";
+
     this.selectedTab = 2;
 
     this.disableButton = true;
@@ -162,6 +167,8 @@ class QuestionBank {
     this.value.questionSet = tempQues;
 
     this.disableButton = false;
+
+    this.showReview = "show";
 
     this.changeTab();
   }
@@ -213,6 +220,8 @@ class QuestionBank {
       if(t === this.hardCount)
         break;
     }
+
+    this.showReview = "show";
 
     this.selectedTab = 2;
     this.disableButton = true;
@@ -337,6 +346,11 @@ class QuestionBank {
     return data;
    }
 
+   foreChange(){
+     //if(this.selectedTab === 2)
+
+   }
+
    //sử dụng đối với câu hỏi cá nhân
    remove(questionId){
      Question.remove(questionId)
@@ -348,6 +362,10 @@ class QuestionBank {
     //    if(this.value.questionSet[i].question === ques.question){
     //      var index = i;
          this.value.questionSet.splice(index, 1);
+   }
+
+   resetReview (){
+     this.showReview = "hidden";
    }
 
    //hiện và ẩn nội dung ứng với một câu hỏi trong tab xem lại

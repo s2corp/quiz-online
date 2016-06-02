@@ -1,12 +1,12 @@
 <md-content>
     <md-tabs md-dynamic-height md-border-bottom md-selected="questionbank.selectedTab">
 
-      <md-tab label="Cá nhân">
+      <md-tab label="Cá nhân" md-on-select="questionbank.resetReview()">
         <!-- Tab thứ nhất -->
         <md-tabs>
 
           <!-- Chọn lần lượt -->
-          <md-tab label="Lần lượt">
+          <md-tab label="Lần lượt" md-on-select="questionbank.resetReview()">
             <md-content class="md-padding">
               <!-- <h1 class="md-display-2">Tab One</h1> -->
                 <div>
@@ -83,7 +83,7 @@
           </md-tab>
 
           <!-- Chọn ngẫu nhiên -->
-          <md-tab label="Ngẫu nhiên">
+          <md-tab label="Ngẫu nhiên" md-on-select="questionbank.resetReview()">
             <md-content class="md-padding">
               <form name="questionbank.randomForm">
                 <div layout="row" layout-align="center">
@@ -183,7 +183,7 @@
       </md-tab>
 
       <!-- Tab thứ hai -->
-      <md-tab label="Cộng đồng" md-on-select="questionbank.foreChange()">
+      <md-tab label="Cộng đồng" md-on-select="questionbank.resetReview()">
         <md-content class="md-padding">
           <!-- <h1 class="md-display-2">Tab Two</h1> -->
           <form name="questionbank.myForm">
@@ -227,7 +227,7 @@
       </md-tab>
 
       <!--tab xem lại-->
-      <md-tab label="Xem lại" md-on-select="questionbank.foreChange()">
+      <md-tab label="Xem lại" ng-disabled="questionbank.showReview == 'hidden'">
         <!-- <h1 class="md-display-2">Xem lại</h1> -->
         <div layout="row" layout-align="center">
           <md-content style="width: 80%;">
