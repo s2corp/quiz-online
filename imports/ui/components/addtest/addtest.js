@@ -3,7 +3,7 @@ import angularMeteor from 'angular-meteor';
 import uiRouter from 'angular-ui-router';
 import ngMaterial from 'angular-material';
 import { Question } from '../../../api/question';
-
+import { Images } from '../../../api/image'
 import './addtest.html';
 
 class AddTest {
@@ -12,6 +12,7 @@ class AddTest {
 
     $reactive(this).attach($scope);
     this.subscribe("question");
+    this.subscribe("images");
 
     //mã câu hỏi sinh tự động
     this.code = (Math.floor(Math.random()*99999) + 10000).toString();
@@ -39,8 +40,13 @@ class AddTest {
     //dùng để ẩn chức năng câu hỏi
     this.disable = 0;
 
+    //lưu dữ liệu hình ảnh
+    this.Photo = new Uint8Array(1024);
+
     //số lượng câu hỏi hiện tại
     this.question = 0;
+
+    this.$scope = $scope;
 
     this.compile = $compile;
 
@@ -117,6 +123,21 @@ class AddTest {
                                       '<label>Câu hỏi thứ ' + this.question + '</label>' +
                                       '<textarea ng-model="addtest.data.questionSet[' + this.question + '].question" md-maxlength="500" rows="5" md-select-on-focus></textarea>' +
                                 '</md-input-container>' +
+                                '<input ng-model="addtest.Photo" id="image_question_' + this.question + '" class="imageInput" type="file" md-select-on-focus accept="image/x-png, image/gif, image/jpeg">' +
+                                '<img id="photo_' + this.question + '"/>' +
+                                '<script>' +
+                                  'document.getElementById("image_question_' + this.question + '").onchange = function () {' +
+                                    'var reader = new FileReader();' +
+
+                                    'reader.onload = function (e) {' +
+                                      // get loaded data and render thumbnail.
+                                      'document.getElementById("photo_' + this.question + '").src = e.target.result;' +
+                                    '};' +
+
+                                    // read the image file as a data URL.
+                                    'reader.readAsDataURL(this.files[0]);' +
+                                  '};' +
+                                '</script>' +
                                 '<br>' +
                                 '<div id="answer' + this.question + '" layout-gt-sm="column">' +
                                   '<div id=answer'+ this.question + '_' + this.answer + '>' +
@@ -142,35 +163,51 @@ class AddTest {
 
   //gán điểm số mặt định
   setDefaultScore(){
-    if(this.startForm.$valid){
+    if(this.startForm.$valid) {
       this.scoreDivide = this.score / this.questionCount;
       this.data.questionSet[0].score = this.scoreDivide;
       this.selectedTab ++;
     }
   }
 
+  //xem lại hình ảnh tải lên
+  // showImage(){
+  //     alert("file uploaded");
+  // }
+
   //lưu bộ câu hỏi vào cơ sở dữ liẹu
   buildTest()
   {
-    this.addTest();
+    //var elements = document.getElementsByClassName("imageInput");
+    //for(i = 0; i < elements.length; i ++)
+      //console.log(elements[i].files[0]);
+    var file = document.getElementById('image_question_0').files[0];
+    console.log(Question);
+    console.log(Images);
+    console.log(file);
+    Images.insert(file, function (err, fileObj) {
+        alert('lỗi ' + err)
+        alert('Inserted new doc with ID' + fileObj._id + ', and kicked off the data upload using HTTP')
+    });
+    //this.addTest();
 
-    //thêm id của user đang đăng nhập
-    if(Meteor.userId() != null)
-      this.data.userId = Meteor.userId();
-
-    //thêm ngày
-    this.data.date = new Date();
-
-    //clean up data to remove $$hashkey
-    var data = angular.copy(this.data);
-    this.cleanupAngularObject(data);
-    Question.insert(data);
-
-    Session.set('questionId', data._id);
-    Session.set('questionCount', data.questionSet.length);
-    Session.set('selectedTab', '2');
-    //reset data
-    this.data = {};
+    // //thêm id của user đang đăng nhập
+    // if(Meteor.userId() != null)
+    //   this.data.userId = Meteor.userId();
+    //
+    // //thêm ngày
+    // this.data.date = new Date();
+    //
+    // //clean up data to remove $$hashkey
+    // var data = angular.copy(this.data);
+    // this.cleanupAngularObject(data);
+    // Question.insert(data);
+    //
+    // Session.set('questionId', data._id);
+    // Session.set('questionCount', data.questionSet.length);
+    // Session.set('selectedTab', '2');
+    // //reset data
+    // this.data = {};
   }
 
   //đổi tab

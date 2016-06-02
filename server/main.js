@@ -1,7 +1,9 @@
 import { Meteor } from 'meteor/meteor';
 import { Email } from 'meteor/email';
 import { Session } from 'meteor/session';
-import {Promise} from 'meteor/promise';
+import { Promise } from 'meteor/promise';
+
+import { Images } from '../imports/api/image'; 
 import { NotificationData } from '../imports/api/notificationdata';
 import { Examination } from '../imports/api/examination';
 import { Responsive } from '../imports/api/responsive';

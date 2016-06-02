@@ -29,3 +29,5 @@ less
 planettraining:material-design-icons
 promise
 accounts-password
+cfs:standard-packages
+cfs:filesystem
