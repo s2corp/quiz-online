@@ -1,21 +1,37 @@
 <md-content layout-padding layout-wrap ng-show="startedExam.isend">
-  <div layout="row">
-    <div flex>
-        <h3 id="scored">Số điểm hiện tại: 0</h3>
-    </div>
-    <div flex>
-      <h3 id ="time">Số điểm hiện tại: 0</h3>
-    </div>
+  <div layout="column" layout-align="center center">
+    <h3 style="color:#ff8a00">{{startedExam.showquestion.title}} </h3>
   </div>
-  <div layout="row" layout-align="center center">
-    <h3>{{startedExam.showquestion.title}} </h3>
+  <div layout="column">
+    <md-slider-container>
+      <div  layout="column" layout-align="center center">
+        <h5>Mức độ hoàn thành</h5>
+      </div>
+       <md-slider ng-readonly="true" class="md-primary" flex min="0" max={{startedExam.totalquestion}} ng-model="startedExam.total" aria-label="red" id="red-slider">
+       </md-slider>
+     </md-slider-container>
   </div>
+
+  <div  layout-xs="column" layout="row" layout-align="center end" layout-padding="30" >
+
+      <div layout="column" layout-align="center center" id="lableScored">
+        <h3 id="scored">Điểm: 0</h3>
+      </div>
+
+      <span flex="10"></span>
+
+      <div layout="column" layout-align="center center" id="lableTime">
+        <h3 id ="time">Thời Gian: 0</h3>
+      </div>
+
+  </div>
+
   <div layout="column" ng-repeat="q in startedExam.showquestion.questionSet" flex="80" flex-offset="10" ng-init="vitri = $index">
     <div ng-show="$index == startedExam.selectedIndex">
     <md-card>
       <md-card-title>
           <md-card-title-text style="min-height:50px; padding-left:5px;">
-            <h4>Câu {{$index +1}}. {{q.question}}</h4>
+            <h4 style="color:rgb(16, 17, 16)">Câu {{$index +1}}. {{q.question}}</h4>
           </md-card-title-text>
         </md-card-title>
         <md-divider></md-divider>
@@ -34,4 +50,5 @@
     </md-card>
   </div>
   </div>
+  <range-exam-button data=startedExam.exam_id></range-exam-button>
 </md-content>

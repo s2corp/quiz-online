@@ -8,6 +8,7 @@ import {Examination} from '../../../api/examination';
 import {Meteor} from 'meteor/meteor';
 import './startedExam.html';
 import {Session} from 'meteor/session';
+import {name as rangeExamButton} from '../rangeExamButton/rangeExamButton';
 class StartedExam {
   constructor($scope,$reactive,$stateParams,$state) {
     'ngInject';
@@ -24,14 +25,15 @@ class StartedExam {
     this.state=$state;
     this.selectedRow = null;
     this.lengthquestion = 0;
-    document.getElementById('scored').innerHTML ="Số điểm hiện tại: 0.";
+    this.total =1;
+    document.getElementById('scored').innerHTML ="Điểm: 0.";
     var exam = Examination.findOne({_id:$stateParams.exam_id});
     if(exam !== null)
         Session.set("stoprun", exam.time -1);
     else {
         Session.set("stoprun", 60);
     }
-    document.getElementById('time').innerHTML = "Thời gian còn lại :"+ Session.get("stoprun") +"phút.";
+    document.getElementById('time').innerHTML = "Thời gian:"+ Session.get("stoprun") +"phút.";
     //ham tu dong kiem tra thoi gian
     this.autorun(() =>{
       this.isstop =setInterval(function(){
@@ -47,7 +49,7 @@ class StartedExam {
          $state.go("scored-exam",{"exam_id":$stateParams.exam_id});
         }
         else {
-          document.getElementById('time').innerHTML = "Thời gian còn lại :"+ Session.get("stoprun") +"phút.";
+          document.getElementById('time').innerHTML = "Thời gian:"+ Session.get("stoprun") +"phút.";
         }
       },60000);
     });
@@ -60,18 +62,22 @@ class StartedExam {
         }
       },
       showquestion(){
-
         if(Question.find({"_id":$stateParams.question_id}).count() > 0)
         {
           val=Question.findOne({"_id":$stateParams.question_id});
-        //  console.log(val);
-
           this.lengthquestion = val.questionSet.length;
           return Question.findOne({"_id":$stateParams.question_id});
         }
           else {
            this.state.go('home');
           }
+    },
+    totalquestion()
+    {
+      var data = Question.find({"_id":$stateParams.question_id}).fetch();
+      console.log(data);
+      var t = data[0].questionSet.length;
+      return t;
     }
   });
   }
@@ -84,6 +90,7 @@ class StartedExam {
 
   checkanswer(que,data,vitri)
   {
+    this.total = this.total + 1;
     var userscored =
     Meteor.call("checkanswer",this.exam_id,Meteor.userId(),this.question_id,que,data,vitri , function(error, result){
       if(error){
@@ -91,7 +98,7 @@ class StartedExam {
       }
       if(result){
         //console.log(result);
-        document.getElementById('scored').innerHTML ="Số điểm hiện tại:"+ result+".";
+        document.getElementById('scored').innerHTML ="Điểm:"+ result+".";
         Session.set("scored", result);
       }
     });
@@ -112,7 +119,8 @@ const name = 'startedExam';
 export default angular.module(name,[
   angularMeteor,
   uiRouter,
-  mdDataTable
+  mdDataTable,
+  rangeExamButton
 ])
 .component(name,{
   templateUrl:'imports/ui/components/startedExam/startedExam.html',

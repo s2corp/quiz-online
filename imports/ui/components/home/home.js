@@ -32,8 +32,6 @@ class Home {
             content: responsives[i].content
           }
 
-          console.log(responser);
-
           respondList.push(responser);
         }
 

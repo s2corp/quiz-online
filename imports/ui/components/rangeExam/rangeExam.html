@@ -1,0 +1,18 @@
+<md-content  layout="column" layout-padding layout-margin>
+  <div layout="column" layout-align="start" layout-margin layout-padding style="overflow-x:auto;">
+      <table>
+        <tr>
+          <th>Tên thí sinh</th>
+          <th>Địa chỉ Email</th>
+          <th>score</th>
+          <th>Vị thứ</th>
+        </tr>
+      <tr ng-repeat="inf in rangeExam.infor | orderBy:'-scored' " >
+        <td>{{inf.name}}</td>
+        <td>{{inf.email}}</td>
+        <td>{{inf.scored}}</td>
+        <td>{{$index+1}}</td>
+        </tr>
+      </table>
+  </div>
+</md-content>
