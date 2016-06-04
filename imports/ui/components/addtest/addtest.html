@@ -3,7 +3,7 @@
     <md-tabs md-dynamic-height md-border-bottom md-selected="addtest.selectedTab">
 
       <!-- start -->
-      <md-tab label="Bắt đầu">
+      <md-tab label="Bắt đầu" md-on-select="addtest.resetReview()">
         <h1 class="md-display-2">Bắt đầu</h1>
         <form name="addtest.startForm">
           <div layout="row" layout-align="center">
@@ -49,7 +49,7 @@
       </md-tab>
 
       <!-- Add question tab -->
-      <md-tab label="Thêm nội dung">
+      <md-tab label="Thêm nội dung" md-on-select="addtest.resetReview()">
 
         <form name="addtest.myForm">
           <md-content id="questionSet" class="md-padding">
@@ -79,11 +79,21 @@
                   <br>
                 </md-input-container>
 
-                <md-input-container id="a" class="md-block" flex-gt-sm>
+                <!-- <md-input-container id="a" class="md-block" flex-gt-sm> -->
                   <!-- <label>Câu hỏi thứ nhất</label> -->
-                  <input ng-model="addtest.Photo" id="image_question_0" class="imageInput" type="file" md-select-on-focus accept="image/x-png, image/gif, image/jpeg">
-                  <img id="photo_0"/>
+                  <div layout="column">
+                    <!-- Thêm hình ảnh -->
+                    <input id="image_question_0" class="imageInput" type="file" md-select-on-focus accept="image/x-png, image/gif, image/jpeg">
+                    <img id="photo_0" style="width:80%">
+
+                    <!--Thêm âm thanh-->
+                    <input id="audio_question_0" class="imageInput" type="file" md-select-on-focus accept="audio/mpeg3">
+                    <audio id="audio_0" controls>
+                    </audio>
+
+                  </div>
                   <script>
+                    // Upload hình ảnh
                     document.getElementById("image_question_0").onchange = function () {
                       var reader = new FileReader();
 
@@ -93,11 +103,24 @@
                       };
 
                       // read the image file as a data URL.
-                      reader.readAsDataURL(this.files[0]);
+                      if(this.files[0])
+                        reader.readAsDataURL(this.files[0]);
+                    };
+
+                    //upload âm thanh
+                    document.getElementById("audio_question_0").onchange = function () {
+                      var reader = new FileReader();
+                      var sound = document.getElementById('audio_0');
+                        var reader = new FileReader();
+                        reader.onload = (function(audio) {return function(e) {audio.src = e.target.result;};})(sound);
+
+                      // read the audio file as a data URL.
+                      if(this.files[0])
+                        reader.readAsDataURL(this.files[0]);
                     };
                   </script>
 
-                </md-input-container>
+                <!-- </md-input-container> -->
 
                 <br>
 
@@ -134,12 +157,12 @@
 
         <div layout="column" layout-align="center center">
           <md-button class="md-primary md-hue-1" ng-click="addtest.appendQuestion()" aria-label="addAnswer">Thêm câu hỏi</md-button>
-          <md-button class="md-raised md-primary" style="background-color: #ff8a00;" ng-click="addtest.changeTab()" aria-label="finish">Hoàn Thành</md-button>
+          <md-button class="md-raised md-primary" style="background-color: #ff8a00;" ng-click="addtest.addTest()" aria-label="finish">Hoàn Thành</md-button>
         </div>
       </md-tab>
 
       <!--tab xem lại-->
-      <md-tab label="Xem lại" md-on-select="addtest.foreChange()">
+      <md-tab label="Xem lại" ng-disabled="addtest.showReview == 'hidden'" md-on-select="addtest.foreChange()">
         <h1 class="md-display-2">Xem lại</h1>
         <div layout="row" layout-align="center">
           <md-content style="width: 80%;">
@@ -164,6 +187,9 @@
                     <br>
                   </md-input-container>
 
+                  <!-- Hình ảnh -->
+                  <p>{{ ques.image }}</p>
+                  <img id="{{ 'review_'+ $index }}" class="imageReview" alt="">
 
                   <!-- các lựa chọn -->
                   <div ng-repeat="answer in ques.answerSet track by $index" ng-if="answer != ''" layout="column" layout-align="center">

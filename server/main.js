@@ -3,7 +3,7 @@ import { Email } from 'meteor/email';
 import { Session } from 'meteor/session';
 import { Promise } from 'meteor/promise';
 
-import { Images } from '../imports/api/image'; 
+import { Images } from '../imports/api/image';
 import { NotificationData } from '../imports/api/notificationdata';
 import { Examination } from '../imports/api/examination';
 import { Responsive } from '../imports/api/responsive';
@@ -121,10 +121,11 @@ Meteor.publish("user", function() {
 Meteor.methods({
     finduser:function(exam){
       var data = [];
-      for (var i = 0; i < exam.usersList.length; i++) {
-        var user = Meteor.users.findOne({_id:exam.usersList[i].userId});
-        data.push(user)
-      }
+      if(exam.usersList)
+        for (var i = 0; i < exam.usersList.length; i++) {
+          var user = Meteor.users.findOne({_id:exam.usersList[i].userId});
+          data.push(user)
+        }
       return data;
     }
   });

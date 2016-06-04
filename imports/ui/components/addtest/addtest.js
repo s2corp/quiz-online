@@ -23,10 +23,11 @@ class AddTest {
       questionSet: [
         {
           question: '',
+          image: '',
           answerSet: [],
           correctAnswer: '',
           score: 1,
-          countCorrect:0,
+          countCorrect: 0,
           rate: 0
         }
       ],
@@ -42,17 +43,14 @@ class AddTest {
     //dùng để ẩn chức năng câu hỏi
     this.disable = 0;
 
-    //lưu dữ liệu hình ảnh
-    this.Photo = new Uint8Array(1024);
-
     //số lượng câu hỏi hiện tại
     this.question = 0;
-
-    this.$scope = $scope;
 
     this.compile = $compile;
 
     this.scope = $scope;
+
+    this.showReview = 'hidden';
 
     //xóa dữ liệu trong questionId
     delete Session.keys['questionId'];
@@ -61,9 +59,12 @@ class AddTest {
   //thêm đề
   addTest()
   {
+    this.elements = document.getElementsByClassName("imageInput");
+    console.log(this.elements);
     for(i = 0; i < this.data.questionSet.length; i++){
       if(this.data.questionSet[i] === null){
         this.data.questionSet.splice(i, 1);
+        this.elements.splice(i, 1)
         i--;
       }
       else
@@ -74,6 +75,9 @@ class AddTest {
           }
         }
     }
+    this.reviewImage(this.elements);
+    this.showReview = "show";
+    this.selectedTab = 2;
   }
 
   //thêm đáp án
@@ -111,10 +115,11 @@ class AddTest {
 
     var question = {
         question: '',
+        image: '',
         answerSet: [],
         correctAnswer: '',
         score: this.scoreDivide,
-        countCorrect:0,
+        countCorrect: 0,
         rate: 0
     }
 
@@ -126,8 +131,10 @@ class AddTest {
                                       '<label>Câu hỏi thứ ' + this.question + '</label>' +
                                       '<textarea ng-model="addtest.data.questionSet[' + this.question + '].question" md-maxlength="500" rows="5" md-select-on-focus></textarea>' +
                                 '</md-input-container>' +
-                                '<input ng-model="addtest.Photo" id="image_question_' + this.question + '" class="imageInput" type="file" md-select-on-focus accept="image/x-png, image/gif, image/jpeg">' +
-                                '<img id="photo_' + this.question + '"/>' +
+                                '<div layout="column">' +
+                                  '<input id="image_question_' + this.question + '" class="imageInput" type="file" md-select-on-focus accept="image/x-png, image/gif, image/jpeg">' +
+                                  '<img id="photo_' + this.question + '" style="width:80%"/>' +
+                                '</div>' +
                                 '<script>' +
                                   'document.getElementById("image_question_' + this.question + '").onchange = function () {' +
                                     'var reader = new FileReader();' +
@@ -136,7 +143,7 @@ class AddTest {
                                       // get loaded data and render thumbnail.
                                       'document.getElementById("photo_' + this.question + '").src = e.target.result;' +
                                     '};' +
-
+                                    'if(this.files[0])' +
                                     // read the image file as a data URL.
                                     'reader.readAsDataURL(this.files[0]);' +
                                   '};' +
@@ -173,44 +180,71 @@ class AddTest {
     }
   }
 
-  //xem lại hình ảnh tải lên
-  // showImage(){
-  //     alert("file uploaded");
-  // }
-
   //lưu bộ câu hỏi vào cơ sở dữ liẹu
   buildTest()
   {
-    //var elements = document.getElementsByClassName("imageInput");
-    //for(i = 0; i < elements.length; i ++)
-      //console.log(elements[i].files[0]);
-    var file = document.getElementById('image_question_0').files[0];
-    console.log(Question);
-    console.log(Images);
-    console.log(file);
-    Images.insert(file, function (err, fileObj) {
-        alert('lỗi ' + err)
-        alert('Inserted new doc with ID' + fileObj._id + ', and kicked off the data upload using HTTP')
-    });
-    //this.addTest();
+    console.log(this.elements);
 
-    // //thêm id của user đang đăng nhập
-    // if(Meteor.userId() != null)
-    //   this.data.userId = Meteor.userId();
-    //
-    // //thêm ngày
-    // this.data.date = new Date();
-    //
-    // //clean up data to remove $$hashkey
-    // var data = angular.copy(this.data);
-    // this.cleanupAngularObject(data);
+    //thêm id của user đang đăng nhập
+    if(Meteor.userId() != null)
+      this.data.userId = Meteor.userId();
+
+    //thêm ngày
+    this.data.date = new Date();
+
+    //clean up data to remove $$hashkey
+    var data = angular.copy(this.data);
+    this.cleanupAngularObject(data);
+
+
+    //thêm hình ảnh và cập nhật câu hỏi vào cơ sỏa dữ liệu
+    var parent = this
+    var index = 0;
+    for(i = 0; i < this.elements.length; i ++) {
+       var file = this.elements[i].files[0];
+       //console.log(file);
+
+       if(file) {
+         //upload hình ảnh
+         Images.insert(file, function (err, fileObj) {
+            url = 'questionImages/images-' + fileObj._id + '-' + fileObj.original.name ;
+            data.questionSet[index].image = url;
+            //console.log(parent[index].image);
+
+            //nếu upload hình ảnh thành công thêm câu hỏi vào cơ sở dữ liệu
+            if(index >= parent.elements.length - 1) {
+              Question.insert(data);
+
+
+              Session.set('questionId', data._id);
+              Session.set('questionCount', data.questionSet.length);
+              Session.set('selectedTab', '2');
+            }
+            index ++;
+         });
+      }
+      else {
+        if(index >= parent.elements.length - 1) {
+          Question.insert(data);
+
+
+          Session.set('questionId', data._id);
+          Session.set('questionCount', data.questionSet.length);
+          Session.set('selectedTab', '2');
+        }
+        index ++;
+      }
+    }
+
+    //console.log(this.data.questionSet[0].image);
     // Question.insert(data);
+    //
     //
     // Session.set('questionId', data._id);
     // Session.set('questionCount', data.questionSet.length);
     // Session.set('selectedTab', '2');
-    // //reset data
-    // this.data = {};
+    //reset data
+    this.data = {};
   }
 
   //đổi tab
@@ -263,6 +297,10 @@ class AddTest {
      }
  }
 
+ resetReview (){
+   this.showReview = "hidden";
+ }
+
  //hiện và ẩn nội dung ứng với một câu hỏi trong tab xem lại
  showhideQuestion(id){
   if(document.getElementById(id).style.display === 'none')
@@ -294,6 +332,25 @@ class AddTest {
 
     myEl.remove();
     this.data.questionSet[questionIndex].answerSet[answerIndex] = '';
+  }
+
+  //xem lại hình ảnh ứng với câu hỏi
+  reviewImage(elements){
+    var index = 0
+    for(i = 0; i < elements.length; i++)
+    {
+        var reader = new FileReader();
+
+        reader.onload = function (e) {
+          console.log("review_" + index);
+          // get loaded data and render thumbnail.
+          document.getElementById("review_" + index).src = e.target.result;
+          index ++;
+        };
+        if(elements[i].files[0])
+        // read the image file as a data URL.
+          reader.readAsDataURL(elements[i].files[0]);
+    }
   }
 
   //xóa câu hỏi

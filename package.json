@@ -17,6 +17,7 @@
     "angular-sanitize": "^1.5.5",
     "angular-ui-router": "^0.2.18",
     "cryptr": "^2.0.0",
+    "fibers": "^1.0.13",
     "ionic-sdk": "^1.2.4",
     "meteor-node-stubs": "^0.2.3"
   }

@@ -26,6 +26,12 @@
             <h4 style="color:rgb(16, 17, 16)">Câu {{$index +1}}. {{q.question}}</h4>
         </div>
         <md-divider></md-divider>
+        <div layout="row" layout-padding layout-align="center center">
+          <audio controls>
+            <source src="sound/solemn.mp3">
+          </audio>
+        </div>
+        <md-divider></md-divider>
         <div id="quesimage" ng-show="q.image != '' && q.image" layout="column" layout-align="center center" flex="80" layout-margin="10">
           <img  src={{q.image}} />
         </div>
@@ -40,6 +46,8 @@
           <md-button class="md-raised md-warn" ng-click="startedExam.checkanswer(q.question,data.group1,vitri)" aria-label="next">TIẾP THEO</md-button>
         </div>
     </div>
+
+
     <div layout="column">
       <md-slider-container>
         <div  layout="column" layout-align="center center">
