@@ -23,7 +23,7 @@ class DetailExam {
           if(races[i].isTest === true)
             this.istest="true";
           if(races[i].started === true )
-            this.isStart == true;
+            this.isStart = "true";
         }
         var data = races[0];
         return data;
