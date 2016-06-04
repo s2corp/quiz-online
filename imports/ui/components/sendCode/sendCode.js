@@ -15,6 +15,8 @@ class SendCode{
     this.subscribe("notification");
     this.helpers({
       usersOnline() {
+        console.log(this.quizid);
+
         return Meteor.users.find({ "status.online": true })
       }
     });
@@ -23,12 +25,18 @@ class SendCode{
   sendCode(id, event){
     var note = {
       userId:id,
-      notification: Meteor.user().profile.name + ' vừa mời bạn tham gia kì thi của anh ấy với mã: ' + Session.get('quizId'),
+      notification: '',
       date: new Date()
     }
+    if(this.quizid)
+      Session.set("quizId", this.quizid);
+
+    note.notification = Meteor.user().profile.name + ' vừa mời bạn tham gia kì thi của anh ấy với mã: ' + Session.get('quizId'),
+
     NotificationData.insert(note);
     Session.set('notificationId', id);
   }
+
 
   inviteAll(){
     var users = Meteor.users.find({ "status.online": true });
@@ -54,5 +62,8 @@ export default  angular.module(name, [
 .component(name, {
   templateUrl: `imports/ui/components/${name}/${name}.html`,
   controllerAs: name,
-  controller: SendCode
+  controller: SendCode,
+  bindings:{
+    quizid:'='
+  }
 })

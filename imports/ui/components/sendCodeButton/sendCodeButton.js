@@ -6,17 +6,29 @@ import './sendCodeModal.html';
 import { name as SendCode } from '../sendCode/sendCode';
 
 class SendCodeButton {
-  constructor($mdDialog, $mdMedia) {
+  constructor($mdDialog, $mdMedia,$reactive,$scope) {
     'ngInject';
-
+    $reactive(this).attach($scope);
     this.$mdDialog = $mdDialog;
     this.$mdMedia = $mdMedia
+    this.helpers({
+      rendered: function(){
+        console.log(this.examid);
+      }
+    });
+
   }
 
   open(event) {
     this.$mdDialog.show({
-      controller($mdDialog) {
+      locals:{
+        item:this.examid
+      },
+      controller($mdDialog,item,$reactive,$scope) {
         'ngInject';
+        $reactive(this).attach($scope);
+        this.item = item;
+        console.log(this.item);
 
         this.close = () => {
           $mdDialog.hide();
@@ -40,6 +52,9 @@ export default angular.module(name, [
   SendCode
 ]).component(name, {
   templateUrl: `imports/ui/components/${name}/${name}.html`,
+  bindings:{
+    examid:'='
+  },
   controllerAs: name,
   controller: SendCodeButton
 });

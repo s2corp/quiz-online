@@ -2,6 +2,11 @@
   <div layout="column" layout-align="center center">
     <h3 style="color:#ff8a00">{{startedExam.showquestion.title}} </h3>
   </div>
+
+  <div layout="column" layout-align="start">
+    <range-exam-button data=startedExam.exam_id></range-exam-button>
+  </div>
+
   <div layout="column">
     <md-slider-container>
       <div  layout="column" layout-align="center center">
@@ -13,7 +18,6 @@
   </div>
 
   <div  layout-xs="column" layout="row" layout-align="center end" layout-padding="30" >
-
       <div layout="column" layout-align="center center" id="lableScored">
         <h3 id="scored">Điểm: 0</h3>
       </div>
@@ -50,5 +54,4 @@
     </md-card>
   </div>
   </div>
-  <range-exam-button data=startedExam.exam_id></range-exam-button>
 </md-content>

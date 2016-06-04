@@ -11,6 +11,7 @@ class DetailExam {
     $reactive(this).attach($scope);
     this.subscribe("examination");
     this.stateParams = $stateParams;
+    this.exam_id=$stateParams.exam_id;
     this.state=$state;
     this.istest="false" ;
     this.isStart="false" ;
@@ -19,21 +20,18 @@ class DetailExam {
         var raceCursor = Examination.find({_id:$stateParams.exam_id});
         var races = raceCursor.fetch();
         for (var i=0; i<races.length; i++) {
-          console.log(races[i].isTest);
           if(races[i].isTest === true)
             this.istest="true";
           if(races[i].started === true )
             this.isStart == true;
         }
         var data = races[0];
-        console.log(this.istest);
         return data;
       }
     });
   }
   save()
   {
-    console.log(this.exam.examName);
     var test = false;
     var start = false;
     if(this.istest === "true")
@@ -44,7 +42,7 @@ class DetailExam {
       "examName":this.exam.examName,"examDescrip":this.exam.examDescrip,
       "started":start,"isTest":test,"usersList":[]
     }});
-    this.state.go("profileExam");
+    // this.state.go("profileExam");
   }
 }
 const name = "detailExam";

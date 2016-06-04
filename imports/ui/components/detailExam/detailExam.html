@@ -31,8 +31,9 @@
            </md-radio-group>
       </div>
       <md-divider></md-divider>
-      <div>
+      <div layout="rows" >
         <md-button ng-click="detailExam.save()" class="md-primary md-raised">Cập nhập</md-button>
+        <md-button ng-href="/waitExam/{{detailExam.exam_id}}" class="md-primary md-raised">Bắt đầu lại</md-button>
       </div>
     </form>
   </div>
