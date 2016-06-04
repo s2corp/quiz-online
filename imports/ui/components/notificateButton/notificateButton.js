@@ -17,6 +17,9 @@ class NotificateButton {
     var handle = query.observeChanges({
       added: function (id, user) {
         document.getElementById('noteButton').style.backgroundColor = 'red';
+        var audio = new Audio('sound/solemn.mp3');
+        audio.volume = 0.2;
+        audio.play();
       },
       removed: function () {
         count--;
