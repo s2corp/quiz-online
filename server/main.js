@@ -3,7 +3,8 @@ import { Email } from 'meteor/email';
 import { Session } from 'meteor/session';
 import { Promise } from 'meteor/promise';
 
-import { Images } from '../imports/api/image'; 
+import { Images } from '../imports/api/image';
+import { Audioes } from '../imports/api/audio'; 
 import { NotificationData } from '../imports/api/notificationdata';
 import { Examination } from '../imports/api/examination';
 import { Responsive } from '../imports/api/responsive';
