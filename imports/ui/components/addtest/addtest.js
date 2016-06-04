@@ -62,7 +62,7 @@ class AddTest {
   {
     this.imageElements = document.getElementsByClassName("imageInput");
     this.audioElements = document.getElementsByClassName("audioInput")
-    console.log(this.imageElements);
+
     for(i = 0; i < this.data.questionSet.length; i++){
       if(this.data.questionSet[i] === null){
         this.data.questionSet.splice(i, 1);
@@ -78,8 +78,8 @@ class AddTest {
           }
         }
     }
-    this.reviewImage(this.imageElements);
-    this.reviewAudio(this.audioElements);
+    this.reviewImage();
+    this.reviewAudio();
     this.showReview = "show";
     this.selectedTab = 2;
   }
@@ -138,9 +138,9 @@ class AddTest {
                                 '</md-input-container>' +
                                 '<div layout="column">' +
                                   '<input id="image_question_' + this.question + '" class="imageInput" type="file" md-select-on-focus accept="image/x-png, image/gif, image/jpeg">' +
-                                  '<img id="photo_' + this.question + '" style="width:80%"/>' +
+                                  '<img id="photo_' + this.question + '" style="width:80%" class="image"/>' +
                                   '<input id="audio_question_' + this.question + '" class="audioInput" type="file" md-select-on-focus accept="audio/mpeg3">' +
-                                  '<audio id="audio_' + this.question + '" controls>' +
+                                  '<audio id="audio_' + this.question + '" controls class="audio">' +
                                   '</audio>' +
                                 '</div>' +
                                 '<script>' +
@@ -202,7 +202,6 @@ class AddTest {
   //lưu bộ câu hỏi vào cơ sở dữ liẹu
   buildTest()
   {
-    console.log(this.imageElements);
 
     //thêm id của user đang đăng nhập
     if(Meteor.userId() != null)
@@ -222,7 +221,6 @@ class AddTest {
     for(i = 0; i < this.data.questionSet.length; i ++) {
        var fileImage = this.imageElements[i].files[0];
        var fileAudio = this.audioElements[i].files[0];
-       //console.log(file);
 
        if(fileImage || fileAudio) {
 
@@ -232,7 +230,6 @@ class AddTest {
            Images.insert(fileImage, function (err, fileObj) {
               url = 'questionImages/images-' + fileObj._id + '-' + fileObj.original.name ;
               data.questionSet[index].image = url;
-              //console.log(parent[index].image);
 
               //nếu upload hình ảnh thành công thêm câu hỏi vào cơ sở dữ liệu
               if(index >= parent.imageElements.length - 1) {
@@ -253,7 +250,6 @@ class AddTest {
             Audioes.insert(fileAudio, function (err, fileObj) {
               url = 'questionAudioes/audioes-' + fileObj._id + '-' + fileObj.original.name ;
               data.questionSet[index].audio = url;
-              //console.log(parent[index].image);
 
               //nếu upload hình ảnh thành công thêm câu hỏi vào cơ sở dữ liệu
               if(index >= parent.audioElements.length - 1) {
@@ -280,15 +276,6 @@ class AddTest {
         index ++;
       }
     }
-
-    //console.log(this.data.questionSet[0].image);
-    // Question.insert(data);
-    //
-    //
-    // Session.set('questionId', data._id);
-    // Session.set('questionCount', data.questionSet.length);
-    // Session.set('selectedTab', '2');
-    //reset data
     this.data = {};
   }
 
@@ -379,42 +366,25 @@ class AddTest {
     this.data.questionSet[questionIndex].answerSet[answerIndex] = '';
   }
 
+  //xem lại âm thanh ứng với mỗi câu hỏi
+  reviewAudio(){
+    var audioElements = document.getElementsByClassName("audio" );
+    for(i = 0; i < audioElements.length; i++) {
+      if(audioElements[i].src)
+        document.getElementById("reviewAudio_" + i).src = audioElements[i].src;
+    }
+  }
+
   //xem lại hình ảnh ứng với câu hỏi
-  reviewImage(elements){
-    var index = 0
-    for(i = 0; i < elements.length; i++)
-    {
-        var reader = new FileReader();
-
-        reader.onload = function (e) {
-          console.log("reviewImage_" + index);
-          // get loaded data and render thumbnail.
-          document.getElementById("reviewImage_" + index).src = e.target.result;
-          index ++;
-        };
-        if(elements[i].files[0])
-        // read the image file as a data URL.
-          reader.readAsDataURL(elements[i].files[0]);
+  reviewImage(){
+    var imageElements = document.getElementsByClassName("image" );
+    for(i = 0; i < imageElements.length; i++) {
+      if(imageElements[i].src)
+        document.getElementById("reviewImage_" + i).src = imageElements[i].src;
     }
   }
 
-  reviewAudio(elements){
-    var index = 0
-    for(i = 0; i < elements.length; i++)
-    {
-        var reader = new FileReader();
 
-        reader.onload = function (e) {
-          console.log("reviewAudio_" + index);
-          // get loaded data and render thumbnail.
-          document.getElementById("reviewAudio_" + index).src = e.target.result;
-          index ++;
-        };
-        if(elements[i].files[0])
-        // read the image file as a data URL.
-          reader.readAsDataURL(elements[i].files[0]);
-    }
-  }
 
   //xóa câu hỏi
   removeQuestion(event)
