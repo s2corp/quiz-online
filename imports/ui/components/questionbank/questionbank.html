@@ -38,7 +38,7 @@
                               <br>
                             </md-input-container>
 
-                            <img src="{{q.image}}" alt="">
+                            <img src="{{q.image}}" alt="" style="width:80%">
 
                             <!-- các lựa chọn -->
                             <div ng-repeat="answer in q.answerSet" ng-if="answer != ''" layout="column" layout-align="center">
@@ -256,6 +256,7 @@
                   <br>
                 </md-input-container>
 
+                <img src="ques.image" alt="" style="width: 80%">
 
                 <!-- các lựa chọn -->
                 <div ng-repeat="answer in ques.answerSet track by $index" ng-if="answer != ''" layout="column" layout-align="center">

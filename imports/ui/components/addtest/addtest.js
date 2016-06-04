@@ -130,8 +130,10 @@ class AddTest {
                                       '<label>Câu hỏi thứ ' + this.question + '</label>' +
                                       '<textarea ng-model="addtest.data.questionSet[' + this.question + '].question" md-maxlength="500" rows="5" md-select-on-focus></textarea>' +
                                 '</md-input-container>' +
-                                '<input ng-model="addtest.Photo" id="image_question_' + this.question + '" class="imageInput" type="file" md-select-on-focus accept="image/x-png, image/gif, image/jpeg">' +
-                                '<img id="photo_' + this.question + '"/>' +
+                                '<div layout="column">' +
+                                  '<input id="image_question_' + this.question + '" class="imageInput" type="file" md-select-on-focus accept="image/x-png, image/gif, image/jpeg">' +
+                                  '<img id="photo_' + this.question + '" style="width:80%"/>' +
+                                '</div>' +
                                 '<script>' +
                                   'document.getElementById("image_question_' + this.question + '").onchange = function () {' +
                                     'var reader = new FileReader();' +
@@ -199,25 +201,38 @@ class AddTest {
     var index = 0;
     for(i = 0; i < this.elements.length; i ++) {
        var file = this.elements[i].files[0];
-       console.log(file);
+       //console.log(file);
 
-       //upload hình ảnh
-       Images.insert(file, function (err, fileObj) {
-          url = 'questionImages/images-' + fileObj._id + '-' + fileObj.original.name ;
-          data.questionSet[index].image = url;
-          //console.log(parent[index].image);
+       if(file) {
+         //upload hình ảnh
+         Images.insert(file, function (err, fileObj) {
+            url = 'questionImages/images-' + fileObj._id + '-' + fileObj.original.name ;
+            data.questionSet[index].image = url;
+            //console.log(parent[index].image);
 
-          //nếu upload hình ảnh thành công thêm câu hỏi vào cơ sở dữ liệu
-          if(index >= parent.elements.length - 1) {
-            Question.insert(data);
+            //nếu upload hình ảnh thành công thêm câu hỏi vào cơ sở dữ liệu
+            if(index >= parent.elements.length - 1) {
+              Question.insert(data);
 
 
-            Session.set('questionId', data._id);
-            Session.set('questionCount', data.questionSet.length);
-            Session.set('selectedTab', '2');
-          }
-          index ++;
-       });
+              Session.set('questionId', data._id);
+              Session.set('questionCount', data.questionSet.length);
+              Session.set('selectedTab', '2');
+            }
+            index ++;
+         });
+      }
+      else {
+        if(index >= parent.elements.length - 1) {
+          Question.insert(data);
+
+
+          Session.set('questionId', data._id);
+          Session.set('questionCount', data.questionSet.length);
+          Session.set('selectedTab', '2');
+        }
+        index ++;
+      }
     }
 
     //console.log(this.data.questionSet[0].image);
