@@ -4,6 +4,7 @@ import uiRouter from 'angular-ui-router';
 import ngMaterial from 'angular-material';
 import { Question } from '../../../api/question';
 import { Images } from '../../../api/image'
+import { Audioes } from '../../../api/audio';
 import './addtest.html';
 
 class AddTest {
@@ -24,6 +25,7 @@ class AddTest {
         {
           question: '',
           image: '',
+          audio: '',
           answerSet: [],
           correctAnswer: '',
           score: 1,
@@ -59,12 +61,14 @@ class AddTest {
   //thêm đề
   addTest()
   {
-    this.elements = document.getElementsByClassName("imageInput");
-    console.log(this.elements);
+    this.imageElements = document.getElementsByClassName("imageInput");
+    this.audioElements = document.getElementsByClassName("audioInput")
+    console.log(this.imageElements);
     for(i = 0; i < this.data.questionSet.length; i++){
       if(this.data.questionSet[i] === null){
         this.data.questionSet.splice(i, 1);
-        this.elements.splice(i, 1)
+        this.imageElements.splice(i, 1);
+        this.audioElements.splice(i, 1);
         i--;
       }
       else
@@ -75,7 +79,8 @@ class AddTest {
           }
         }
     }
-    this.reviewImage(this.elements);
+    this.reviewImage(this.imageElements);
+    this.reviewAudio(this.audioElements);
     this.showReview = "show";
     this.selectedTab = 2;
   }
@@ -116,6 +121,7 @@ class AddTest {
     var question = {
         question: '',
         image: '',
+        audio: '',
         answerSet: [],
         correctAnswer: '',
         score: this.scoreDivide,
@@ -134,8 +140,12 @@ class AddTest {
                                 '<div layout="column">' +
                                   '<input id="image_question_' + this.question + '" class="imageInput" type="file" md-select-on-focus accept="image/x-png, image/gif, image/jpeg">' +
                                   '<img id="photo_' + this.question + '" style="width:80%"/>' +
+                                  '<input id="audio_question_' + this.question + '" class="audioInput" type="file" md-select-on-focus accept="audio/mpeg3">' +
+                                  '<audio id="audio_' + this.question + '" controls>' +
+                                  '</audio>' +
                                 '</div>' +
                                 '<script>' +
+
                                   'document.getElementById("image_question_' + this.question + '").onchange = function () {' +
                                     'var reader = new FileReader();' +
 
@@ -147,6 +157,16 @@ class AddTest {
                                     // read the image file as a data URL.
                                     'reader.readAsDataURL(this.files[0]);' +
                                   '};' +
+
+                                  'document.getElementById("audio_question_' + this.question + '").onchange = function () {' +
+                                    'var sound = document.getElementById("audio_' + this.question + '");' +
+                                    'var reader = new FileReader();' +
+                                    'reader.onload = (function(audio) {return function(e) {audio.src = e.target.result;};})(sound);' +
+                                    // read the audio file as a data URL
+                                    'if(this.files[0])' +
+                                      'reader.readAsDataURL(this.files[0]);' +
+                                  '};' +
+
                                 '</script>' +
                                 '<br>' +
                                 '<div id="answer' + this.question + '" layout-gt-sm="column">' +
@@ -183,7 +203,7 @@ class AddTest {
   //lưu bộ câu hỏi vào cơ sở dữ liẹu
   buildTest()
   {
-    console.log(this.elements);
+    console.log(this.imageElements);
 
     //thêm id của user đang đăng nhập
     if(Meteor.userId() != null)
@@ -200,31 +220,57 @@ class AddTest {
     //thêm hình ảnh và cập nhật câu hỏi vào cơ sỏa dữ liệu
     var parent = this
     var index = 0;
-    for(i = 0; i < this.elements.length; i ++) {
-       var file = this.elements[i].files[0];
+    for(i = 0; i < this.data.questionSet.length; i ++) {
+       var fileImage = this.imageElements[i].files[0];
+       var fileAudio = this.audioElements[i].files[0];
        //console.log(file);
 
-       if(file) {
-         //upload hình ảnh
-         Images.insert(file, function (err, fileObj) {
-            url = 'questionImages/images-' + fileObj._id + '-' + fileObj.original.name ;
-            data.questionSet[index].image = url;
-            //console.log(parent[index].image);
+       if(fileImage || fileAudio) {
 
-            //nếu upload hình ảnh thành công thêm câu hỏi vào cơ sở dữ liệu
-            if(index >= parent.elements.length - 1) {
-              Question.insert(data);
+         //them hinh anh
+         if(fileImage) {
+           //upload hình ảnh
+           Images.insert(fileImage, function (err, fileObj) {
+              url = 'questionImages/images-' + fileObj._id + '-' + fileObj.original.name ;
+              data.questionSet[index].image = url;
+              //console.log(parent[index].image);
+
+              //nếu upload hình ảnh thành công thêm câu hỏi vào cơ sở dữ liệu
+              if(index >= parent.imageElements.length - 1) {
+                Question.insert(data);
 
 
-              Session.set('questionId', data._id);
-              Session.set('questionCount', data.questionSet.length);
-              Session.set('selectedTab', '2');
-            }
-            index ++;
-         });
+                Session.set('questionId', data._id);
+                Session.set('questionCount', data.questionSet.length);
+                Session.set('selectedTab', '2');
+              }
+              index ++;
+           });
+         }
+
+         //them am thanh
+         if(fileAudio) {
+          //upload hình ảnh
+            Audioes.insert(fileAudio, function (err, fileObj) {
+              url = 'questionAudioes/audioes-' + fileObj._id + '-' + fileObj.original.name ;
+              data.questionSet[index].audio = url;
+              //console.log(parent[index].image);
+
+              //nếu upload hình ảnh thành công thêm câu hỏi vào cơ sở dữ liệu
+              if(index >= parent.audioElements.length - 1) {
+                Question.insert(data);
+
+
+                Session.set('questionId', data._id);
+                Session.set('questionCount', data.questionSet.length);
+                Session.set('selectedTab', '2');
+              }
+              index ++;
+            });
+        }
       }
       else {
-        if(index >= parent.elements.length - 1) {
+        if(index >= parent.imageElements.length - 1) {
           Question.insert(data);
 
 
@@ -342,9 +388,27 @@ class AddTest {
         var reader = new FileReader();
 
         reader.onload = function (e) {
-          console.log("review_" + index);
+          console.log("reviewImage_" + index);
           // get loaded data and render thumbnail.
-          document.getElementById("review_" + index).src = e.target.result;
+          document.getElementById("reviewImage_" + index).src = e.target.result;
+          index ++;
+        };
+        if(elements[i].files[0])
+        // read the image file as a data URL.
+          reader.readAsDataURL(elements[i].files[0]);
+    }
+  }
+
+  reviewAudio(elements){
+    var index = 0
+    for(i = 0; i < elements.length; i++)
+    {
+        var reader = new FileReader();
+
+        reader.onload = function (e) {
+          console.log("reviewAudio_" + index);
+          // get loaded data and render thumbnail.
+          document.getElementById("reviewAudio_" + index).src = e.target.result;
           index ++;
         };
         if(elements[i].files[0])

@@ -87,7 +87,7 @@
                     <img id="photo_0" style="width:80%">
 
                     <!--Thêm âm thanh-->
-                    <input id="audio_question_0" class="imageInput" type="file" md-select-on-focus accept="audio/mpeg3">
+                    <input id="audio_question_0" class="audioInput" type="file" md-select-on-focus accept="audio/mpeg3">
                     <audio id="audio_0" controls>
                     </audio>
 
@@ -102,6 +102,7 @@
                         document.getElementById("photo_0").src = e.target.result;
                       };
 
+                      console.log(this.files[0]);
                       // read the image file as a data URL.
                       if(this.files[0])
                         reader.readAsDataURL(this.files[0]);
@@ -114,6 +115,7 @@
                         var reader = new FileReader();
                         reader.onload = (function(audio) {return function(e) {audio.src = e.target.result;};})(sound);
 
+                      console.log(this.files[0])
                       // read the audio file as a data URL.
                       if(this.files[0])
                         reader.readAsDataURL(this.files[0]);
@@ -189,8 +191,9 @@
 
                   <!-- Hình ảnh -->
                   <p>{{ ques.image }}</p>
-                  <img id="{{ 'review_'+ $index }}" class="imageReview" alt="">
-
+                  <img id="{{ 'reviewImage_'+ $index }}" class="imageReview" alt="">
+                  <audio id="{{ 'reviewAudio_'+ $index }}" class="audioReview" alt="" controls>
+                  </audio>
                   <!-- các lựa chọn -->
                   <div ng-repeat="answer in ques.answerSet track by $index" ng-if="answer != ''" layout="column" layout-align="center">
                       <!-- <md-button class="md-raised"><textarea rows="3" name="Text1" readonly>{{answer}}</textarea></md-button> -->

@@ -27,15 +27,15 @@
         </div>
         <md-divider></md-divider>
         <div layout="row" layout-padding layout-align="center center">
-          <audio controls>
-            <source src="sound/solemn.mp3">
+          <audio controls ng-show="q.audio != '' && q.audio">
+            <source src={{q.audio}}>
           </audio>
         </div>
-        <md-divider></md-divider>
+        <md-divider ng-show="q.audio != '' && q.audio"></md-divider>
         <div id="quesimage" ng-show="q.image != '' && q.image" layout="column" layout-align="center center" flex="80" layout-margin="10">
           <img  src={{q.image}} />
         </div>
-        <md-divider></md-divider>
+        <md-divider ng-show="q.image != '' && q.image" ></md-divider>
         <div layout="column" layout-padding>
           <md-radio-group ng-model="data.group1" layout="column" >
             <md-radio-button id="radi" ng-repeat="an in q.answerSet" ng-value="an" ng-class="{selected:$index == startedExam.selectedRow}" ng-click="startedExam.setClickedRow($index)">{{an}}</md-radio-button>
