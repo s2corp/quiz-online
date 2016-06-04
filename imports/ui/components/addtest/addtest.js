@@ -49,6 +49,10 @@ class AddTest {
 
     this.compile = $compile;
 
+    this.media = '';
+
+    this.medias = [ 'hình ảnh', 'âm thanh' ];
+
     this.scope = $scope;
 
     this.showReview = 'hidden';
@@ -137,11 +141,23 @@ class AddTest {
                                       '<textarea ng-model="addtest.data.questionSet[' + this.question + '].question" md-maxlength="500" rows="5" md-select-on-focus></textarea>' +
                                 '</md-input-container>' +
                                 '<div layout="column">' +
-                                  '<input id="image_question_' + this.question + '" class="imageInput" type="file" md-select-on-focus accept="image/x-png, image/gif, image/jpeg">' +
-                                  '<img id="photo_' + this.question + '" style="width:80%" class="image"/>' +
-                                  '<input id="audio_question_' + this.question + '" class="audioInput" type="file" md-select-on-focus accept="audio/mpeg3">' +
-                                  '<audio id="audio_' + this.question + '" controls class="audio">' +
-                                  '</audio>' +
+                                '<md-input-container flex-gt-sm style="width: 80%; margin-left: 10%;">' +
+                                  '<label>Chọn media</label>' +
+                                  '<md-select ng-model="addtest.media" ng-change="addtest.showMedia()">' +
+                                    '<md-option ng-value="media" ng-repeat="media in addtest.medias">{{media}}</md-option>' +
+                                  '</md-select>' +
+                                '</md-input-container>' +
+
+                                '<div id="imageTab_' + this.question + '" style="display: none">' +
+                                  '<input id="image_question_' + this.question + '" class="imageInput" type="file" md-select-on-focus accept="image/x-png, image/gif, image/jpeg" ng-click="addtest.hideAudio($event)">' +
+                                  '<img id="photo_' + this.question + '" style="width:80%" class="image">' +
+                                '</div>' +
+
+                                '<div id="audioTab_' + this.question + '" style="display: none">' +
+                                  '<input id="audio_question_' + this.question + '" class="audioInput" type="file" md-select-on-focus accept="audio/mpeg3" ng-click="addtest.hideImage($event)">' +
+                                  '<audio id="audio_' + this.question + '" controls class="audio"></audio>' +
+                                '</div>' +
+
                                 '</div>' +
                                 '<script>' +
 
@@ -222,7 +238,7 @@ class AddTest {
        var fileImage = this.imageElements[i].files[0];
        var fileAudio = this.audioElements[i].files[0];
 
-       if(fileImage || fileAudio) {
+       if(fileImage) {
 
          //them hinh anh
          if(fileImage) {
@@ -341,12 +357,38 @@ class AddTest {
     document.getElementById(id).style.display = 'none';
  }
 
+ showMedia() {
+   if(this.media === 'hình ảnh') {
+     document.getElementById('imageTab_0').style.display = 'inline';
+     document.getElementById('audioTab_').style.display = 'none';
+   }
+   else {
+     document.getElementById('imageTab').style.display = 'none';
+     document.getElementById('audioTab').style.display = 'inline';
+   }
+
+ }
+
  //chặn việc chuyển tab
  foreChange()
  {
    var check = this.checkValidAnswer();
    if(!this.myForm.$valid || !check)
     this.selectedTab = 0;
+ }
+
+ hideAudio(event){
+   var length = event.target.id.length
+   var index = parseInt(event.target.id.charAt(length - 1));
+   document.getElementById('imageTab_0').reset();
+   //document.getElementById('audio_' + index.toString()).src = '';
+ }
+
+ hideImage(event){
+   var length = event.target.id.length
+   var index = parseInt(event.target.id.charAt(length - 1));
+   document.getElementById('audioTab_0').reset();
+   //document.getElementById('photo_' + index.toString()).src = '';
  }
 
  //thêm đáp án chính xác

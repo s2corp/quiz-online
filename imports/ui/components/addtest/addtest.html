@@ -82,14 +82,25 @@
                 <!-- <md-input-container id="a" class="md-block" flex-gt-sm> -->
                   <!-- <label>Câu hỏi thứ nhất</label> -->
                   <div layout="column">
+                    <!-- Chọn lĩnh vực  -->
+                    <!-- <md-input-container flex-gt-sm style="width: 80%; margin-left: 10%;">
+                      <label>Chọn media</label>
+                      <md-select ng-model="addtest.media" ng-change="addtest.showMedia()">
+                        <md-option ng-value="media" ng-repeat="media in addtest.medias">{{media}}</md-option>
+                      </md-select>
+                    </md-input-container> -->
+
                     <!-- Thêm hình ảnh -->
-                    <input id="image_question_0" class="imageInput" type="file" md-select-on-focus accept="image/x-png, image/gif, image/jpeg">
-                    <img id="photo_0" style="width:80%" class="image">
+                    <form id="imageTab_0">
+                      <input id="image_question_0" class="imageInput" type="file" md-select-on-focus accept="image/x-png, image/gif, image/jpeg" ng-click="addtest.hideAudio($event)">
+                      <img id="photo_0" style="width:80%" class="image">
+                    </form>
 
                     <!--Thêm âm thanh-->
-                    <input id="audio_question_0" class="audioInput" type="file" md-select-on-focus accept="audio/mpeg3">
-                    <audio id="audio_0" controls class="audio">
-                    </audio>
+                    <form id="audioTab_0">
+                      <input id="audio_question_0" class="audioInput" type="file" md-select-on-focus accept="audio/mpeg3" ng-click="addtest.hideImage($event)">
+                      <audio id="audio_0" controls class="audio"></audio>
+                    </form>
 
                   </div>
                   <script>
