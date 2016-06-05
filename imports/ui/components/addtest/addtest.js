@@ -3,8 +3,7 @@ import angularMeteor from 'angular-meteor';
 import uiRouter from 'angular-ui-router';
 import ngMaterial from 'angular-material';
 import { Question } from '../../../api/question';
-import { Images } from '../../../api/image'
-import { Audioes } from '../../../api/audio';
+import { Medias } from '../../../api/media';
 import './addtest.html';
 
 class AddTest {
@@ -226,16 +225,17 @@ class AddTest {
     //thêm hình ảnh và cập nhật câu hỏi vào cơ sỏa dữ liệu
     var parent = this
     var index = 0;
+
+
+
     for(i = 0; i < this.mediaElements.length; i ++) {
        var file = this.mediaElements[i].files[0];
-
        if(file) {
-
-         //them hinh anh
-         if(file.type.substring(0, 5) === 'image') {
-           //upload hình ảnh
-           Images.insert(file, function (err, fileObj) {
-              url = 'questionImages/images-' + fileObj._id + '-' + fileObj.original.name ;
+          //upload media
+          if(file.type.substring(0, 5) === 'image')
+            Medias.insert(file, function (err, fileObj) {
+              //console.log(file);
+              url = 'questionMedia/media-' + fileObj._id + '-' + fileObj.original.name ;
               data.questionSet[index].image = url;
 
               //nếu upload hình ảnh thành công thêm câu hỏi vào cơ sở dữ liệu
@@ -248,14 +248,11 @@ class AddTest {
                 Session.set('selectedTab', '2');
               }
               index ++;
-           });
-         }
-
-         //them am thanh
-         if(file.type.substring(0, 5) === 'audio') {
-          //upload hình ảnh
-            Audioes.insert(file, function (err, fileObj) {
-              url = 'questionAudioes/audioes-' + fileObj._id + '-' + fileObj.original.name ;
+            });
+          else
+            Medias.insert(file, function (err, fileObj) {
+              //console.log(file);
+              url = 'questionMedia/media-' + fileObj._id + '-' + fileObj.original.name ;
               data.questionSet[index].audio = url;
 
               //nếu upload hình ảnh thành công thêm câu hỏi vào cơ sở dữ liệu
@@ -269,7 +266,6 @@ class AddTest {
               }
               index ++;
             });
-        }
       }
       else {
         if(index >= parent.mediaElements.length - 1) {

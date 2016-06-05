@@ -3,8 +3,7 @@ import { Email } from 'meteor/email';
 import { Session } from 'meteor/session';
 import { Promise } from 'meteor/promise';
 
-import { Images } from '../imports/api/image';
-import { Audioes } from '../imports/api/audio'; 
+import { Medias } from '../imports/api/media';
 import { NotificationData } from '../imports/api/notificationdata';
 import { Examination } from '../imports/api/examination';
 import { Responsive } from '../imports/api/responsive';
@@ -33,6 +32,35 @@ Meteor.methods({
         Meteor.users.update({'_id': Meteor.userId()}, {$set: {'profile.job': 'student'}});
   }
 });
+
+// Meteor.methods({
+//   insertMedia: function(data, media){
+//
+//     var fc = function(data, media) {
+//
+//       var index = 0;
+//       for(i = 0; i < media.length; i ++) {
+//          var file = media.files[0];
+//
+//          if(file) {
+//             //upload media
+//             Medias.insert(file, function (err, fileObj) {
+//
+//               url = 'questionMedia/media-' + fileObj._id + '-' + fileObj.original.name ;
+//               if(file.type.substring(0, 5) === 'image')
+//                   data.questionSet[index].image = url;
+//               else
+//                   data.questionSet[index].audio = url;
+//               if(index >= media.length - 1)
+//                 return data
+//               index ++;
+//             });
+//         }
+//      }
+//   }
+//     var convertAsyncToSync  = Meteor.wrapAsync(fc);
+//   }
+// });
 
 // //save facebook user avatar
 // var getFbPicture = function(accessToken) { // make async call to grab the picture from facebook
