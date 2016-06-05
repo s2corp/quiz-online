@@ -49,10 +49,6 @@ class AddTest {
 
     this.compile = $compile;
 
-    this.media = '';
-
-    this.medias = [ 'hình ảnh', 'âm thanh' ];
-
     this.scope = $scope;
 
     this.showReview = 'hidden';
@@ -64,14 +60,12 @@ class AddTest {
   //thêm đề
   addTest()
   {
-    this.imageElements = document.getElementsByClassName("imageInput");
-    this.audioElements = document.getElementsByClassName("audioInput")
+    this.mediaElements = document.getElementsByClassName("mediaInput");
 
     for(i = 0; i < this.data.questionSet.length; i++){
       if(this.data.questionSet[i] === null){
         this.data.questionSet.splice(i, 1);
-        this.imageElements.splice(i, 1);
-        this.audioElements.splice(i, 1);
+        this.mediaElements.splice(i, 1);
         i--;
       }
       else
@@ -82,8 +76,7 @@ class AddTest {
           }
         }
     }
-    this.reviewImage();
-    this.reviewAudio();
+    this.reviewMedia();
     this.showReview = "show";
     this.selectedTab = 2;
   }
@@ -141,48 +134,42 @@ class AddTest {
                                       '<textarea ng-model="addtest.data.questionSet[' + this.question + '].question" md-maxlength="500" rows="5" md-select-on-focus></textarea>' +
                                 '</md-input-container>' +
                                 '<div layout="column">' +
-                                '<md-input-container flex-gt-sm style="width: 80%; margin-left: 10%;">' +
-                                  '<label>Chọn media</label>' +
-                                  '<md-select ng-model="addtest.media" ng-change="addtest.showMedia()">' +
-                                    '<md-option ng-value="media" ng-repeat="media in addtest.medias">{{media}}</md-option>' +
-                                  '</md-select>' +
-                                '</md-input-container>' +
 
-                                '<div id="imageTab_' + this.question + '" style="display: none">' +
-                                  '<input id="image_question_' + this.question + '" class="imageInput" type="file" md-select-on-focus accept="image/x-png, image/gif, image/jpeg" ng-click="addtest.hideAudio($event)">' +
-                                  '<img id="photo_' + this.question + '" style="width:80%" class="image">' +
-                                '</div>' +
-
-                                '<div id="audioTab_' + this.question + '" style="display: none">' +
-                                  '<input id="audio_question_' + this.question + '" class="audioInput" type="file" md-select-on-focus accept="audio/mpeg3" ng-click="addtest.hideImage($event)">' +
-                                  '<audio id="audio_' + this.question + '" controls class="audio"></audio>' +
-                                '</div>' +
+                                  '<input id="media_question_' + this.question + '" class="mediaInput" type="file" md-select-on-focus accept="image/*, audio/*">' +
+                                  '<img id="photo_' + this.question + '" style="width:80%" class="media" src="default">' +
+                                  '<audio id="audio_' + this.question + '" controls class="media" src="default"></audio>' +
 
                                 '</div>' +
                                 '<script>' +
-
-                                  'document.getElementById("image_question_' + this.question + '").onchange = function () {' +
+                                  // Upload hình ảnh
+                                  'document.getElementById("media_question_' + this.question + '").onchange = function () {' +
                                     'var reader = new FileReader();' +
 
-                                    'reader.onload = function (e) {' +
-                                      // get loaded data and render thumbnail.
-                                      'document.getElementById("photo_' + this.question + '").src = e.target.result;' +
-                                    '};' +
-                                    'if(this.files[0])' +
-                                    // read the image file as a data URL.
-                                    'reader.readAsDataURL(this.files[0]);' +
-                                  '};' +
+                                      //console.log(this.files[0].type.substring(0, 6))
+                                    'if(this.files[0].type.substring(0, 5) === "image") {' +
+                                      'document.getElementById("audio_' + this.question + '").src = "";' +
+                                      'reader.onload = function (e) {' +
+                                        // get loaded data and render thumbnail.
+                                        'document.getElementById("photo_' + this.question + '").src = e.target.result;' +
+                                      '};' +
 
-                                  'document.getElementById("audio_question_' + this.question + '").onchange = function () {' +
-                                    'var sound = document.getElementById("audio_' + this.question + '");' +
-                                    'var reader = new FileReader();' +
-                                    'reader.onload = (function(audio) {return function(e) {audio.src = e.target.result;};})(sound);' +
-                                    // read the audio file as a data URL
-                                    'if(this.files[0])' +
-                                      'reader.readAsDataURL(this.files[0]);' +
-                                  '};' +
 
+                                        // read the image file as a data URL.
+                                      'if(this.files[0])' +
+                                        'reader.readAsDataURL(this.files[0]);' +
+                                    '}' +
+                                    'else {' +
+                                      'document.getElementById("photo_' + this.question + '").src = "";' +
+                                      'var sound = document.getElementById("audio_' + this.question + '");' +
+                                      'reader.onload = (function(audio) {return function(e) {audio.src = e.target.result;};})(sound);' +
+
+                                      // read the audio file as a data URL.
+                                      'if(this.files[0])' +
+                                        'reader.readAsDataURL(this.files[0]);' +
+                                    '}' +
+                                  '};' +
                                 '</script>' +
+
                                 '<br>' +
                                 '<div id="answer' + this.question + '" layout-gt-sm="column">' +
                                   '<div id=answer'+ this.question + '_' + this.answer + '>' +
@@ -230,25 +217,29 @@ class AddTest {
     var data = angular.copy(this.data);
     this.cleanupAngularObject(data);
 
+    // for(i = 0; i < this.mediaElements.length; i ++) {
+    //    var file = this.mediaElements[i].files[0];
+    //    console.log(file);
+    // }
+
 
     //thêm hình ảnh và cập nhật câu hỏi vào cơ sỏa dữ liệu
     var parent = this
     var index = 0;
-    for(i = 0; i < this.data.questionSet.length; i ++) {
-       var fileImage = this.imageElements[i].files[0];
-       var fileAudio = this.audioElements[i].files[0];
+    for(i = 0; i < this.mediaElements.length; i ++) {
+       var file = this.mediaElements[i].files[0];
 
-       if(fileImage) {
+       if(file) {
 
          //them hinh anh
-         if(fileImage) {
+         if(file.type.substring(0, 5) === 'image') {
            //upload hình ảnh
-           Images.insert(fileImage, function (err, fileObj) {
+           Images.insert(file, function (err, fileObj) {
               url = 'questionImages/images-' + fileObj._id + '-' + fileObj.original.name ;
               data.questionSet[index].image = url;
 
               //nếu upload hình ảnh thành công thêm câu hỏi vào cơ sở dữ liệu
-              if(index >= parent.imageElements.length - 1) {
+              if(index >= parent.mediaElements.length - 1) {
                 Question.insert(data);
 
 
@@ -261,14 +252,14 @@ class AddTest {
          }
 
          //them am thanh
-         if(fileAudio) {
+         if(file.type.substring(0, 5) === 'audio') {
           //upload hình ảnh
-            Audioes.insert(fileAudio, function (err, fileObj) {
+            Audioes.insert(file, function (err, fileObj) {
               url = 'questionAudioes/audioes-' + fileObj._id + '-' + fileObj.original.name ;
               data.questionSet[index].audio = url;
 
               //nếu upload hình ảnh thành công thêm câu hỏi vào cơ sở dữ liệu
-              if(index >= parent.audioElements.length - 1) {
+              if(index >= parent.mediaElements.length - 1) {
                 Question.insert(data);
 
 
@@ -281,7 +272,7 @@ class AddTest {
         }
       }
       else {
-        if(index >= parent.imageElements.length - 1) {
+        if(index >= parent.mediaElements.length - 1) {
           Question.insert(data);
 
 
@@ -380,14 +371,14 @@ class AddTest {
  hideAudio(event){
    var length = event.target.id.length
    var index = parseInt(event.target.id.charAt(length - 1));
-   document.getElementById('imageTab_0').reset();
+   document.getElementById('audioTab_0').reset();
    //document.getElementById('audio_' + index.toString()).src = '';
  }
 
  hideImage(event){
    var length = event.target.id.length
    var index = parseInt(event.target.id.charAt(length - 1));
-   document.getElementById('audioTab_0').reset();
+   document.getElementById('imageTab_0').reset();
    //document.getElementById('photo_' + index.toString()).src = '';
  }
 
@@ -409,21 +400,43 @@ class AddTest {
   }
 
   //xem lại âm thanh ứng với mỗi câu hỏi
-  reviewAudio(){
-    var audioElements = document.getElementsByClassName("audio" );
-    for(i = 0; i < audioElements.length; i++) {
-      if(audioElements[i].src)
-        document.getElementById("reviewAudio_" + i).src = audioElements[i].src;
-    }
-  }
+  reviewMedia(){
 
-  //xem lại hình ảnh ứng với câu hỏi
-  reviewImage(){
-    var imageElements = document.getElementsByClassName("image" );
-    for(i = 0; i < imageElements.length; i++) {
-      if(imageElements[i].src)
-        document.getElementById("reviewImage_" + i).src = imageElements[i].src;
+    var mediaElements = document.getElementsByClassName("media" );
+    var arrayElements = [];
+
+    for(i = 0; i < mediaElements.length; i++) {
+      //if(mediaElements[i].src !== 'http://localhost:3000/') {
+        arrayElements.push(mediaElements[i]);
+      //}
     }
+
+    var imageArray = [];
+    for(i = 0; i < arrayElements.length; i++) {
+      if(arrayElements[i].tagName === 'IMG')
+        imageArray.push(arrayElements[i]);
+    }
+
+    var audioArray = [];
+    for(i = 0; i < arrayElements.length; i++) {
+      if(arrayElements[i].tagName === 'AUDIO')
+        audioArray.push(arrayElements[i]);
+    }
+
+    for(i = 0; i < imageArray.length; i++) {
+      console.log(imageArray[i].src.substring(0, 50));
+      if(imageArray[i].src !== 'http://localhost:3000/default' && imageArray[i].src !== 'http://localhost:3000/') {
+          document.getElementById("reviewImage_" + i).src = imageArray[i].src;
+      }
+    }
+
+    for(i = 0; i < audioArray.length; i++) {
+      console.log(audioArray[i].src.substring(0, 50));
+      if(audioArray[i].src !== 'http://localhost:3000/default' && audioArray[i].src !== 'http://localhost:3000/') {
+          document.getElementById("reviewAudio_" + i).src = audioArray[i].src;
+      }
+    }
+
   }
 
 
@@ -437,6 +450,7 @@ class AddTest {
     myEl.remove();
     this.data.questionSet[questionIndex] = null;
     this.disable --;
+    //this.question --;
   }
 }
 
