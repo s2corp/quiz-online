@@ -34,49 +34,29 @@ Meteor.methods({
 });
 
 // Meteor.methods({
-//   insertMedia: function(data, media){
+//   insertMedia: function(data, file, index) {
+//     console.log(data);
+//     console.log(file.type);
+//     console.log();
+//     Future = require('fibers/future');
+//     var myFuture = new Future();
 //
-//     var fc = function(data, media) {
-//
-//       var index = 0;
-//       for(i = 0; i < media.length; i ++) {
-//          var file = media.files[0];
-//
-//          if(file) {
-//             //upload media
-//             Medias.insert(file, function (err, fileObj) {
-//
-//               url = 'questionMedia/media-' + fileObj._id + '-' + fileObj.original.name ;
-//               if(file.type.substring(0, 5) === 'image')
-//                   data.questionSet[index].image = url;
-//               else
-//                   data.questionSet[index].audio = url;
-//               if(index >= media.length - 1)
-//                 return data
-//               index ++;
-//             });
+//     Medias.insert(file, function (err, fileObj) {
+//       if(err) {
+//           myFuture.throw(err);
+//       } else {
+//           url = 'questionMedia/media-' + fileObj._id + '-' + fileObj.original.name ;
+//           if(file.type.substring(0, 5) === 'image')
+//             data.questionSet[index].image = url;
+//           else
+//             data.questionSet[index].audio = url;
+//           myFuture.return(data);
 //         }
-//      }
-//   }
-//     var convertAsyncToSync  = Meteor.wrapAsync(fc);
+//     });
+//
+//     return myFuture.wait();
 //   }
 // });
-
-// //save facebook user avatar
-// var getFbPicture = function(accessToken) { // make async call to grab the picture from facebook
-//     var result;
-//     result = Meteor.http.get("https://graph.facebook.com/me", {
-//       params: {
-//         access_token: accessToken,
-//         fields: 'picture'
-//       }
-//     });
-//     if(result.error) {
-//       throw result.error;
-//     }
-//     console.log(result.data.picture.data.url);
-//     return result.data.picture.data.url; // return the picture's url
-//   };
 
 // during new account creation get user picture from Facebook and save it on user object
 Accounts.onCreateUser(function(options, user) {

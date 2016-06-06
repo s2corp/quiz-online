@@ -202,7 +202,7 @@ class AddTest {
   }
 
   //lưu bộ câu hỏi vào cơ sở dữ liẹu
-  buildTest()
+  async buildTest()
   {
 
     //thêm id của user đang đăng nhập
@@ -216,69 +216,31 @@ class AddTest {
     var data = angular.copy(this.data);
     this.cleanupAngularObject(data);
 
-    // for(i = 0; i < this.mediaElements.length; i ++) {
-    //    var file = this.mediaElements[i].files[0];
-    //    console.log(file);
-    // }
-
-
     //thêm hình ảnh và cập nhật câu hỏi vào cơ sỏa dữ liệu
     var parent = this
     var index = 0;
 
-
-
     for(i = 0; i < this.mediaElements.length; i ++) {
        var file = this.mediaElements[i].files[0];
+
        if(file) {
-          //upload media
-          if(file.type.substring(0, 5) === 'image')
-            Medias.insert(file, function (err, fileObj) {
-              //console.log(file);
-              url = 'questionMedia/media-' + fileObj._id + '-' + fileObj.original.name ;
-              data.questionSet[index].image = url;
 
-              //nếu upload hình ảnh thành công thêm câu hỏi vào cơ sở dữ liệu
-              if(index >= parent.mediaElements.length - 1) {
-                Question.insert(data);
+          if(file.type.substring(0, 5) === 'image') {
+            var fileObj = await this.insertMedia(file)
+            data.questionSet[i].image = 'questionMedia/media-' + fileObj._id + '-' + fileObj.original.name ;
+          } else {
+              var fileObj = await this.insertMedia(file)
+              data.questionSet[i].audio = 'questionMedia/media-' + fileObj._id + '-' + fileObj.original.name ;
+            }
 
-
-                Session.set('questionId', data._id);
-                Session.set('questionCount', data.questionSet.length);
-                Session.set('selectedTab', '2');
-              }
-              index ++;
-            });
-          else
-            Medias.insert(file, function (err, fileObj) {
-              //console.log(file);
-              url = 'questionMedia/media-' + fileObj._id + '-' + fileObj.original.name ;
-              data.questionSet[index].audio = url;
-
-              //nếu upload hình ảnh thành công thêm câu hỏi vào cơ sở dữ liệu
-              if(index >= parent.mediaElements.length - 1) {
-                Question.insert(data);
-
-
-                Session.set('questionId', data._id);
-                Session.set('questionCount', data.questionSet.length);
-                Session.set('selectedTab', '2');
-              }
-              index ++;
-            });
       }
-      else {
-        if(index >= parent.mediaElements.length - 1) {
-          Question.insert(data);
 
-
-          Session.set('questionId', data._id);
-          Session.set('questionCount', data.questionSet.length);
-          Session.set('selectedTab', '2');
-        }
-        index ++;
-      }
     }
+
+    Question.insert(data);
+    Session.set('questionId', data._id);
+    Session.set('questionCount', data.questionSet.length);
+    Session.set('selectedTab', '2');
     this.data = {};
   }
 
@@ -331,6 +293,18 @@ class AddTest {
          }
      }
  }
+
+ insertMedia (file) {
+  return new Promise(function (resolve, reject) {
+    Medias.insert(file, function (err, fileObj) {
+      if(err) {
+          reject(err);
+      } else {
+          resolve(fileObj);
+        }
+    })
+  });
+}
 
  resetReview (){
    this.showReview = "hidden";
