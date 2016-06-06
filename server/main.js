@@ -3,9 +3,7 @@ import { Email } from 'meteor/email';
 import { Session } from 'meteor/session';
 import { Promise } from 'meteor/promise';
 
-import { Images } from '../imports/api/image';
-import { Audioes } from '../imports/api/audio';
-
+import { Medias } from '../imports/api/media';
 import { NotificationData } from '../imports/api/notificationdata';
 import { Examination } from '../imports/api/examination';
 import { Responsive } from '../imports/api/responsive';
@@ -35,21 +33,30 @@ Meteor.methods({
   }
 });
 
-// //save facebook user avatar
-// var getFbPicture = function(accessToken) { // make async call to grab the picture from facebook
-//     var result;
-//     result = Meteor.http.get("https://graph.facebook.com/me", {
-//       params: {
-//         access_token: accessToken,
-//         fields: 'picture'
-//       }
+// Meteor.methods({
+//   insertMedia: function(data, file, index) {
+//     console.log(data);
+//     console.log(file.type);
+//     console.log();
+//     Future = require('fibers/future');
+//     var myFuture = new Future();
+//
+//     Medias.insert(file, function (err, fileObj) {
+//       if(err) {
+//           myFuture.throw(err);
+//       } else {
+//           url = 'questionMedia/media-' + fileObj._id + '-' + fileObj.original.name ;
+//           if(file.type.substring(0, 5) === 'image')
+//             data.questionSet[index].image = url;
+//           else
+//             data.questionSet[index].audio = url;
+//           myFuture.return(data);
+//         }
 //     });
-//     if(result.error) {
-//       throw result.error;
-//     }
-//     console.log(result.data.picture.data.url);
-//     return result.data.picture.data.url; // return the picture's url
-//   };
+//
+//     return myFuture.wait();
+//   }
+// });
 
 // during new account creation get user picture from Facebook and save it on user object
 Accounts.onCreateUser(function(options, user) {

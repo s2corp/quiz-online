@@ -27,7 +27,7 @@ class StartedExam {
     this.lengthquestion = 0;
     this.total =1;
     document.getElementById('scored').innerHTML ="Điểm: 0.";
-    var exam = Examination.findOne({_id:$stateParams.exam_id});
+    var exam =  Examination.findOne({_id:$stateParams.exam_id});
     if(exam !== null)
         Session.set("stoprun", exam.time -1);
     else {

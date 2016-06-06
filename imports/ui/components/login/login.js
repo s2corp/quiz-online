@@ -103,7 +103,7 @@ class Login {
 
   loginGG(){
     Meteor.loginWithGoogle({
-      requestPermissions: ['user_friends', 'public_profile', 'email']
+      requestPermissions: ['email']
     }, (err) => {
         if (err) {
           // handle error

@@ -3,8 +3,7 @@ import angularMeteor from 'angular-meteor';
 import uiRouter from 'angular-ui-router';
 import ngMaterial from 'angular-material';
 import { Question } from '../../../api/question';
-import { Images } from '../../../api/image'
-import { Audioes } from '../../../api/audio';
+import { Medias } from '../../../api/media';
 import './addtest.html';
 
 class AddTest {
@@ -61,14 +60,12 @@ class AddTest {
   //thêm đề
   addTest()
   {
-    this.imageElements = document.getElementsByClassName("imageInput");
-    this.audioElements = document.getElementsByClassName("audioInput")
-    console.log(this.imageElements);
+    this.mediaElements = document.getElementsByClassName("mediaInput");
+
     for(i = 0; i < this.data.questionSet.length; i++){
       if(this.data.questionSet[i] === null){
         this.data.questionSet.splice(i, 1);
-        this.imageElements.splice(i, 1);
-        this.audioElements.splice(i, 1);
+        this.mediaElements.splice(i, 1);
         i--;
       }
       else
@@ -79,8 +76,7 @@ class AddTest {
           }
         }
     }
-    this.reviewImage(this.imageElements);
-    this.reviewAudio(this.audioElements);
+    this.reviewMedia();
     this.showReview = "show";
     this.selectedTab = 2;
   }
@@ -138,36 +134,42 @@ class AddTest {
                                       '<textarea ng-model="addtest.data.questionSet[' + this.question + '].question" md-maxlength="500" rows="5" md-select-on-focus></textarea>' +
                                 '</md-input-container>' +
                                 '<div layout="column">' +
-                                  '<input id="image_question_' + this.question + '" class="imageInput" type="file" md-select-on-focus accept="image/x-png, image/gif, image/jpeg">' +
-                                  '<img id="photo_' + this.question + '" style="width:80%"/>' +
-                                  '<input id="audio_question_' + this.question + '" class="audioInput" type="file" md-select-on-focus accept="audio/mpeg3">' +
-                                  '<audio id="audio_' + this.question + '" controls>' +
-                                  '</audio>' +
+
+                                  '<input id="media_question_' + this.question + '" class="mediaInput" type="file" md-select-on-focus accept="image/*, audio/*">' +
+                                  '<img id="photo_' + this.question + '" style="width:80%" class="media" src="default">' +
+                                  '<audio id="audio_' + this.question + '" controls class="media" src="default"></audio>' +
+
                                 '</div>' +
                                 '<script>' +
-
-                                  'document.getElementById("image_question_' + this.question + '").onchange = function () {' +
+                                  // Upload hình ảnh
+                                  'document.getElementById("media_question_' + this.question + '").onchange = function () {' +
                                     'var reader = new FileReader();' +
 
-                                    'reader.onload = function (e) {' +
-                                      // get loaded data and render thumbnail.
-                                      'document.getElementById("photo_' + this.question + '").src = e.target.result;' +
-                                    '};' +
-                                    'if(this.files[0])' +
-                                    // read the image file as a data URL.
-                                    'reader.readAsDataURL(this.files[0]);' +
-                                  '};' +
+                                      //console.log(this.files[0].type.substring(0, 6))
+                                    'if(this.files[0].type.substring(0, 5) === "image") {' +
+                                      'document.getElementById("audio_' + this.question + '").src = "";' +
+                                      'reader.onload = function (e) {' +
+                                        // get loaded data and render thumbnail.
+                                        'document.getElementById("photo_' + this.question + '").src = e.target.result;' +
+                                      '};' +
 
-                                  'document.getElementById("audio_question_' + this.question + '").onchange = function () {' +
-                                    'var sound = document.getElementById("audio_' + this.question + '");' +
-                                    'var reader = new FileReader();' +
-                                    'reader.onload = (function(audio) {return function(e) {audio.src = e.target.result;};})(sound);' +
-                                    // read the audio file as a data URL
-                                    'if(this.files[0])' +
-                                      'reader.readAsDataURL(this.files[0]);' +
-                                  '};' +
 
+                                        // read the image file as a data URL.
+                                      'if(this.files[0])' +
+                                        'reader.readAsDataURL(this.files[0]);' +
+                                    '}' +
+                                    'else {' +
+                                      'document.getElementById("photo_' + this.question + '").src = "";' +
+                                      'var sound = document.getElementById("audio_' + this.question + '");' +
+                                      'reader.onload = (function(audio) {return function(e) {audio.src = e.target.result;};})(sound);' +
+
+                                      // read the audio file as a data URL.
+                                      'if(this.files[0])' +
+                                        'reader.readAsDataURL(this.files[0]);' +
+                                    '}' +
+                                  '};' +
                                 '</script>' +
+
                                 '<br>' +
                                 '<div id="answer' + this.question + '" layout-gt-sm="column">' +
                                   '<div id=answer'+ this.question + '_' + this.answer + '>' +
@@ -201,9 +203,8 @@ class AddTest {
   }
 
   //lưu bộ câu hỏi vào cơ sở dữ liẹu
-  buildTest()
+  async buildTest()
   {
-    console.log(this.imageElements);
 
     //thêm id của user đang đăng nhập
     if(Meteor.userId() != null)
@@ -216,80 +217,31 @@ class AddTest {
     var data = angular.copy(this.data);
     this.cleanupAngularObject(data);
 
-
     //thêm hình ảnh và cập nhật câu hỏi vào cơ sỏa dữ liệu
     var parent = this
     var index = 0;
-    for(i = 0; i < this.data.questionSet.length; i ++) {
-       var fileImage = this.imageElements[i].files[0];
-       var fileAudio = this.audioElements[i].files[0];
-       //console.log(file);
 
-       if(fileImage || fileAudio) {
+    for(i = 0; i < this.mediaElements.length; i ++) {
+       var file = this.mediaElements[i].files[0];
 
-         //them hinh anh
-         if(fileImage) {
-           //upload hình ảnh
-           Images.insert(fileImage, function (err, fileObj) {
-              url = 'questionImages/images-' + fileObj._id + '-' + fileObj.original.name ;
-              data.questionSet[index].image = url;
-              //console.log(parent[index].image);
+       if(file) {
 
-              //nếu upload hình ảnh thành công thêm câu hỏi vào cơ sở dữ liệu
-              if(index >= parent.imageElements.length - 1) {
-                Question.insert(data);
+          if(file.type.substring(0, 5) === 'image') {
+            var fileObj = await this.insertMedia(file)
+            data.questionSet[i].image = 'questionMedia/media-' + fileObj._id + '-' + fileObj.original.name ;
+          } else {
+              var fileObj = await this.insertMedia(file)
+              data.questionSet[i].audio = 'questionMedia/media-' + fileObj._id + '-' + fileObj.original.name ;
+            }
 
-
-                Session.set('questionId', data._id);
-                Session.set('questionCount', data.questionSet.length);
-                Session.set('selectedTab', '2');
-              }
-              index ++;
-           });
-         }
-
-         //them am thanh
-         if(fileAudio) {
-          //upload hình ảnh
-            Audioes.insert(fileAudio, function (err, fileObj) {
-              url = 'questionAudioes/audioes-' + fileObj._id + '-' + fileObj.original.name ;
-              data.questionSet[index].audio = url;
-              //console.log(parent[index].image);
-
-              //nếu upload hình ảnh thành công thêm câu hỏi vào cơ sở dữ liệu
-              if(index >= parent.audioElements.length - 1) {
-                Question.insert(data);
-
-
-                Session.set('questionId', data._id);
-                Session.set('questionCount', data.questionSet.length);
-                Session.set('selectedTab', '2');
-              }
-              index ++;
-            });
-        }
       }
-      else {
-        if(index >= parent.imageElements.length - 1) {
-          Question.insert(data);
 
-
-          Session.set('questionId', data._id);
-          Session.set('questionCount', data.questionSet.length);
-          Session.set('selectedTab', '2');
-        }
-        index ++;
-      }
     }
 
-    //console.log(this.data.questionSet[0].image);
-    // Question.insert(data);
-    //
-    //
-    // Session.set('questionId', data._id);
-    // Session.set('questionCount', data.questionSet.length);
-    // Session.set('selectedTab', '2');
-    //reset data
+    Question.insert(data);
+    Session.set('questionId', data._id);
+    Session.set('questionCount', data.questionSet.length);
+    Session.set('selectedTab', '2');
     this.data = {};
   }
 
@@ -343,6 +295,18 @@ class AddTest {
      }
  }
 
+ insertMedia (file) {
+  return new Promise(function (resolve, reject) {
+    Medias.insert(file, function (err, fileObj) {
+      if(err) {
+          reject(err);
+      } else {
+          resolve(fileObj);
+        }
+    })
+  });
+}
+
  resetReview (){
    this.showReview = "hidden";
  }
@@ -355,12 +319,38 @@ class AddTest {
     document.getElementById(id).style.display = 'none';
  }
 
+ showMedia() {
+   if(this.media === 'hình ảnh') {
+     document.getElementById('imageTab_0').style.display = 'inline';
+     document.getElementById('audioTab_').style.display = 'none';
+   }
+   else {
+     document.getElementById('imageTab').style.display = 'none';
+     document.getElementById('audioTab').style.display = 'inline';
+   }
+
+ }
+
  //chặn việc chuyển tab
  foreChange()
  {
    var check = this.checkValidAnswer();
    if(!this.myForm.$valid || !check)
     this.selectedTab = 0;
+ }
+
+ hideAudio(event){
+   var length = event.target.id.length
+   var index = parseInt(event.target.id.charAt(length - 1));
+   document.getElementById('audioTab_0').reset();
+   //document.getElementById('audio_' + index.toString()).src = '';
+ }
+
+ hideImage(event){
+   var length = event.target.id.length
+   var index = parseInt(event.target.id.charAt(length - 1));
+   document.getElementById('imageTab_0').reset();
+   //document.getElementById('photo_' + index.toString()).src = '';
  }
 
  //thêm đáp án chính xác
@@ -380,42 +370,47 @@ class AddTest {
     this.data.questionSet[questionIndex].answerSet[answerIndex] = '';
   }
 
-  //xem lại hình ảnh ứng với câu hỏi
-  reviewImage(elements){
-    var index = 0
-    for(i = 0; i < elements.length; i++)
-    {
-        var reader = new FileReader();
+  //xem lại âm thanh ứng với mỗi câu hỏi
+  reviewMedia(){
 
-        reader.onload = function (e) {
-          console.log("reviewImage_" + index);
-          // get loaded data and render thumbnail.
-          document.getElementById("reviewImage_" + index).src = e.target.result;
-          index ++;
-        };
-        if(elements[i].files[0])
-        // read the image file as a data URL.
-          reader.readAsDataURL(elements[i].files[0]);
+    var mediaElements = document.getElementsByClassName("media" );
+    var arrayElements = [];
+
+    for(i = 0; i < mediaElements.length; i++) {
+      //if(mediaElements[i].src !== 'http://localhost:3000/') {
+        arrayElements.push(mediaElements[i]);
+      //}
     }
+
+    var imageArray = [];
+    for(i = 0; i < arrayElements.length; i++) {
+      if(arrayElements[i].tagName === 'IMG')
+        imageArray.push(arrayElements[i]);
+    }
+
+    var audioArray = [];
+    for(i = 0; i < arrayElements.length; i++) {
+      if(arrayElements[i].tagName === 'AUDIO')
+        audioArray.push(arrayElements[i]);
+    }
+
+    for(i = 0; i < imageArray.length; i++) {
+      console.log(imageArray[i].src.substring(0, 50));
+      if(imageArray[i].src !== 'http://quiz.s2corp.vn/default' && imageArray[i].src !== 'http://quiz.s2corp.vn/') {
+          document.getElementById("reviewImage_" + i).src = imageArray[i].src;
+      }
+    }
+
+    for(i = 0; i < audioArray.length; i++) {
+      console.log(audioArray[i].src.substring(0, 50));
+      if(audioArray[i].src !== 'http://quiz.s2corp.vn/default' && audioArray[i].src !== 'http://quiz.s2corp.vn/') {
+          document.getElementById("reviewAudio_" + i).src = audioArray[i].src;
+      }
+    }
+
   }
 
-  reviewAudio(elements){
-    var index = 0
-    for(i = 0; i < elements.length; i++)
-    {
-        var reader = new FileReader();
 
-        reader.onload = function (e) {
-          console.log("reviewAudio_" + index);
-          // get loaded data and render thumbnail.
-          document.getElementById("reviewAudio_" + index).src = e.target.result;
-          index ++;
-        };
-        if(elements[i].files[0])
-        // read the image file as a data URL.
-          reader.readAsDataURL(elements[i].files[0]);
-    }
-  }
 
   //xóa câu hỏi
   removeQuestion(event)
@@ -426,6 +421,7 @@ class AddTest {
     myEl.remove();
     this.data.questionSet[questionIndex] = null;
     this.disable --;
+    //this.question --;
   }
 }
 
