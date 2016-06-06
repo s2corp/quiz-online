@@ -38,10 +38,13 @@
                               <br>
                             </md-input-container>
 
-                            <img src="{{q.image}}" alt="" style="width:80%">
+                            <div layout="column" layout-align="center center" style="width: 100%;">
+                              <img src="{{q.image}}" alt="" style="width:80%">
+                              <audio controls class="media" src="{{q.audio}}"></audio>
+                            </div>
 
                             <!-- các lựa chọn -->
-                            <div ng-repeat="answer in q.answerSet" ng-if="answer != ''" layout="column" layout-align="center">
+                            <div ng-repeat="answer in q.answerSet track by $index" ng-if="answer != ''" layout="column" layout-align="center">
                                 <!-- <md-button class="md-raised"><textarea rows="3" name="Text1" readonly>{{answer}}</textarea></md-button> -->
                                 <md-input-container id="a" class="md-block" flex-gt-sm style="width:80%; margin-left: 10%">
                                   <label>Lựa chọn</label>
@@ -255,8 +258,10 @@
                   <textarea ng-model="ques.question" md-maxlength="500" rows="5" md-select-on-focus style="background-color: #ff8a00; color: #ffffff" readonly></textarea>
                   <br>
                 </md-input-container>
-
-                <img src="ques.image" alt="" style="width: 80%">
+                <div layout="column" layout-align="center center" style="width: 100%;">
+                  <img src="{{ ques.image }}" alt="" style="width: 80%">
+                  <audio controls class="media" src="{{ ques.audio }}"></audio>
+                </div>
 
                 <!-- các lựa chọn -->
                 <div ng-repeat="answer in ques.answerSet track by $index" ng-if="answer != ''" layout="column" layout-align="center">
