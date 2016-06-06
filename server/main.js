@@ -198,6 +198,7 @@ Meteor.methods({
   scoredUserInf:function(exam){
     var contain = [];
     var ob = {};
+    if(exam !==null)
     for (var i = 0; i < exam.usersList.length; i++) {
       var user = Meteor.users.findOne({_id:exam.usersList[i].userId});
     //  console.log(user);

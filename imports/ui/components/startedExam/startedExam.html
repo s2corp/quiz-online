@@ -3,7 +3,7 @@
     <h3 style="color:#ff8a00">{{startedExam.showquestion.title}} </h3>
   </div>
 
-  <div layout="column" layout-align="start">
+  <div id="range" layout="column" layout-align="start">
     <range-exam-button data=startedExam.exam_id></range-exam-button>
   </div>
 
@@ -27,7 +27,7 @@
         </div>
         <md-divider></md-divider>
         <div layout="row" layout-padding layout-align="center center">
-          <audio controls ng-show="q.audio != '' && q.audio">
+          <audio controls autoplay ng-show="q.audio != '' && q.audio">
             <source src={{q.audio}}>
           </audio>
         </div>

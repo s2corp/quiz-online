@@ -1,26 +1,25 @@
-<!-- <a href="/startQuiz">Tạo kì thi</a>
-<a href="/joinExam">Ứng thi</a> -->
 <md-content layout="column">
   <div id="intro" layout="column" layout-align="center center">
-    <div layout="column" layout-align="center left">
-      <p class="intro">
-        Bạn là sinh viên ? Bạn cần môi trường năng động, thi đua mà trong đó vừa học vừa chơi rất phù hợp?
-      </p>
-      <p class="intro">
-        Vậy còn chần chừ gì mà không lựa chọn chúng tôi.
-      </p>
-      <p class="intro">
-        Với mục đính nâng cao chất lượng học tập và thi đua như trò chơi đối kháng, chúng tôi hy vọng mang đến cho bạn nhiều kiến thức bổ ích và những giây phút thực sự thú vị
-      </p>
-    </div>
+      <img id="play" src="image/icon_07.png"  alt="">
   </div>
+  <!-- show id play after 3s -->
+  <script type="text/javascript">
 
+    $(document).ready(function(){
+        $("#play").hide();
+
+        setTimeout(function(){
+            $("#play").show(3000)
+        }, 1000 );
+
+    });
+  </script>
   <!-- chuc nang -->
   <div id="picture" layout-xs="column" layout="row" layout-align="center end" layout-padding="30" >
 
-      <div layout="column" class="feature" layout-align="end">
+      <div id="create" layout="column" class="feature" layout-align="end">
         <!-- <img src="images/home-page_11.png" id="icon1" alt=""> -->
-          <img src="images/img4.png" id="icon1" alt="">
+          <img src="image/img4.png" id="icon1" alt="">
         <!-- <span flex></span> -->
           <!-- <span flex="5"></span> -->
         <md-button  class="md-raised" aria-label="thamgia" href="/startQuiz">
@@ -32,9 +31,9 @@
 
       <span flex="15"></span>
 
-      <div layout="column" class="feature" layout-align="end" >
+      <div id="join" layout="column" class="feature" layout-align="end" >
         <!-- <img src="images/game-controller.png" id="icon2" alt=""> -->
-          <img src="images/img5.png" id="icon1" alt="">
+          <img src="image/img5.png" id="icon1" alt="">
         <span flex="5"></span>
         <md-button class="md-raised" aria-label="thamgia" href="/joinExam">
           <strong>
@@ -54,10 +53,10 @@
     <div layout="row" layout-align="center center">
       <h1 >LỢI ÍCH SINH VIÊN</h1>
     </div>
-    <div layout="row" layout-padding layout-align="space-around center">
+    <div id="benifit" layout="row" layout-padding layout-align="space-around center">
 
       <div layout="column" class="benifit"  layout-align="center center">
-        <img src="images/icon_loiich1.png" id="icon_sv1" alt="">
+        <img src="image/icon_loiich1.png" id="icon_sv1" alt="">
         <h4>Học tập</h4>
         <p style="color:#000000;font-size:15px;">
           Tạo môi trường phát huy việc học tập vừa học vừa chơi qua đó tăng
@@ -66,7 +65,7 @@
       </div>
 
       <div layout="column" class="benifit" layout-align="center center">
-        <img src="images/icon_loiich2.png" id="iconsv2" alt="">
+        <img src="image/icon_loiich2.png" id="iconsv2" alt="">
         <h4>Thi đua</h4>
         <p style="color:#000000;font-size:15px;">
           Phát huy tính độc lập, tự giác, thi đua trong học tập
@@ -75,7 +74,7 @@
       </div>
 
       <div layout="column" class="benifit" layout-align="center center">
-          <img src="images/icon_loiich3.png" id="iconsv3" alt="">
+          <img src="image/icon_loiich3.png" id="iconsv3" alt="">
           <h4>Tư duy</h4>
           <p style="color:#000000;font-size:15px;">
             Rèn luyện khả năng tư duy, khả năng tập trung, đồng
@@ -84,7 +83,7 @@
       </div>
 
       <div layout="column" class="benifit" layout-align="center center">
-          <img src="images/icon_loiich4.png" id="iconsv4" alt="">
+          <img src="image/icon_loiich4.png" id="iconsv4" alt="">
           <h4>Thuận tiện</h4>
           <p style="color:#000000;font-size:15px;">
             Thuận lợi về việc thi online, ôn tập ở bất cứ đâu chỉ cần có kết nối
@@ -92,7 +91,7 @@
           </p>
       </div>
     </div>
-    <img id ="three_man" src="images/loiichgv_34.png" alt="" />
+    <img id ="three_man" src="image/loiichgv_34.png" alt="" />
   </div>
   <!-- benifit of teacher -->
   <!-- <div  layout="column"  layout-align="top center">
@@ -105,32 +104,13 @@
     <div  layout="row" layout-align="space-around center">
 
       <div ng-repeat="res in home.responsiver track by $index" layout="column" class="respond"  layout-align="center center">
-        <md-button layout="row" layout-align="center" class="md-fab userRespond" style="background-image: url('images/user-default.png'); background-size: 200px 200px; width: 200px; height: 200px;">
+        <md-button layout="row" layout-align="center" class="md-fab userRespond" style="background-image: url('image/user-default.png'); background-size: 200px 200px; width: 200px; height: 200px;">
           <img src="{{res.userProfile.profile.picture + res.userProfile.services.google.picture }}" alt="">
         </md-button>
         <h4>{{ res.userMail }}</h4>
         <p class="userRespond">{{res.content }}</p>
       </div>
 
-      <!-- <div layout="column" class="respond"  layout-align="center center">
-        <img src="images/img0002.png" id="Shape1" alt="">
-        <h4>Học tập</h4>
-      </div>
-
-      <div layout="column" class="respond"  layout-align="center center">
-        <img src="images/img0002.png" id="Shape1" alt="">
-        <h4>Học tập</h4>
-      </div>
-
-      <div layout="column" class="respond"  layout-align="center center">
-        <img src="images/img0002.png" id="Shape1" alt="">
-        <h4>Học tập</h4>
-      </div>
-
-      <div layout="column" class="respond"  layout-align="center center">
-        <img src="images/img0002.png" id="Shape1" alt="">
-        <h4>Học tập</h4>
-      </div> -->
     </div>
   </div>
 
@@ -161,19 +141,19 @@
     <div id="border_content" layout="column" layout-align="center left">
 
       <div layout="row" layout-align="left center">
-        <img src="images/mail.png" alt="">
+        <img src="image/mail.png" alt="">
         <p style="color:#FFFFFF;font-size:16px;">ntuchallenge@gmail.com</p>
       </div>
 
       <div layout="row" layout-align="left center">
-        <img src="images/phone.png" alt="">
+        <img src="image/phone.png" alt="">
         <p style="color:#FFFFFF;font-size:16px;">0169.3024.336</p>
       </div>
 
       <div layout="row" layout-align="left center">
-        <img src="images/i_fb.png" id="Image14" alt="">
-        <img src="images/i_gg.png" id="Image15" alt="">
-        <img src="images/i_tw.png" id="Image16" alt="">
+        <img src="image/i_fb.png" id="Image14" alt="">
+        <img src="image/i_gg.png" id="Image15" alt="">
+        <img src="image/i_tw.png" id="Image16" alt="">
       </div>
     </div>
 
@@ -183,11 +163,11 @@
       </p>
 
       <div style="width: 50%;" layout="row" layout-align="space-around center">
-        <md-button href="https://www.facebook.com/huynhngoc.sang.334" target="_blank" class="md-fab userRespond" style="background-image: url('images/sang_huynh.jpg'); background-size: 100px 100px; height: 100px; width: 100px">
+        <md-button href="https://www.facebook.com/huynhngoc.sang.334" target="_blank" class="md-fab userRespond" style="background-image: url('image/sang_huynh.jpg'); background-size: 100px 100px; height: 100px; width: 100px">
         </md-button>
-        <md-button href="https://www.facebook.com/profile.php?id=100010113151598&fref=ts" target="_blank" class="md-fab userRespond" style="background-image: url('images/xuan_vinh.jpg'); background-size: 100px 100px; height: 100px; width: 100px;">
+        <md-button href="https://www.facebook.com/profile.php?id=100010113151598&fref=ts" target="_blank" class="md-fab userRespond" style="background-image: url('image/xuan_vinh.jpg'); background-size: 100px 100px; height: 100px; width: 100px;">
         </md-button>
-        <md-button href="https://www.facebook.com/pekrom94?fref=ts" target="_blank" class="md-fab userRespond" style="background-image: url('images/bich_thuan.jpg'); background-size: 100px 100px; height: 100px; width: 100px">
+        <md-button href="https://www.facebook.com/pekrom94?fref=ts" target="_blank" class="md-fab userRespond" style="background-image: url('image/bich_thuan.jpg'); background-size: 100px 100px; height: 100px; width: 100px">
         </md-button>
       </div>
 
