@@ -83,15 +83,16 @@ class AddTest {
   //thêm đáp án
   appendAnswer(event)
   {
-    var answer = this.data.questionSet[this.question].answerSet.length;
+    this.answer ++;
+    //var answer = this.data.questionSet[this.question].answerSet.length;
     var anString =
-    '<div id=answer'+ this.question + '_' + answer + '>' +
+    '<div id=answer'+ this.question + '_' + this.answer + '>' +
       '<md-input-container class="md-block" flex-gt-sm>' +
-        '<label>câu trả lời ' + answer + '</label>' +
-        '<textarea ng-model="addtest.data.questionSet[' + this.question + '].answerSet[' + answer + ']" md-maxlength="500" rows="5" md-select-on-focus></textarea>' +
+        '<label>câu trả lời ' + this.answer + '</label>' +
+        '<textarea ng-model="addtest.data.questionSet[' + this.question + '].answerSet[' + this.answer + ']" md-maxlength="500" rows="5" md-select-on-focus></textarea>' +
       '</md-input-container>' +
-      '<input type="radio" name="gender" ng-click="addtest.insertCorrectAnswer(' + this.question + ', addtest.data.questionSet[' + this.question + '].answerSet[' + answer + '])"> Đáp án đúng <br>' +
-      '<button id="#answer' + this.question + '_' + answer + '" ng-click="addtest.removeAnswer($event)">X</button>' +
+      '<input type="radio" name="gender" ng-click="addtest.insertCorrectAnswer(' + this.question + ', addtest.data.questionSet[' + this.question + '].answerSet[' + this.answer + '])"> Đáp án đúng <br>' +
+      '<button id="#answer' + this.question + '_' + this.answer + '" ng-click="addtest.removeAnswer($event)">X</button>' +
     '</div>';
     var myEl = angular.element( document.querySelector( event.target.id) );
     myEl.append(this.compile(anString)(this.scope));
@@ -100,6 +101,10 @@ class AddTest {
   //thêm câu hỏi
   appendQuestion()
   {
+    var addAnswerList = document.getElementsByClassName('addAnswer');
+    var i = addAnswerList.length - 1;
+    addAnswerList[ i ].disabled = true;
+
     if( this.data.questionSet.length === this.questionCount && !this.confirm)
       if(confirm('bạn đã nhập đủ số lượng câu hỏi khai báo là ' + this.questionCount + ' tiếp tục nhập?')){
         this.data.questionSet [ questionSet.length - 1 ] = null;
@@ -184,7 +189,7 @@ class AddTest {
                                   '<label>Điểm số</label>' +
                                   '<input ng-model="addtest.data.questionSet[' + this.question + '].score" style="width: 120px;" type="number" step="0.25">' +
                                 '</md-input-container><br>' +
-                                '<button id="#answer'+ this.question + '" class="md-primary md-hue-1" ng-click="addtest.appendAnswer($event)" ng-disabled="addtest.disable > '+ this.question +'">Thêm câu trả lời</button>' +
+                                '<button id="#answer'+ this.question + '" class="md-primary md-hue-1 addAnswer" ng-click="addtest.appendAnswer($event)">Thêm câu trả lời</button>' +
                                 '<button id="#question' + this.question + '" class="md-primary md-hue-1" ng-click="addtest.removeQuestion($event)">Xóa câu hỏi</button>' +
                           '</md-content>';
     var myEl = angular.element( document.querySelector( '#questionSet' ) );
@@ -414,6 +419,10 @@ class AddTest {
   //xóa câu hỏi
   removeQuestion(event)
   {
+    var addAnswerList = document.getElementsByClassName('addAnswer');
+    var i = addAnswerList.length - 2;
+    addAnswerList[ i ].disabled = false;
+
     var questionIndex = parseInt(event.target.id.charAt(9));
     var myEl = angular.element( document.querySelector( event.target.id) );
 
