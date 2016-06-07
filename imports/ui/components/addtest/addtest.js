@@ -138,11 +138,8 @@ class AddTest {
                                       '<textarea ng-model="addtest.data.questionSet[' + this.question + '].question" md-maxlength="500" rows="5" md-select-on-focus></textarea>' +
                                 '</md-input-container>' +
                                 '<div layout="column">' +
-
-                                  '<input id="media_question_' + this.question + '" class="mediaInput" type="file" md-select-on-focus accept="image/*, audio/*">' +
-                                  '<img id="photo_' + this.question + '" style="width:80%" class="media" src="default">' +
-                                  '<audio id="audio_' + this.question + '" controls class="media" src="default"></audio>' +
-
+                                    '<img id="photo_' + this.question + '" style="width:80%" class="media" src="">' +
+                                    '<audio id="audio_' + this.question + '" controls class="media" style="visibility: hidden;" src=""></audio>' +
                                 '</div>' +
                                 '<script>' +
                                   // Upload hình ảnh
@@ -161,6 +158,7 @@ class AddTest {
                                         // read the image file as a data URL.
                                       'if(this.files[0])' +
                                         'reader.readAsDataURL(this.files[0]);' +
+                                      'document.getElementById("audio_' + this.question + '").style.visibility = "hidden";' +
                                     '}' +
                                     'else {' +
                                       'document.getElementById("photo_' + this.question + '").src = "";' +
@@ -170,6 +168,7 @@ class AddTest {
                                       // read the audio file as a data URL.
                                       'if(this.files[0])' +
                                         'reader.readAsDataURL(this.files[0]);' +
+                                      'document.getElementById("audio_' + this.question + '").style.visibility = "visible";' +
                                     '}' +
                                   '};' +
                                 '</script>' +
@@ -188,9 +187,19 @@ class AddTest {
                                 '<md-input-container class="md-block" flex-gt-sm>' +
                                   '<label>Điểm số</label>' +
                                   '<input ng-model="addtest.data.questionSet[' + this.question + '].score" style="width: 120px;" type="number" step="0.25">' +
-                                '</md-input-container><br>' +
-                                '<button id="#answer'+ this.question + '" class="md-primary md-hue-1 addAnswer" ng-click="addtest.appendAnswer($event)">Thêm câu trả lời</button>' +
-                                '<button id="#question' + this.question + '" class="md-primary md-hue-1" ng-click="addtest.removeQuestion($event)">Xóa câu hỏi</button>' +
+                                '</md-input-container>' +
+                                '<div layout="row" layout-align="left center" style="width: 40%;">' +
+                                  '<button id="#answer' + this.question + '" class="addAnswer" ng-click="addtest.appendAnswer($event)">Thêm câu trả lời</button>' +
+                                  '<span flex = 10></span>' +
+
+                                  '<label class="file">' +
+                                    '<input id="media_question_' + this.question + '" class="mediaInput" type="file" md-select-on-focus accept="image/*, audio/*">' +
+                                    '<span>Thêm Media</span>' +
+                                  '</label>' +
+                                  '<span flex = 10></span>' +
+
+                                  '<button id="#question' + this.question + '" class="deleteQues" ng-click="addtest.removeQuestion($event)">Xóa câu hỏi</button>' +
+                                '</div>' +
                           '</md-content>';
     var myEl = angular.element( document.querySelector( '#questionSet' ) );
     myEl.append(this.compile(quesString)(this.scope));
@@ -400,14 +409,14 @@ class AddTest {
 
     for(i = 0; i < imageArray.length; i++) {
       console.log(imageArray[i].src.substring(0, 50));
-      if(imageArray[i].src !== 'http://localhost:3000/default' && imageArray[i].src !== 'http://localhost:3000/') {
+      if(imageArray[i].src !== 'http://localhost:3000/') {
           document.getElementById("reviewImage_" + i).src = imageArray[i].src;
       }
     }
 
     for(i = 0; i < audioArray.length; i++) {
       console.log(audioArray[i].src.substring(0, 50));
-      if(audioArray[i].src !== 'http://localhost:3000/default' && audioArray[i].src !== 'http://localhost:3000/') {
+      if(audioArray[i].src !== 'http://localhost:3000/') {
           document.getElementById("reviewAudio_" + i).src = audioArray[i].src;
       }
     }

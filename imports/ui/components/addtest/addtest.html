@@ -80,10 +80,8 @@
                 </md-input-container>
 
                 <div layout="column">
-
-                  <input id="media_question_0" class="mediaInput" type="file" md-select-on-focus accept="image/*, audio/*">
-                  <img id="photo_0" style="width:80%" class="media" src="default">
-                  <audio id="audio_0" controls class="media" src="default"></audio>
+                  <img id="photo_0" style="width:80%" class="media" src="">
+                  <audio id="audio_0" controls class="media" style="visibility: hidden;" src=""></audio>
 
                 </div>
                 <script>
@@ -103,6 +101,7 @@
                         // read the image file as a data URL.
                       if(this.files[0])
                         reader.readAsDataURL(this.files[0]);
+                      document.getElementById('audio_0').style.visibility = 'hidden';
                     }
                     else {
                       document.getElementById('photo_0').src = '';
@@ -112,6 +111,7 @@
                       // read the audio file as a data URL.
                       if(this.files[0])
                         reader.readAsDataURL(this.files[0]);
+                      document.getElementById('audio_0').style.visibility = 'visible';
                     }
                   };
                 </script>
@@ -142,18 +142,29 @@
                   <input ng-model="addtest.data.questionSet[0].score" style="width: 120px;" type="number" step="0.25">
                 </md-input-container>
 
-                <!--Thêm câu trả lời-->
-                <button id="#answer0" class="md-primary md-raised addAnswer" ng-click="addtest.appendAnswer($event)">Thêm câu trả lời</button>
+                <div layout="row" layout-align="left center" style="width: 40%;">
 
-                <!--xóa câu hỏi-->
-                <button id="#question0" class="md-primary md-raised md-hue-1" ng-click="addtest.removeQuestion($event)">Xóa câu hỏi</button>
+                  <!--Thêm câu trả lời-->
+                  <button id="#answer0" class="addAnswer" ng-click="addtest.appendAnswer($event)">Thêm câu trả lời</button>
+                  <span flex = 10></span>
+
+                  <!--Thêm media-->
+                  <label class="file">
+                    <input id="media_question_0" class="mediaInput" type="file" md-select-on-focus accept="image/*, audio/*">
+                    <span>Thêm Media</span>
+                  </label>
+                  <span flex = 10></span>
+
+                  <!--xóa câu hỏi-->
+                  <button id="#question0" class="deleteQues" ng-click="addtest.removeQuestion($event)">Xóa câu hỏi</button>
+              </div>
               </md-content>
           </md-content>
         </form>
 
         <div layout="column" layout-align="center center">
-          <md-button class="md-primary md-hue-1" ng-click="addtest.appendQuestion()" aria-label="addAnswer">Thêm câu hỏi</md-button>
-          <md-button class="md-raised md-primary" style="background-color: #ff8a00;" ng-click="addtest.addTest()" aria-label="finish">Hoàn Thành</md-button>
+          <md-button class="md-raised md-primary" style="background-color: #ff8a00; width: 20%;" ng-click="addtest.appendQuestion()" aria-label="addAnswer">Thêm câu hỏi</md-button>
+          <md-button class="md-raised md-primary" style="background-color: #ff8a00; width: 20%;" ng-click="addtest.addTest()" aria-label="finish">Hoàn Thành</md-button>
         </div>
       </md-tab>
 
