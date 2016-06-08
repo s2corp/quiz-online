@@ -13,14 +13,14 @@
                   <!-- <div class="questionbank-tab"> -->
                     <div layout-align="center" layout="column" ng-repeat="ques in questionbank.questions">
                       <div layout="row" layout-align="center">
-                        <md-button style="width: 60%" class="md-raised md-primary" aria-label="show" ng-click="questionbank.showhideQuestion(ques.title)">
+                        <md-button style="width: 60%" class="md-raised md-primary" aria-label="show" ng-click="questionbank.showhideQuestion(ques.title + $index)">
                           <strong>{{ques.title}} - {{ques.date.getDate() + '/' + (ques.date.getMonth() + 1) + '/'+ ques.date.getFullYear()}}</strong>
                         </md-button>
                         <md-button style="background-color: rgb(240, 121, 11)" class="md-raised md-primary" ng-click="questionbank.addQuestionPersonal(ques)" aria-label="add"><strong>Chọn bộ câu hỏi</strong></md-button>
                         <md-button style="background-color: rgb(231, 19, 6); width: 50px;" ng-click="questionbank.remove(ques._id)" aria-label="delete">X</md-button>
                       </div>
                       <!-- Nội dung bộ câu hỏi -->
-                      <div id="{{ques.title}}" style="display: none">
+                      <div id="{{ques.title + $index}}" style="display: none">
                         <div ng-repeat="q in ques.questionSet">
                           <div layout="row" layout-align="center">
                             <md-button class="md-raised" style="height: 50%; width: 60%;" ng-click="questionbank.showhideQuestion(q.question)" aria-label="showQuestion">{{q.question + ' | ' + (q.rate * 100) + '%'}}</md-button>
@@ -79,7 +79,7 @@
                     </div>
                 </div>
                 <div layout="row" layout-align="center">
-                  <md-button style="background-color: rgb(240, 121, 11)" class="md-raised md-primary" ng-click="questionbank.changeTabPersonal()" aria-label="add"><strong>Tiếp tục</strong></md-button>
+                  <md-button style="background-color: rgb(240, 121, 11)" class="md-raised md-primary" ng-click="questionbank.changeTabPersonal()" aria-label="add">Tiếp tục</md-button>
                 </div>
                 <!-- </div> -->
             </md-content>

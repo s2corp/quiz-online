@@ -1,18 +1,50 @@
 addtest {
   @media only screen and (max-width: 1000px) {
     label{
-      font-size: 32px;
+      //font-size: 32px;
     }
   }
 
   textarea{
-    font-size: 11pt;
+    //font-size: 11pt;
     width: 90%;
     background-color: inherit;
     border: none;
     overflow:hidden;
     text-transform: uppercase;
   }
+
+  input[type=radio].css-checkbox {
+		position:absolute; z-index:-1000; left:-1000px; overflow: hidden; clip: rect(0 0 0 0); height:1px; width:1px; margin:-1px; padding:0; border:0;
+	}
+
+	input[type=radio].css-checkbox + label.css-label {
+		padding-left:27px;
+		height:23px;
+		display:inline-block;
+		line-height:23px;
+		background-repeat:no-repeat;
+		background-position: 0 0;
+		font-size:23px;
+		vertical-align:middle;
+		cursor:pointer;
+    margin-left: 10px;
+    margin-right: 10px;
+	}
+
+	input[type=radio].css-checkbox:checked + label.css-label {
+		background-position: 0 -23px;
+	}
+
+	label.css-label {
+		background-image:url(image/radioButton.png);
+		-webkit-touch-callout: none;
+		-webkit-user-select: none;
+		-khtml-user-select: none;
+		-moz-user-select: none;
+		-ms-user-select: none;
+		user-select: none;
+	}
 
   .addAnswer {
     background-color: #ff8a00;
@@ -27,6 +59,8 @@ addtest {
     text-decoration: none;
   }
 
+
+
   .addAnswer:active {
     // background: #f0eeed;
     // background-image: -webkit-linear-gradient(top, #f0eeed, #ffb969);
@@ -36,6 +70,7 @@ addtest {
     // background-image: linear-gradient(to bottom, #f0eeed, #ffb969);
     // text-decoration: none;
   }
+
 
   .deleteQues {
     background-color: rgb(231, 19, 6);

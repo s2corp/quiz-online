@@ -86,13 +86,14 @@ class AddTest {
     this.answer ++;
     //var answer = this.data.questionSet[this.question].answerSet.length;
     var anString =
-    '<div id=answer'+ this.question + '_' + this.answer + '>' +
+    '<div id=answer'+ this.question + '_' + this.answer + ' layout = "row" layout-align="left center">' +
       '<md-input-container class="md-block" flex-gt-sm>' +
         '<label>câu trả lời ' + this.answer + '</label>' +
         '<textarea ng-model="addtest.data.questionSet[' + this.question + '].answerSet[' + this.answer + ']" md-maxlength="500" rows="5" md-select-on-focus></textarea>' +
       '</md-input-container>' +
-      '<input type="radio" name="gender" ng-click="addtest.insertCorrectAnswer(' + this.question + ', addtest.data.questionSet[' + this.question + '].answerSet[' + this.answer + '])"> Đáp án đúng <br>' +
-      '<button id="#answer' + this.question + '_' + this.answer + '" ng-click="addtest.removeAnswer($event)">X</button>' +
+      '<input type="radio" id="radio_' + this.question + '_' + this.answer + '" class="css-checkbox" name="gender" ng-click="addtest.insertCorrectAnswer(' + this.question + ', addtest.data.questionSet[' + this.question + '].answerSet[' + this.answer + '])"><label title="Đáp án đúng" class="css-label" for="radio_' + this.question + '_' + this.answer + '"></label>' +
+      // '<input type="radio" name="gender" ng-click="addtest.insertCorrectAnswer(' + this.question + ', addtest.data.questionSet[' + this.question + '].answerSet[' + this.answer + '])"> Đáp án đúng <br>' +
+      '<button id="#answer' + this.question + '_' + this.answer + '" class="deleteQues" ng-click="addtest.removeAnswer($event)">X</button>' +
     '</div>';
     var myEl = angular.element( document.querySelector( event.target.id) );
     myEl.append(this.compile(anString)(this.scope));
@@ -175,13 +176,13 @@ class AddTest {
 
                                 '<br>' +
                                 '<div id="answer' + this.question + '" layout-gt-sm="column">' +
-                                  '<div id=answer'+ this.question + '_' + this.answer + '>' +
+                                  '<div id=answer'+ this.question + '_' + this.answer + ' layout = "row" layout-align="left center">' +
                                     '<md-input-container class="md-block" flex-gt-sm>' +
                                           '<label>Câu trả lời 1</label>' +
                                           '<textarea ng-model="addtest.data.questionSet[' + this.question + '].answerSet[0]" md-maxlength="500" rows="5" md-select-on-focus></textarea>' +
                                     '</md-input-container>' +
-                                    '<input type="radio" name="gender" ng-click="addtest.insertCorrectAnswer(' + this.question + ', addtest.data.questionSet[' + this.question + '].answerSet[' + this.answer + '])"> Đáp án đúng <br>' +
-                                    '<button id="#answer' + this.question + '_' + this.answer + '" ng-click="addtest.removeAnswer($event)">X</button>' +
+                                    '<input type="radio" id="radio_radio_' + this.question + '_' + this.answer + '" class="css-checkbox" name="gender" ng-click="addtest.insertCorrectAnswer(0, addtest.data.questionSet[0].answerSet[0])"><label class="css-label" for="radio_radio_' + this.question + '_' + this.answer + '"></label>' +
+                                    '<button id="#answer' + this.question + '_' + this.answer + '" class="deleteQues" ng-click="addtest.removeAnswer($event)">X</button>' +
                                   '</div>' +
                                 '</div>' +
                                 '<md-input-container class="md-block" flex-gt-sm>' +
@@ -190,13 +191,13 @@ class AddTest {
                                 '</md-input-container>' +
                                 '<div layout="row" layout-align="left center" style="width: 40%;">' +
                                   '<button id="#answer' + this.question + '" class="addAnswer" ng-click="addtest.appendAnswer($event)">Thêm câu trả lời</button>' +
-                                  '<span flex = 10></span>' +
+                                  '<span flex></span>' +
 
                                   '<label class="file">' +
                                     '<input id="media_question_' + this.question + '" class="mediaInput" type="file" md-select-on-focus accept="image/*, audio/*">' +
                                     '<span>Thêm Media</span>' +
                                   '</label>' +
-                                  '<span flex = 10></span>' +
+                                  '<span flex></span>' +
 
                                   '<button id="#question' + this.question + '" class="deleteQues" ng-click="addtest.removeQuestion($event)">Xóa câu hỏi</button>' +
                                 '</div>' +

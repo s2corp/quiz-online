@@ -122,17 +122,17 @@
 
                 <!--nội dung các câu trả lời-->
                 <div id="answer0" layout-gt-sm="column">
-                      <div id="answer0_0">
+                      <div id="answer0_0" layout = "row" layout-align="left center">
                         <md-input-container class="md-block" flex-gt-sm>
                             <label>Câu trả lời 1</label>
                             <textarea ng-model="addtest.data.questionSet[0].answerSet[0]" md-maxlength="500" rows="5" md-select-on-focus></textarea>
                         </md-input-container>
 
                         <!--Thêm câu trả lời đúng-->
-                        <input type="radio" name="gender" ng-click="addtest.insertCorrectAnswer(0, addtest.data.questionSet[0].answerSet[0])"> Đáp án đúng <br>
+                        <input type="radio" id="radio_0_0" class="css-checkbox" name="gender" ng-click="addtest.insertCorrectAnswer(0, addtest.data.questionSet[0].answerSet[0])"><label title="Đáp án đúng" class="css-label" for="radio_0_0"></label>
 
                         <!--Xóa câu hỏi-->
-                        <button id="#answer0_0" ng-click="addtest.removeAnswer($event)">X</button>
+                        <button id="#answer0_0" class="deleteQues" ng-click="addtest.removeAnswer($event)">X</button>
                       </div>
                 </div>
 
@@ -146,14 +146,14 @@
 
                   <!--Thêm câu trả lời-->
                   <button id="#answer0" class="addAnswer" ng-click="addtest.appendAnswer($event)">Thêm câu trả lời</button>
-                  <span flex = 10></span>
+                  <span flex></span>
 
                   <!--Thêm media-->
                   <label class="file">
                     <input id="media_question_0" class="mediaInput" type="file" md-select-on-focus accept="image/*, audio/*">
                     <span>Thêm Media</span>
                   </label>
-                  <span flex = 10></span>
+                  <span flex></span>
 
                   <!--xóa câu hỏi-->
                   <button id="#question0" class="deleteQues" ng-click="addtest.removeQuestion($event)">Xóa câu hỏi</button>
