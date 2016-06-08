@@ -210,11 +210,11 @@ Meteor.methods({
       var user = Meteor.users.findOne({_id:exam.usersList[i].userId});
     //  console.log(user);
       ob.name = user.profile.name;
-      if(user.services.facebook.email)
+      if(user.services.facebook)
       {
           ob.email = user.services.facebook.email;
       }
-      else if (user.services.google.email) {
+      else if (user.services.google) {
           ob.email = user.services.google.email;
       }
       else {

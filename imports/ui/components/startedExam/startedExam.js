@@ -28,12 +28,17 @@ class StartedExam {
     this.total =1;
     document.getElementById('scored').innerHTML ="Điểm: 0.";
     var exam =  Examination.findOne({_id:$stateParams.exam_id});
+    console.log(exam);
     if(exam !== null)
-        Session.set("stoprun", exam.time -1);
+    {
+      var time = exam.time * 60 -1;
+      Session.set("stoprun", time);
+
+    }
     else {
         Session.set("stoprun", 60);
     }
-    document.getElementById('time').innerHTML = "Thời gian:"+ Session.get("stoprun") +"phút.";
+    this.changeTime(Session.get("stoprun"))
     //ham tu dong kiem tra thoi gian
     this.autorun(() =>{
       this.isstop =setInterval(function(){
@@ -46,12 +51,17 @@ class StartedExam {
         if(Session.get("stoprun") <= 0)
         {
           Meteor.clearInterval(this.isstop);
+          this.stop();
          $state.go("scored-exam",{"exam_id":$stateParams.exam_id});
         }
         else {
-          document.getElementById('time').innerHTML = "Thời gian:"+ Session.get("stoprun") +"phút.";
+          var mi,sec;
+          var timeRunning =parseInt(Session.get("stoprun"));
+          mi =parseInt(timeRunning / 60);
+          sec = timeRunning % 60;
+         document.getElementById('time').innerHTML = "Thời gian: "+mi+":"+sec;
         }
-      },60000);
+      },1000);
     });
 
     this.helpers({
@@ -75,12 +85,20 @@ class StartedExam {
     totalquestion()
     {
       var data = Question.find({"_id":$stateParams.question_id}).fetch();
-      console.log(data);
       var t = data[0].questionSet.length;
       return t;
     }
   });
   }
+
+
+  changeTime(time)
+  {
+    var mi,sec;
+    mi =parseInt(time / 60);
+    sec = time % 60;
+   document.getElementById('time').innerHTML = "Thời gian: "+mi+":"+sec;
+ }
   //hien ra cau hoi thu index
   setClickedRow(index)
   {

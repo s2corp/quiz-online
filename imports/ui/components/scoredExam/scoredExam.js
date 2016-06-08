@@ -12,12 +12,14 @@ class ScoredExam {
     $reactive(this).attach($scope);
     this.subscribe("examination");
     this.stateParams = $stateParams;
+    this.exam_id=$stateParams.exam_id;
     this.examName;
     this.data = [];
     this.helpers({
       infor()
       {
         var tam1 = Examination.findOne({"_id":$stateParams.exam_id});
+        console.log(tam1);
         Meteor.call("scoredUserInf",tam1, function(error, result){
           if(error){
             console.log("error", error);

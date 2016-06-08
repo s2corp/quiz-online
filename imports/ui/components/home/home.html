@@ -2,46 +2,34 @@
   <div id="intro" layout="column" layout-align="center center">
       <img id="play" src="image/icon_07.png"  alt="">
   </div>
-  <!-- show id play after 3s -->
-  <script type="text/javascript">
-
-    $(document).ready(function(){
-        $("#play").hide();
-
-        setTimeout(function(){
-            $("#play").show(3000)
-        }, 1000 );
-
-    });
-  </script>
+  
   <!-- chuc nang -->
-  <div id="picture" layout-xs="column" layout="row" layout-align="center end" layout-padding="30" >
+  <div id="picture" layout-xs="column" layout-md="row" layout-lg="row" layout-align-xs="center center" layout-align-md="space-around center" layout-align-lg="space-around center" layout-padding >
 
-      <div id="create" layout="column" class="feature" layout-align="end">
-          <img src="image/img4.png" id="icon1" alt="">
-        <!-- <span flex></span> -->
-          <!-- <span flex="5"></span> -->
-        <md-button  class="md-raised" aria-label="thamgia" href="/startQuiz">
-          <strong>
+      <div id="create" layout="column" layout-align="center center" class="feature" >
+          <img  src="image/img4.png" id="icon1" alt="">
+
+          <span flex="5"></span>
+        <md-button class="md-raised tool" aria-label="thamgia" href="/startQuiz">
+          <strong class="tool">
             TẠO KÌ THI
           </strong>
         </md-button>
       </div>
 
-      <span flex="15"></span>
 
-      <div id="join" layout="column" class="feature" layout-align="end" >
-          <img src="image/img5.png" id="icon1" alt="">
+
+      <div id="join" layout="column" layout-align="center center" class="feature">
+          <img  src="image/img5.png" id="icon1" alt="">
         <span flex="5"></span>
-        <md-button class="md-raised" aria-label="thamgia" href="/joinExam">
-          <strong>
+        <md-button class="md-raised tool" aria-label="thamgia" href="/joinExam">
+          <strong class="tool">
             THAM GIA NGAY
           </strong>
         </md-button>
       </div>
 
   </div>
-
 
   <md-divider style="width: 60%; margin-left:20%; margin-top:5%;"></md-divider>
 
@@ -51,7 +39,7 @@
     <div layout="row" layout-align="center center">
       <h1 >LỢI ÍCH SINH VIÊN</h1>
     </div>
-    <div id="benifit" layout="row" layout-padding layout-align="space-around center">
+    <div id="benifit" layout-xs="column" layout-md="row" layout-lg="row" layout-padding >
 
       <div layout="column" class="benifit"  layout-align="center center">
         <img src="image/icon_loiich1.png" id="icon_sv1" alt="">
@@ -96,7 +84,7 @@
   </div> -->
   <!-- phan hoi nguoi dung -->
   <div layout="column" class="space" >
-    <div layout="row" layout-align="center center">
+    <div layout="row" layout-align-lg="center center" layout-align-md="center center">
       <h1>PHẢN HỒI NGƯỜI DÙNG</h1>
     </div>
     <div  layout="row" layout-align="space-around center">
@@ -134,7 +122,7 @@
   </div>
 
   <!-- contact -->
-  <div id="contact" layout="row">
+  <div id="contact" layout-xs="column" layout-md="row" layout-lg="row">
     <div id="border_content" layout="column" layout-align="center left">
 
       <div layout="row" layout-align="left center">
@@ -154,17 +142,20 @@
       </div>
     </div>
 
-    <div layout="column" layout-align="center center">
-      <p style="width: 60%; color: #FFFFFF">
-        Chúng tôi mong muốn mang lại phương pháp dạy hiệu quả và hiện đại đồng thời tạo hứng khởi cho sinh viên khi tham gia thi một cách thoải mái, thú vị. Rất mong các bạn đóng góp ý kiến hơn nữa cho chúng tôi được hoàn thiện website một cách tốt nhất
+    <div layout="column"  layout-align="center center" layout-padding>
+      <p style=" color: #FFFFFF">
+        Chúng tôi mong muốn mang lại phương pháp dạy hiệu quả và hiện đại đồng thời tạo hứng
+         khởi cho sinh viên khi tham gia thi một cách thoải mái, thú vị.
+         Rất mong các bạn đóng góp ý kiến hơn nữa cho chúng tôi được hoàn thiện website
+         một cách tốt nhất.
       </p>
 
-      <div style="width: 50%;" layout="row" layout-align="space-around center">
-        <md-button href="https://www.facebook.com/huynhngoc.sang.334" target="_blank" class="md-fab userRespond" style="background-image: url('image/sang_huynh.jpg'); background-size: 100px 100px; height: 100px; width: 100px">
+      <div  layout="row" layout-align="space-around center">
+        <md-button href="https://www.facebook.com/huynhngoc.sang.334" target="_blank" class="md-fab " style="background-image: url('image/sang_huynh.jpg'); background-size: 100px 100px; height: 100px; width: 100px">
         </md-button>
-        <md-button href="https://www.facebook.com/profile.php?id=100010113151598&fref=ts" target="_blank" class="md-fab userRespond" style="background-image: url('image/xuan_vinh.jpg'); background-size: 100px 100px; height: 100px; width: 100px;">
+        <md-button href="https://www.facebook.com/profile.php?id=100010113151598&fref=ts" target="_blank" class="md-fab " style="background-image: url('image/xuan_vinh.jpg'); background-size: 100px 100px; height: 100px; width: 100px;">
         </md-button>
-        <md-button href="https://www.facebook.com/pekrom94?fref=ts" target="_blank" class="md-fab userRespond" style="background-image: url('image/bich_thuan.jpg'); background-size: 100px 100px; height: 100px; width: 100px">
+        <md-button href="https://www.facebook.com/pekrom94?fref=ts" target="_blank" class="md-fab " style="background-image: url('image/bich_thuan.jpg'); background-size: 100px 100px; height: 100px; width: 100px">
         </md-button>
       </div>
 
