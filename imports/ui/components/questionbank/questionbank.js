@@ -263,6 +263,8 @@ class QuestionBank {
   }
 
   changeTabPersonal(){
+    this.showReview = "show";
+
     this.selectedTab = 2;
 
     this.disableButton = true;

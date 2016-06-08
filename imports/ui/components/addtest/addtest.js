@@ -84,15 +84,17 @@ class AddTest {
   //thêm đáp án
   appendAnswer(event)
   {
-    var answer = this.data.questionSet[this.question].answerSet.length;
+    this.answer ++;
+    //var answer = this.data.questionSet[this.question].answerSet.length;
     var anString =
-    '<div id=answer'+ this.question + '_' + answer + '>' +
+    '<div id=answer'+ this.question + '_' + this.answer + ' layout = "row" layout-align="left center">' +
       '<md-input-container class="md-block" flex-gt-sm>' +
-        '<label>câu trả lời ' + answer + '</label>' +
-        '<textarea ng-model="addtest.data.questionSet[' + this.question + '].answerSet[' + answer + ']" md-maxlength="500" rows="5" md-select-on-focus></textarea>' +
+        '<label>câu trả lời ' + this.answer + '</label>' +
+        '<textarea ng-model="addtest.data.questionSet[' + this.question + '].answerSet[' + this.answer + ']" md-maxlength="500" rows="5" md-select-on-focus></textarea>' +
       '</md-input-container>' +
-      '<input type="radio" name="gender" ng-click="addtest.insertCorrectAnswer(' + this.question + ', addtest.data.questionSet[' + this.question + '].answerSet[' + answer + '])"> Đáp án đúng <br>' +
-      '<button id="#answer' + this.question + '_' + answer + '" ng-click="addtest.removeAnswer($event)">X</button>' +
+      '<input type="radio" id="radio_' + this.question + '_' + this.answer + '" class="css-checkbox" name="gender" ng-click="addtest.insertCorrectAnswer(' + this.question + ', addtest.data.questionSet[' + this.question + '].answerSet[' + this.answer + '])"><label title="Đáp án đúng" class="css-label" for="radio_' + this.question + '_' + this.answer + '"></label>' +
+      // '<input type="radio" name="gender" ng-click="addtest.insertCorrectAnswer(' + this.question + ', addtest.data.questionSet[' + this.question + '].answerSet[' + this.answer + '])"> Đáp án đúng <br>' +
+      '<button id="#answer' + this.question + '_' + this.answer + '" class="deleteAns" ng-click="addtest.removeAnswer($event)">X</button>' +
     '</div>';
     var myEl = angular.element( document.querySelector( event.target.id) );
     myEl.append(this.compile(anString)(this.scope));
@@ -101,6 +103,10 @@ class AddTest {
   //thêm câu hỏi
   appendQuestion()
   {
+    var addAnswerList = document.getElementsByClassName('addAnswer');
+    var i = addAnswerList.length - 1;
+    addAnswerList[ i ].disabled = true;
+
     if( this.data.questionSet.length === this.questionCount && !this.confirm)
       if(confirm('bạn đã nhập đủ số lượng câu hỏi khai báo là ' + this.questionCount + ' tiếp tục nhập?')){
         this.data.questionSet [ questionSet.length - 1 ] = null;
@@ -134,11 +140,8 @@ class AddTest {
                                       '<textarea ng-model="addtest.data.questionSet[' + this.question + '].question" md-maxlength="500" rows="5" md-select-on-focus></textarea>' +
                                 '</md-input-container>' +
                                 '<div layout="column">' +
-
-                                  '<input id="media_question_' + this.question + '" class="mediaInput" type="file" md-select-on-focus accept="image/*, audio/*">' +
-                                  '<img id="photo_' + this.question + '" style="width:80%" class="media" src="default">' +
-                                  '<audio id="audio_' + this.question + '" controls class="media" src="default"></audio>' +
-
+                                    '<img id="photo_' + this.question + '" style="width:80%" class="media" src="">' +
+                                    '<audio id="audio_' + this.question + '" controls class="media" style="visibility: hidden;" src=""></audio>' +
                                 '</div>' +
                                 '<script>' +
                                   // Upload hình ảnh
@@ -157,6 +160,7 @@ class AddTest {
                                         // read the image file as a data URL.
                                       'if(this.files[0])' +
                                         'reader.readAsDataURL(this.files[0]);' +
+                                      'document.getElementById("audio_' + this.question + '").style.visibility = "hidden";' +
                                     '}' +
                                     'else {' +
                                       'document.getElementById("photo_' + this.question + '").src = "";' +
@@ -166,27 +170,38 @@ class AddTest {
                                       // read the audio file as a data URL.
                                       'if(this.files[0])' +
                                         'reader.readAsDataURL(this.files[0]);' +
+                                      'document.getElementById("audio_' + this.question + '").style.visibility = "visible";' +
                                     '}' +
                                   '};' +
                                 '</script>' +
 
                                 '<br>' +
                                 '<div id="answer' + this.question + '" layout-gt-sm="column">' +
-                                  '<div id=answer'+ this.question + '_' + this.answer + '>' +
+                                  '<div id=answer'+ this.question + '_' + this.answer + ' layout = "row" layout-align="left center">' +
                                     '<md-input-container class="md-block" flex-gt-sm>' +
                                           '<label>Câu trả lời 1</label>' +
                                           '<textarea ng-model="addtest.data.questionSet[' + this.question + '].answerSet[0]" md-maxlength="500" rows="5" md-select-on-focus></textarea>' +
                                     '</md-input-container>' +
-                                    '<input type="radio" name="gender" ng-click="addtest.insertCorrectAnswer(' + this.question + ', addtest.data.questionSet[' + this.question + '].answerSet[' + this.answer + '])"> Đáp án đúng <br>' +
-                                    '<button id="#answer' + this.question + '_' + this.answer + '" ng-click="addtest.removeAnswer($event)">X</button>' +
+                                    '<input type="radio" id="radio_radio_' + this.question + '_' + this.answer + '" class="css-checkbox" name="gender" ng-click="addtest.insertCorrectAnswer(0, addtest.data.questionSet[0].answerSet[0])"><label class="css-label" for="radio_radio_' + this.question + '_' + this.answer + '"></label>' +
+                                    '<button id="#answer' + this.question + '_' + this.answer + '" class="deleteAns" ng-click="addtest.removeAnswer($event)">X</button>' +
                                   '</div>' +
                                 '</div>' +
                                 '<md-input-container class="md-block" flex-gt-sm>' +
                                   '<label>Điểm số</label>' +
                                   '<input ng-model="addtest.data.questionSet[' + this.question + '].score" style="width: 120px;" type="number" step="0.25">' +
-                                '</md-input-container><br>' +
-                                '<button id="#answer'+ this.question + '" class="md-primary md-hue-1" ng-click="addtest.appendAnswer($event)" ng-disabled="addtest.disable > '+ this.question +'">Thêm câu trả lời</button>' +
-                                '<button id="#question' + this.question + '" class="md-primary md-hue-1" ng-click="addtest.removeQuestion($event)">Xóa câu hỏi</button>' +
+                                '</md-input-container>' +
+                                '<div layout="row" layout-align="left center" style="width: 40%;">' +
+                                  '<button id="#answer' + this.question + '" class="addAnswer" ng-click="addtest.appendAnswer($event)">Thêm câu trả lời</button>' +
+                                  '<span flex style="min-width: 3px;"></span>' +
+
+                                  '<label class="file">' +
+                                    '<input id="media_question_' + this.question + '" class="mediaInput" type="file" md-select-on-focus accept="image/*, audio/*">' +
+                                    '<span>Thêm Media</span>' +
+                                  '</label>' +
+                                  '<span flex style="min-width: 3px;"></span>' +
+
+                                  '<button id="#question' + this.question + '" class="deleteQues" ng-click="addtest.removeQuestion($event)">Xóa câu hỏi</button>' +
+                                '</div>' +
                           '</md-content>';
     var myEl = angular.element( document.querySelector( '#questionSet' ) );
     myEl.append(this.compile(quesString)(this.scope));
@@ -396,14 +411,14 @@ class AddTest {
 
     for(i = 0; i < imageArray.length; i++) {
       console.log(imageArray[i].src.substring(0, 50));
-      if(imageArray[i].src !== 'http://quiz.s2corp.vn/default' && imageArray[i].src !== 'http://quiz.s2corp.vn/') {
+      if(imageArray[i].src !== 'http://quiz.s2corp.vn/default') {
           document.getElementById("reviewImage_" + i).src = imageArray[i].src;
       }
     }
 
     for(i = 0; i < audioArray.length; i++) {
       console.log(audioArray[i].src.substring(0, 50));
-      if(audioArray[i].src !== 'http://quiz.s2corp.vn/default' && audioArray[i].src !== 'http://quiz.s2corp.vn/') {
+      if(audioArray[i].src !== 'http://quiz.s2corp.vn/default') {
           document.getElementById("reviewAudio_" + i).src = audioArray[i].src;
       }
     }
@@ -415,6 +430,10 @@ class AddTest {
   //xóa câu hỏi
   removeQuestion(event)
   {
+    var addAnswerList = document.getElementsByClassName('addAnswer');
+    var i = addAnswerList.length - 2;
+    addAnswerList[ i ].disabled = false;
+
     var questionIndex = parseInt(event.target.id.charAt(9));
     var myEl = angular.element( document.querySelector( event.target.id) );
 
