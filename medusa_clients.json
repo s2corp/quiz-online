@@ -1,0 +1,23 @@
+{
+  "settings": {
+    "directory": "../build",
+    "backup": "../backupDB",
+    "nodeVersion": "v0.10.41"
+  },
+  "A": [
+    {
+      "name": "Quiz Online",
+      "description": "Quiz online app",
+      "appName": "quizonline",
+      "port": 12000,
+      "MONGO_URL": "mongodb://localhost:27017/quizonline",
+      "MONGO_OPLOG_URL": "mongodb://localhost:27017/local",
+      "ROOT_URL": "http://quiz.s2corp.vn",
+      "METEOR_SETTINGS": "{\"public\": \"quizonline\", \"env\": \"quizonline\", \"email\": \"noreply.quizonline@gmail.com\", \"kadira\": { \"appId\": \"XgHTfcA2SnBuKBDJK\", \"appSecret\": \"d6c80e8f-207f-4ae5-9b1e-645747683155\"}}",
+      "ssh": {
+        "host": "meteor.s2corp.vn",
+        "port": 2225
+      },
+      "vnc": []
+    }]
+}

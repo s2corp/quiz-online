@@ -7,8 +7,8 @@
           <md-button ng-show="waitExam.own"  layout-align="end" style="background-color:#ff8a00" ng-disabled="!waitExam.start" ng-click="waitExam.runTime()" >Bắt Đầu</md-button>
       </div>
     </div>
-    <div ng-show="!waitExam.own" layout="row" layout-align="center center">
-        <h2 class="md-raised md-primary"   id="wait">Vui lòng chờ tới khi bắt đầu!</h2>
+    <div ng-show="!waitExam.own || waitExam.statusExam" layout="row" layout-align="center center">
+        <h2 style="color:rgb(244, 15, 42)" id="wait">Vui lòng chờ tới khi bắt đầu!</h2>
     </div>
     <div layout="column" layout-margin layout-padding style="overflow-x:auto;">
         <table>
@@ -25,6 +25,9 @@
             <td >{{u.status.online ? "Online":"Offline"}}</td>
           </tr>
         </table>
-        <send-code-button id="send-code" style="display:"></send-code-button>
+        <div layout="column" layout-align="end">
+          <send-code-button examid=waitExam.idExam></send-code-button>
+        </div>
     </div>
+
 </md-content>

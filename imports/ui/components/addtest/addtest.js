@@ -32,6 +32,7 @@ class AddTest {
           rate: 0
         }
       ],
+
     };
 
     //số lượng câu trả lời hiện tại

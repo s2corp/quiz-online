@@ -1,6 +1,6 @@
-<div layout="column" layout-padding>
-  <div layout="column" layout-gt-sm="row"  layout-padding>
-    <form flex="50" layout="column">
+<md-content  layout="row" layout-padding layout-wrap layout-margin layout-align="center center">
+  <div flex-md="70" flex-lg="50">
+    <form  layout="column"  >
       <md-input-container>
         <label>Tên kì thi</label>
         <input ng-model="detailExam.exam.examName">
@@ -11,17 +11,32 @@
         <input ng-model="detailExam.exam.examDescrip">
       </md-input-container>
 
-      <div >
-        <md-radio-group ng-model="detailExam.exam.isTest" layout="row">
-          <md-radio-button ng-value="detailExam.exam.isTest">Ôn tập</md-radio-button>
-          <md-radio-button ng-value="detailExam.exam.isTest">Kiểm tra</md-radio-button>
-        </md-radio-group>
+      <div layout="column">
+        <p>Đề thì này dùng để:</p>
       </div>
 
-      <div>
-        <md-button ng-click="partyDetails.save()" class="md-primary md-raised" aria-label="remove">Xóa</md-button>
-        <md-button ng-click="partyDetails.save()" class="md-primary md-raised" arial-label="update">Cập nhập</md-button>
+      <div layout="row">
+          <md-radio-group layout="row" layout-align="start center" ng-model="detailExam.istest">
+             <md-radio-button value="false" >Ôn tập</md-radio-button>
+             <md-radio-button value="true" >Kiểm tra</md-radio-button>
+           </md-radio-group>
+      </div>
+      <md-divider></md-divider>
+      <div layout="column">
+        <p>Trạng thái</p>
+      </div>
+      <div layout="row">
+          <md-radio-group layout="row" layout-align="start center" ng-model="detailExam.isStart">
+             <md-radio-button value="false" >Chưa bắt đầu</md-radio-button>
+             <md-radio-button value="true" >Đã kết thúc</md-radio-button>
+           </md-radio-group>
+      </div>
+      <md-divider></md-divider>
+      <div layout="row"  layout-align="space-around center" >
+        <md-button ng-href="/profileExam" class="md-primary md-raised">Quay lại</md-button>
+        <md-button ng-click="detailExam.save()" class="md-primary md-raised">Cập nhập</md-button>
+        <md-button ng-href="/waitExam/{{detailExam.exam_id}}" class="md-primary md-raised">Bắt đầu lại</md-button>
       </div>
     </form>
   </div>
-</div>
+</md-content>

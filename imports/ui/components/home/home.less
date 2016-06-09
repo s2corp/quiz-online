@@ -1,18 +1,44 @@
 home{
   #intro{
+
     background-image: url("image/home-page_01.jpg");
     height: 100vh;
-    margin-top: -30px;
-    //width: 100%;
-    background-size:contain;
+    width: 100%;
     background-repeat: no-repeat;
+    background-size: 100% 100%;
+    animation-name: slidin;
+    animation-duration: 3s;
   }
 
-  .userRespond{
-    width: 70%;
-    height: 70%;
-    text-align: center;
+  @keyframes slidin{
+    from {
+      margin-top:-100vh;
   }
+
+  to {
+      margin-top: 0vh;
+    }
+  }
+
+  #play{
+   animation-name: playgo;
+    animation-duration: 3s;
+  }
+
+  @keyframes playgo{
+    from {
+      margin-bottom: -100vh;
+  }
+
+  to {
+      margin-bottom: 0vh;
+    }
+  }
+
+.tool{
+  min-width: 130px;
+}
+
 
   .intro{
     margin-bottom: -20px;
@@ -27,12 +53,10 @@ home{
     font-weight: bold;
   }
   .feature{
-    height: 90%;
+    height: auto;
   }
   #picture{
-    margin-top: 50px;
-    height: 50vh;
-    //border-bottom: 3px solid black;
+    margin-top: 10%;
   }
 
   #three_man{
@@ -41,9 +65,6 @@ home{
     height: 80vh;
   }
 
-  .benifit{
-    width: 20%;
-  }
 
   .space{
     margin-top: 30px;
@@ -59,9 +80,9 @@ home{
   }
 
   #contact{
-    margin-top: -19px;
+    //margin-top: -19px;
     background-image: url("image/img0008.png");
-    height: 50vh;
+    min-height: 50vh;
     background-repeat: no-repeat;
   }
 
@@ -71,6 +92,5 @@ home{
     padding-right: 20%;
     margin-bottom: 5%;
   }
-
 
 }

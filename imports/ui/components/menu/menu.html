@@ -1,7 +1,16 @@
 <md-button class="md-fab" style="background-color: transparent" aria-label="sendCodeView" ng-click="menu.showMenu()">
   <md-icon md-svg-icon="action:ic_list_24px"></md-icon>
 </md-button>
-<md-menu-content id="menuContent" style="position: absolute; margin-left:-10%; z-index: 3; margin-top: 10px; display: none; background-color: #747474; width: 24%;">
+<md-menu-content id="menuContent" style="position: absolute; left: 5px; z-index: 3; margin-top: 10px; display: none; background-color: #747474;">
+
+            <md-menu-item class = "subMenu">
+              <md-button style="background-color: #ff8a00; border: none; cursor:pointer; overflow: hidden; outline:none; margin-left: 5%;" class="md-fab" aria-label="item1">
+                <md-icon md-svg-icon="action:ic_home_24px"></md-icon>
+              </md-button>
+              <a href="/home" style="color: #ffffff; font-size: 18px;">Trang chủ</a>
+            </md-menu-item>
+            <hr class = "subMenu">
+
             <md-menu-item layout="row">
               <md-button style="background-color: #ff8a00; border: none; cursor:pointer; overflow: hidden; outline:none; margin-left: 5%;" class="md-fab" aria-label="item1">
                 <md-icon md-svg-icon="social:ic_person_24px"></md-icon>
@@ -31,36 +40,26 @@
               <md-button style="background-color: #ff8a00; border: none; cursor:pointer; overflow: hidden; outline:none; margin-left: 5%;" class="md-fab" aria-label="item1">
                 <md-icon md-svg-icon="action:ic_list_24px"></md-icon>
               </md-button>
-              <a href="/joinExam" style="color: #ffffff; font-size: 18px;">Danh sách kì thi</a>
+              <a href="/profileExam" style="color: #ffffff; font-size: 18px;">Danh sách kì thi</a>
             </md-menu-item>
             <hr>
 
-            <md-menu-item>
-              <!-- trang chu -->
-              <md-button title="trang chủ" ui-sref="home" style="background-color: Transparent; border: none; cursor:pointer; overflow: hidden; outline:none; margin-left: 5%;" class="md-fab mainMenu" aria-label="home">
-                <md-icon md-svg-icon="action:ic_home_24px"></md-icon>
-              </md-button>
-              <a href="/home" style="color: #ffffff; font-size: 18px;">Trang chủ</a>
-            </md-menu-item>
-            <hr>
 
-            <md-menu-item layout="row">
-              <!-- gui mail -->
-              <send-mail-button title="gửi mail" class="mainMenu"></send-mail-button>
+            <!-- <md-menu-item layout="row">
+              <send-mail-button title="gửi mail" style="margin-left: -4%" class="subMenu"></send-mail-button>
               <a href="#" style="color: #ffffff; font-size: 18px;">Liên hệ</a>
             </md-menu-item>
-            <hr>
+            <hr> -->
 
-            <md-menu-item layout="row">
-              <!-- thong bao -->
-              <notificate-button title="thông báo" class="mainMenu">Thông báo</notificate-button>
-              <a href="#" style="color: #ffffff; font-size: 18px;"></a>
+            <!-- <md-menu-item layout="row">
+              <notificate-button title="thông báo" style="margin-left: -4%" class="subMenu"></notificate-button>
+              <a href="#" style="color: #ffffff; font-size: 18px;">Thông báo</a>
             </md-menu-item>
-            <hr>
+            <hr> -->
 
             <md-menu-item>
               <!-- dang nhap dang ky -->
-              <auth class="mainMenu"></auth>
+              <auth class="subMenu"></auth>
             </md-menu-item>
 
 </md-menu-content>

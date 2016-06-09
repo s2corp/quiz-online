@@ -1,71 +1,59 @@
-<div layout="row" id="bg-1">
-  <div flex="25"  layout-align="center end">
-    <img src="image/Untitled-2.png" class="icon1">
-  </div>
-  <div flex="50">
-    <h1> Để bắt đầu mọi việc bạn cần đăng nhập hoặc đăng kí bằng tài khoản mail, google hoặc facebook là điều dễ dàng nhất</h1>
-    <div layout="column" layout-align="center center" class="bt" >
-    <md-button href="/login" layout="column" class="md-raised" layout-align="center center">
-        <strong>
-          <h2>ĐĂNG NHẬP</h2>
-        </strong>
-      </md-button>
+<md-content >
+  <div layout-xs="column" layout-md="row" layout-lg="row" id="bg-1">
+      <div flex-md="20" flex-lg="25" layout="column"  layout-align-xs="end center" layout-align-md="end center" layout-align-lg="end center">
+        <img src="image/Untitled-2.png" >
       </div>
-  </div>
-  <div flex="25">
-    <img src="image/Untitled-1.png" class="icon2">
-  </div>
- </div>
 
-
- <div layout="row" id="bg-2">
-  <div flex="25">
-    <img src="image/img1.png" class="icon3">
-  </div>
-  <div flex= "70">
-    <div class="text"><h3> Bạn muốn tham gia ngay bất cứ kì thi nào bạn cần biết mã kì thi và nếu đã biết mã kì thi của bạn rồi thì còn chần chừ gì mà không bắt đầu ngay đi nào.</h3></div>
-    <div layout="column" layout-align="center center" class="bt" >
-    <md-button href="/joinExam" layout="column" class="md-raised1" layout-align="center center">
-        <strong>
-          <h2>THAM GIA NGAY</h2>
-        </strong>
-      </md-button>
+      <div flex-md="60" flex-lg="50" layout="column" layout-align="start center" layout-padding>
+        <h3> Để bắt đầu mọi việc bạn cần đăng nhập hoặc đăng kí bằng tài khoản mail, google hoặc facebook là điều dễ dàng nhất</h3>
+        <md-button class="md-raised" href="/login">
+            <strong>
+              ĐĂNG NHẬP
+            </strong>
+        </md-button>
       </div>
-  </div>
- </div>
 
-<div layout="row" id="bg-3">
-  <div flex="20"  layout-align="center end">
-  </div>
-  <div flex="60">
-    <h4> Bạn là giáo viên hoặc muốn thử sức với những chủ đề mới do mình tạo ra để thi với nhau thì click ngay tạo kỳ thi đi nào! </h4>
-    <div layout="column" layout-align="center center" class="bt1" >
-    <md-button href="/startQuiz" layout="column" class="md-raised3" layout-align="center center">
-        <strong>
-          <h2>TẠO KÌ THI</h2>
-        </strong>
-      </md-button>
-    <div layout= "column" layout-align="center center">
-      <img src="image/img2.png" class="icon4">
-    </div>
+      <div flex-md="20" flex-lg="25" layout="column" layout-align-xs="end center" layout-align-md="end center" layout-align-lg="end center">
+        <img src="image/Untitled-1.png">
       </div>
-  </div>
-</div>
+   </div>
 
-<div layout="row" id="bg-4">
-  <div flex="20"  layout-align="center end">
+
+   <div layout-xs="column" layout-md="row" layout-lg="row" id="bg-2">
+      <div flex-md="25" flex-lg="25" layout="column" layout-align="center center">
+        <img src="image/img1.png">
+      </div>
+      <div flex-md= "75" flex-lg="75" layout="column" layout-align="center center" layout-padding>
+        <h3> Bạn muốn tham gia ngay bất cứ kì thi nào bạn cần biết mã kì thi và nếu đã biết mã kì thi của bạn rồi thì còn chần chừ gì mà không bắt đầu ngay đi nào.</h3>
+        <md-button  href="/joinExam" class="md-raised" >
+            <strong>
+              THAM GIA NGAY
+            </strong>
+        </md-button>
+      </div>
+   </div>
+
+  <div layout="column" id="bg-3" layout-align="center center" layout-padding>
+        <h3> Bạn là giáo viên hoặc muốn thử sức với những chủ đề mới do mình tạo ra để thi với nhau thì click ngay tạo kỳ thi đi nào! </h3>
+        <md-button href="/startQuiz"  layout="column" class="md-raised" layout-align="center center">
+            <strong>
+              TẠO KÌ THI
+            </strong>
+          </md-button>
+        <div layout= "column" layout-align="center center">
+          <img src="image/img2.png" class="icon4">
+        </div>
   </div>
-  <div flex="60">
-    <h4> Bạn muốn xem ngay những kì thi đang diễn ra, Click ngay xem thông báo hoặc trên thanh menu bar.</h4>
-    <div layout="column" layout-align="center center" class="bt1" >
-    <md-button href="/home" layout="column" class="md-raised3" layout-align="center center">
-        <strong>
-          <h5>XEM THÔNG BÁO</h5>
-        </strong>
-      </md-button>
-    <div layout= "column" layout-align="center center">
-      <img src="image/img3.png" class="icon4">
-    </div>
-    </div>
+
+  <div layout="column" id="bg-4" layout-align="center center" layout-padding>
+        <h3> Bạn muốn xem ngay những kì thi đang diễn ra, Click ngay xem thông báo hoặc trên thanh menu bar.</h3>
+        <md-button href="/home" class="md-raised">
+            <strong>
+              XEM THÔNG BÁO
+            </strong>
+          </md-button>
+          <div layout= "column" layout-align="center center">
+            <img src="image/img3.png" class="icon4">
+          </div>
   </div>
-</div>
+</md-content>

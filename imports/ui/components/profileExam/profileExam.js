@@ -14,7 +14,6 @@ class ProfileExam {
     this.helpers({
       exam(){
         var data = Examination.find({"userId":Meteor.userId()});
-        console.log(data);
         return data;
       }
     });

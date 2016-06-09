@@ -7,6 +7,7 @@ import {Examination} from '../../../api/examination';
 import {Question} from '../../../api/question';
 import {Session} from 'meteor/session';
 import  mdDataTable from 'angular-material-data-table';
+import { name as SendCodeButton } from '../sendCodeButton/sendCodeButton';
 import './waitExam.html';
 import '../../../api/users';
 class WaitExam {
@@ -70,7 +71,8 @@ class WaitExam {
       var exam = Examination.findOne({_id:$stateParams.exam_id});
       Meteor.call("finduser",exam, function(error, result){
         if(error){
-          console.log("error", error);
+          throw new Meteor.Error(505, 'Error');
+          // console.log("error", error);
         }
         if(result){
           Session.set("profileUser", result);
@@ -82,11 +84,15 @@ class WaitExam {
 
 
       ownExam(){
-        var exam2 = Examination.findOne({_id:$stateParams.exam_id});
-        var us = Question.find({"_id":exam2.questionSetId, "userId":Meteor.userId()}).count();
-        if(us > 0)
-        {
-          this.own = true;
+        try {
+          var exam2 = Examination.findOne({_id:$stateParams.exam_id});
+          var us = Question.find({"_id":exam2.questionSetId, "userId":Meteor.userId()}).count();
+          if(us > 0)
+          {
+            this.own = true;
+          }
+        } catch (e) {
+          throw new  Meteor.Error(123, "Error");
         }
 
         return this.own;
@@ -109,7 +115,8 @@ export default angular.module(name,[
   angularMeteor,
   uiRouter,
   ngMaterial,
-  mdDataTable
+  mdDataTable,
+  SendCodeButton
 ])
 .component(name,{
   templateUrl:'imports/ui/components/waitExam/waitExam.html',

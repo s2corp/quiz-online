@@ -21,6 +21,8 @@ import { name as Auth } from '../auth/auth';
 import {name as profileExam} from '../profileExam/profileExam';
 import {name as detailExam} from '../detailExam/detailExam';
 import {name as tutorial} from '../tutorial/tutorial';
+import {name as statistics} from '../statistics/statistics';
+import {name as detailStatistics} from '../detailStatistics/detailStatistics';
 import './maincomponent.html';
 
 class Main{
@@ -50,7 +52,9 @@ export default  angular.module(name, [
     detailExam,
     tutorial,
     PageNotFound,
-    Menu
+    Menu,
+    statistics,
+    detailStatistics
     ///ngMaterial
   ]
 )
@@ -96,10 +100,12 @@ function run($rootScope, $state) {
         alert('bạn cần đăng nhập trước khi thực hiện thao tác này');
         $state.go('login');
       }
-      if (error === 'JOB_REQUIRED')
-        alert('bạn cần có tài khoản giáo viên để có thể thực hiện thao tác này')
+      //if (error === 'JOB_REQUIRED')
+        //alert('bạn cần có tài khoản giáo viên để có thể thực hiện thao tác này')
       if (error === 'VERTIFICATE_REQUIRED')
         alert('một mail chứng thực đã được gửi đến email của bạn, đề nghị xác thực email trước khi thực hiện thao tác này');
+      if(error === 123)
+        $state.go('home');
     }
   );
 }

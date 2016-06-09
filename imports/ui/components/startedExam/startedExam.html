@@ -1,37 +1,62 @@
 <md-content layout-padding layout-wrap ng-show="startedExam.isend">
-  <div layout="row">
-    <div flex>
-        <h3 id="scored">Số điểm hiện tại: 0</h3>
-    </div>
-    <div flex>
-      <h3 id ="time">Số điểm hiện tại: 0</h3>
-    </div>
+  <div layout="column" layout-align="center center">
+    <h3 style="color:#ff8a00">{{startedExam.showquestion.title}} </h3>
   </div>
-  <div layout="row" layout-align="center center">
-    <h3>{{startedExam.showquestion.title}} </h3>
+
+  <div id="range" layout="column" layout-align="start">
+    <range-exam-button data=startedExam.exam_id></range-exam-button>
   </div>
-  <div layout="column" ng-repeat="q in startedExam.showquestion.questionSet" flex="80" flex-offset="10" ng-init="vitri = $index">
-    <div ng-show="$index == startedExam.selectedIndex">
-    <md-card>
-      <md-card-title>
-          <md-card-title-text style="min-height:50px; padding-left:5px;">
-            <h4>Câu {{$index +1}}. {{q.question}}</h4>
-          </md-card-title-text>
-        </md-card-title>
+
+
+  <div  layout-xs="column" layout="row" layout-align="center end" layout-padding="30" >
+      <div layout="column" layout-align="center center" id="lableScored">
+        <h3 id="scored">Điểm: 0</h3>
+      </div>
+
+      <span flex="10"></span>
+
+      <div layout="column" layout-align="center center" id="lableTime">
+        <h3 id ="time">Thời Gian: 0</h3>
+      </div>
+  </div>
+
+  <div id="question" layout="column" layout-padding>
+    <div  ng-repeat="q in startedExam.showquestion.questionSet" ng-show="$index == startedExam.selectedIndex" ng-init="vitri = $index">
+        <div layout="column">
+            <h4 style="color:rgb(16, 17, 16)">Câu {{$index +1}}. {{q.question}}</h4>
+        </div>
         <md-divider></md-divider>
-        <!-- ng-click de chon hien ung cho ngclass -->
-      <md-card-content>
-        <md-radio-group ng-model="data.group1" layout="column" >
-          <md-divider></md-divider>
-          <md-radio-button id="radi" ng-repeat="an in q.answerSet" ng-value="an" ng-class="{selected:$index == startedExam.selectedRow}" ng-click="startedExam.setClickedRow($index)">{{an}}</md-radio-button>
-          <md-divider></md-divider>
-        </md-radio-group>
-      </md-card-content>
-      <!-- bat su kien next truyen vao vi tri cau hoi, cau hoi va cau tra loi -->
-       <div layout="row" layout-padding layout-align="end" >
-         <md-button class="md-raised md-warn" ng-click="startedExam.checkanswer(q.question,data.group1,vitri)" aria-label="next">TIẾP THEO</md-button>
-       </div>
-    </md-card>
+        <div layout="row" layout-padding layout-align="center center">
+          <audio controls autoplay ng-show="q.audio != '' && q.audio">
+            <source src={{q.audio}}>
+          </audio>
+        </div>
+        <md-divider ng-show="q.audio != '' && q.audio"></md-divider>
+        <div id="quesimage" ng-show="q.image != '' && q.image" layout="column" layout-align="center center" flex="80" layout-margin="10">
+          <img  src={{q.image}} />
+        </div>
+        <md-divider ng-show="q.image != '' && q.image" ></md-divider>
+        <div layout="column" layout-padding>
+          <md-radio-group ng-model="data.group1" layout="column" >
+            <md-radio-button id="radi" ng-repeat="an in q.answerSet" ng-value="an" ng-class="{selected:$index == startedExam.selectedRow}" ng-click="startedExam.setClickedRow($index)">{{an}}</md-radio-button>
+          </md-radio-group>
+        </div>
+        <md-divider></md-divider>
+         <div layout="row" layout-padding layout-align="end" >
+          <md-button class="md-raised md-warn" ng-click="startedExam.checkanswer(q.question,data.group1,vitri)" aria-label="next">TIẾP THEO</md-button>
+        </div>
+    </div>
+
+
+    <div layout="column">
+      <md-slider-container>
+        <div  layout="column" layout-align="center center">
+          <h5>Mức độ hoàn thành</h5>
+        </div>
+         <md-slider ng-readonly="true" class="md-primary" flex min="0" max={{startedExam.totalquestion}} ng-model="startedExam.total" aria-label="red" id="red-slider">
+         </md-slider>
+       </md-slider-container>
+    </div>
   </div>
-  </div>
+
 </md-content>

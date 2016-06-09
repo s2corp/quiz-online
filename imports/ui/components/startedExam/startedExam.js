@@ -8,6 +8,7 @@ import {Examination} from '../../../api/examination';
 import {Meteor} from 'meteor/meteor';
 import './startedExam.html';
 import {Session} from 'meteor/session';
+import {name as rangeExamButton} from '../rangeExamButton/rangeExamButton';
 class StartedExam {
   constructor($scope,$reactive,$stateParams,$state) {
     'ngInject';
@@ -24,14 +25,20 @@ class StartedExam {
     this.state=$state;
     this.selectedRow = null;
     this.lengthquestion = 0;
-    document.getElementById('scored').innerHTML ="Số điểm hiện tại: 0.";
-    var exam = Examination.findOne({_id:$stateParams.exam_id});
+    this.total =1;
+    document.getElementById('scored').innerHTML ="Điểm: 0.";
+    var exam =  Examination.findOne({_id:$stateParams.exam_id});
+    console.log(exam);
     if(exam !== null)
-        Session.set("stoprun", exam.time -1);
+    {
+      var time = exam.time * 60 -1;
+      Session.set("stoprun", time);
+
+    }
     else {
         Session.set("stoprun", 60);
     }
-    document.getElementById('time').innerHTML = "Thời gian còn lại :"+ Session.get("stoprun") +"phút.";
+    this.changeTime(Session.get("stoprun"))
     //ham tu dong kiem tra thoi gian
     this.autorun(() =>{
       this.isstop =setInterval(function(){
@@ -44,12 +51,17 @@ class StartedExam {
         if(Session.get("stoprun") <= 0)
         {
           Meteor.clearInterval(this.isstop);
+          this.stop();
          $state.go("scored-exam",{"exam_id":$stateParams.exam_id});
         }
         else {
-          document.getElementById('time').innerHTML = "Thời gian còn lại :"+ Session.get("stoprun") +"phút.";
+          var mi,sec;
+          var timeRunning =parseInt(Session.get("stoprun"));
+          mi =parseInt(timeRunning / 60);
+          sec = timeRunning % 60;
+         document.getElementById('time').innerHTML = "Thời gian: "+mi+":"+sec;
         }
-      },60000);
+      },1000);
     });
 
     this.helpers({
@@ -60,21 +72,33 @@ class StartedExam {
         }
       },
       showquestion(){
-
         if(Question.find({"_id":$stateParams.question_id}).count() > 0)
         {
           val=Question.findOne({"_id":$stateParams.question_id});
-        //  console.log(val);
-
           this.lengthquestion = val.questionSet.length;
           return Question.findOne({"_id":$stateParams.question_id});
         }
           else {
            this.state.go('home');
           }
+    },
+    totalquestion()
+    {
+      var data = Question.find({"_id":$stateParams.question_id}).fetch();
+      var t = data[0].questionSet.length;
+      return t;
     }
   });
   }
+
+
+  changeTime(time)
+  {
+    var mi,sec;
+    mi =parseInt(time / 60);
+    sec = time % 60;
+   document.getElementById('time').innerHTML = "Thời gian: "+mi+":"+sec;
+ }
   //hien ra cau hoi thu index
   setClickedRow(index)
   {
@@ -84,6 +108,7 @@ class StartedExam {
 
   checkanswer(que,data,vitri)
   {
+    this.total = this.total + 1;
     var userscored =
     Meteor.call("checkanswer",this.exam_id,Meteor.userId(),this.question_id,que,data,vitri , function(error, result){
       if(error){
@@ -91,7 +116,7 @@ class StartedExam {
       }
       if(result){
         //console.log(result);
-        document.getElementById('scored').innerHTML ="Số điểm hiện tại:"+ result+".";
+        document.getElementById('scored').innerHTML ="Điểm:"+ result+".";
         Session.set("scored", result);
       }
     });
@@ -112,7 +137,8 @@ const name = 'startedExam';
 export default angular.module(name,[
   angularMeteor,
   uiRouter,
-  mdDataTable
+  mdDataTable,
+  rangeExamButton
 ])
 .component(name,{
   templateUrl:'imports/ui/components/startedExam/startedExam.html',
