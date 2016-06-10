@@ -1,27 +1,24 @@
-<md-content layout-padding layout-wrap ng-show="startedExam.isend">
+<md-content id="started-exam" layout="column"  layout-padding ng-show="startedExam.isend">
   <div layout="column" layout-align="center center">
     <h3 style="color:#ff8a00">{{startedExam.showquestion.title}} </h3>
   </div>
 
-  <div id="range" layout="column" layout-align="start">
-    <range-exam-button data=startedExam.exam_id></range-exam-button>
-  </div>
 
-
-  <div  layout-xs="column" layout="row" layout-align="center end" layout-padding="30" >
-      <div layout="column" layout-align="center center" id="lableScored">
+  <div layout="row" layout-align="space-around center">
+      <div class="lable" layout="column" layout-align="center center">
+        <range-exam-button data=startedExam.exam_id></range-exam-button>
+      </div>
+      <div  class="lable">
         <h3 id="scored">Điểm: 0</h3>
       </div>
 
-      <span flex="10"></span>
-
-      <div layout="column" layout-align="center center" id="lableTime">
-        <h3 id ="time">Thời Gian: 0</h3>
+      <div class="lable">
+        <h3 id ="time">0:0</h3>
       </div>
   </div>
 
   <div id="question" layout="column" layout-padding>
-    <div  ng-repeat="q in startedExam.showquestion.questionSet" ng-show="$index == startedExam.selectedIndex" ng-init="vitri = $index">
+    <div layout="column" ng-repeat="q in startedExam.showquestion.questionSet" ng-show="$index == startedExam.selectedIndex" ng-init="vitri = $index">
         <div layout="column">
             <h4 style="color:rgb(16, 17, 16)">Câu {{$index +1}}. {{q.question}}</h4>
         </div>
@@ -49,14 +46,20 @@
 
 
     <div layout="column">
-      <md-slider-container>
+      <md-slider-container >
         <div  layout="column" layout-align="center center">
-          <h5>Mức độ hoàn thành</h5>
+          <h5>Mức độ hoàn thành: {{startedExam.total}}/{{startedExam.totalquestion}} </h5>
         </div>
-         <md-slider ng-readonly="true" class="md-primary" flex min="0" max={{startedExam.totalquestion}} ng-model="startedExam.total" aria-label="red" id="red-slider">
-         </md-slider>
+        <div layout="row">
+          <md-slider ng-readonly="readonly" ng-disabled="true" class="md-primary"  md-discrete
+          flex min="0" max={{startedExam.totalquestion}}
+          ng-model="startedExam.total" aria-label="red" id="red-slider">
+          </md-slider>
+        </div>
+
        </md-slider-container>
     </div>
+
   </div>
 
 </md-content>
