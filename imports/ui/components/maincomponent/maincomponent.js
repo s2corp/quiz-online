@@ -11,6 +11,7 @@ import { name as StartQuiz } from '../startquiz/startquiz';
 import { name as Notification } from '../notification/notification';
 import { name as NotificateButton } from '../notificateButton/notificateButton';
 import { name as SendMailButton } from '../sendMailButton/sendMailButton';
+import {name as UserProfile} from '../userProfile/userProfile';
 import { name as joinExam} from '../joinExam/joinExam';
 import { name as waitExam} from '../waitExam/waitExam';
 import { name as startedExam} from '../startedExam/startedExam';
@@ -23,6 +24,7 @@ import {name as detailExam} from '../detailExam/detailExam';
 import {name as tutorial} from '../tutorial/tutorial';
 import {name as statistics} from '../statistics/statistics';
 import {name as detailStatistics} from '../detailStatistics/detailStatistics';
+
 import './maincomponent.html';
 
 class Main{
@@ -42,6 +44,7 @@ export default  angular.module(name, [
     NotificateButton,
     SendMailButton,
     StartQuiz,
+    UserProfile,
     Notification,
     joinExam,
     waitExam,
