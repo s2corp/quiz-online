@@ -165,7 +165,7 @@ Meteor.methods({
     {
       var count = tam.questionSet[index].countCorrect + 1;
       var num = count / totaluser;
-      var val = num.toFixed(3);
+      var val =parseFloat(num.toFixed(3));
       Examination.update({_id:id,"usersList.userId":user}, {$inc:{
           "usersList.$.score":tam.questionSet[index].score
       }});
@@ -263,16 +263,16 @@ Meteor.methods({
           var check = data.questionSet[i].rate;
           if(check >= 0.6)
             easy = easy + check;
-            else if (check >=0.3 && check < 0.6) {
+            else if (check >= 0.3 && check < 0.6) {
               normal = normal + check;
             }
             else {
               hardly = hardly + check;
             }
         }
-        ob.easy = Math.round(  easy * 100);
-        ob.normal = Math.round(  normal * 100);
-        ob.hardly = Math.round(  hardly * 100);
+        ob.easy = Math.round(easy * 100);
+        ob.normal = Math.round(normal * 100)
+        ob.hardly = Math.round(hardly *100);
         return ob;
     }
   });
