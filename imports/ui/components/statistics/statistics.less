@@ -1,10 +1,21 @@
 statistics{
   #mychart{
-    margin-top: 40px;
-    min-height: 60vh;
+    width: 100%;
   }
   #piechart{
-    // min-width: 80%;
-    // min-height: 70%;
+
   }
+
+  @media only screen and (max-width: 1000px) {
+    #piechart{
+       height: 320px;
+       width: 420px;
+    }
+    }
+    @media only screen and (min-width: 1100px) {
+      #piechart{
+        min-height: 500px;
+        min-width: 900px;
+      }
+      }
 }
