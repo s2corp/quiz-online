@@ -27,7 +27,7 @@ class StartedExam {
     this.selectedRow = null;
     this.lengthquestion = 0;
     this.total =1;
-    document.getElementById('scored').innerHTML ="Điểm: 0.";
+    document.getElementById('scored').innerHTML ="Điểm: 0";
     var exam =  Examination.findOne({_id:$stateParams.exam_id});
     console.log(exam);
     if(exam !== null)
@@ -117,7 +117,7 @@ class StartedExam {
       }
       if(result){
         //console.log(result);
-        document.getElementById('scored').innerHTML ="Điểm:"+ result+".";
+        document.getElementById('scored').innerHTML ="Điểm:"+ result;
         Session.set("scored", result);
       }
     });

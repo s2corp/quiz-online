@@ -13,8 +13,8 @@ class Statistics {
     this.subscribe("examination");
     this.subscribe("question");
     this.stateParams = $stateParams;
-    this.exam = $stateParams.exam_id;
-    google.charts.load('current', {'packages':['corechart']});//onload pie
+    this.exam_id = $stateParams.exam_id;
+    // google.charts.load('current', {'packages':['corechart']});//chi load mot lan trong maincomponents
     this.helpers({
       info: function(){
         Meteor.call("statis", $stateParams.exam_id, function(error, result){
@@ -37,7 +37,11 @@ class Statistics {
           var normal = arr[1];
           var hardly = arr[2];
           this.drawPie(easy,normal,hardly);
-      }
+      },
+    exam(){
+      return Examination.findOne({_id:$stateParams.exam_id});
+
+    }
     });
   }
   drawPie(easy,normal,hardly){
@@ -46,7 +50,7 @@ class Statistics {
     google.charts.setOnLoadCallback(drawChart);
     function drawChart() {
       var data = google.visualization.arrayToDataTable([
-        ['Task', 'Hours per Day'],
+        ['Kì thi', 'Tỷ lệ %'],
         ['Dễ',     easy],
         ['Trung bình',      normal],
         ['Khó',  hardly]
