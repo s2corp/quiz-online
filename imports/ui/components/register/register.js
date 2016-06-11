@@ -77,6 +77,7 @@ class Register {
       //this.credentials.profile.job = this.user.job;
       this.credentials.email = this.user.eduMail + this.user.normalMail;
       Meteor.call('sendEmail', this.credentials.email);
+      alert("Vui lòng kiểm tra emails.")
       Accounts.createUser(this.credentials,
         this.$bindToContext((err) => {
           if (err) {
