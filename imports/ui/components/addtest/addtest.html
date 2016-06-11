@@ -119,22 +119,23 @@
                 <!-- </md-input-container> -->
 
                 <br>
+                <!-- <form> -->
+                  <!--nội dung các câu trả lời-->
+                  <div id="answer0" layout-gt-sm="column">
+                        <div id="answer0_0" layout = "row" layout-align="left center">
+                          <md-input-container class="md-block" flex-gt-sm>
+                              <label>Câu trả lời 1</label>
+                              <textarea ng-model="addtest.data.questionSet[0].answerSet[0]" md-maxlength="500" rows="5" md-select-on-focus></textarea>
+                          </md-input-container>
 
-                <!--nội dung các câu trả lời-->
-                <div id="answer0" layout-gt-sm="column">
-                      <div id="answer0_0" layout = "row" layout-align="left center">
-                        <md-input-container class="md-block" flex-gt-sm>
-                            <label>Câu trả lời 1</label>
-                            <textarea ng-model="addtest.data.questionSet[0].answerSet[0]" md-maxlength="500" rows="5" md-select-on-focus></textarea>
-                        </md-input-container>
+                          <!--Thêm câu trả lời đúng-->
+                          <input type="radio" id="radio_0_0" class="css-checkbox" name="gender" ng-click="addtest.insertCorrectAnswer($event)"><label title="Đáp án đúng" class="css-label" for="radio_0_0"></label>
 
-                        <!--Thêm câu trả lời đúng-->
-                        <input type="radio" id="radio_0_0" class="css-checkbox" name="gender" ng-click="addtest.insertCorrectAnswer(0, addtest.data.questionSet[0].answerSet[0])"><label title="Đáp án đúng" class="css-label" for="radio_0_0"></label>
-
-                        <!--Xóa câu hỏi-->
-                        <button id="#answer0_0" class="deleteAns" ng-click="addtest.removeAnswer($event)">X</button>
-                      </div>
-                </div>
+                          <!--Xóa câu hỏi-->
+                          <button id="#answer0_0" class="deleteAns" ng-click="addtest.removeAnswer($event)">X</button>
+                        </div>
+                  </div>
+                <!-- </form> -->
 
                 <!--Điểm số của câu hỏi-->
                 <md-input-container class="md-block" flex-gt-sm>
