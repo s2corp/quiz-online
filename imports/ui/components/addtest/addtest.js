@@ -60,7 +60,7 @@ class AddTest {
   //thêm đề
   addTest()
   {
-    this.mediaElements = document.getElementsByClassName("mediaInput");
+    this.mediaElements = Array.prototype.slice.call(document.getElementsByClassName("mediaInput"));
 
     for(i = 0; i < this.data.questionSet.length; i++){
       if(this.data.questionSet[i] === null){
@@ -92,7 +92,7 @@ class AddTest {
         '<label>câu trả lời ' + this.answer + '</label>' +
         '<textarea ng-model="addtest.data.questionSet[' + this.question + '].answerSet[' + this.answer + ']" md-maxlength="500" rows="5" md-select-on-focus></textarea>' +
       '</md-input-container>' +
-      '<input type="radio" id="radio_' + this.question + '_' + this.answer + '" class="css-checkbox" name="gender" ng-click="addtest.insertCorrectAnswer(' + this.question + ', addtest.data.questionSet[' + this.question + '].answerSet[' + this.answer + '])"><label title="Đáp án đúng" class="css-label" for="radio_' + this.question + '_' + this.answer + '"></label>' +
+      '<input type="radio" id="radio_' + this.question + '_' + this.answer + '" class="css-checkbox" name="gender" ng-click="addtest.insertCorrectAnswer($event)"><label title="Đáp án đúng" class="css-label" for="radio_' + this.question + '_' + this.answer + '"></label>' +
       // '<input type="radio" name="gender" ng-click="addtest.insertCorrectAnswer(' + this.question + ', addtest.data.questionSet[' + this.question + '].answerSet[' + this.answer + '])"> Đáp án đúng <br>' +
       '<button id="#answer' + this.question + '_' + this.answer + '" class="deleteAns" ng-click="addtest.removeAnswer($event)">X</button>' +
     '</div>';
@@ -176,16 +176,18 @@ class AddTest {
                                 '</script>' +
 
                                 '<br>' +
-                                '<div id="answer' + this.question + '" layout-gt-sm="column">' +
-                                  '<div id=answer'+ this.question + '_' + this.answer + ' layout = "row" layout-align="left center">' +
-                                    '<md-input-container class="md-block" flex-gt-sm>' +
-                                          '<label>Câu trả lời 1</label>' +
-                                          '<textarea ng-model="addtest.data.questionSet[' + this.question + '].answerSet[0]" md-maxlength="500" rows="5" md-select-on-focus></textarea>' +
-                                    '</md-input-container>' +
-                                    '<input type="radio" id="radio_radio_' + this.question + '_' + this.answer + '" class="css-checkbox" name="gender" ng-click="addtest.insertCorrectAnswer(0, addtest.data.questionSet[0].answerSet[0])"><label class="css-label" for="radio_radio_' + this.question + '_' + this.answer + '"></label>' +
-                                    '<button id="#answer' + this.question + '_' + this.answer + '" class="deleteAns" ng-click="addtest.removeAnswer($event)">X</button>' +
+                                // '<form>' +
+                                  '<div id="answer' + this.question + '" layout-gt-sm="column">' +
+                                    '<div id=answer'+ this.question + '_' + this.answer + ' layout = "row" layout-align="left center">' +
+                                      '<md-input-container class="md-block" flex-gt-sm>' +
+                                            '<label>Câu trả lời 1</label>' +
+                                            '<textarea ng-model="addtest.data.questionSet[' + this.question + '].answerSet[0]" md-maxlength="500" rows="5" md-select-on-focus></textarea>' +
+                                      '</md-input-container>' +
+                                      '<input type="radio" id="radio_radio_' + this.question + '_' + this.answer + '" class="css-checkbox" name="gender" ng-click="addtest.insertCorrectAnswer($event)"><label class="css-label" for="radio_radio_' + this.question + '_' + this.answer + '"></label>' +
+                                      '<button id="#answer' + this.question + '_' + this.answer + '" class="deleteAns" ng-click="addtest.removeAnswer($event)">X</button>' +
+                                    '</div>' +
                                   '</div>' +
-                                '</div>' +
+                                // '</form>' +
                                 '<md-input-container class="md-block" flex-gt-sm>' +
                                   '<label>Điểm số</label>' +
                                   '<input ng-model="addtest.data.questionSet[' + this.question + '].score" style="width: 120px;" type="number" step="0.25">' +
@@ -243,10 +245,10 @@ class AddTest {
 
           if(file.type.substring(0, 5) === 'image') {
             var fileObj = await this.insertMedia(file)
-            data.questionSet[i].image = 'questionMedia/media-' + fileObj._id + '-' + fileObj.original.name ;
+            data.questionSet[i].image = '/questionMedia/media-' + fileObj._id + '-' + fileObj.original.name ;
           } else {
               var fileObj = await this.insertMedia(file)
-              data.questionSet[i].audio = 'questionMedia/media-' + fileObj._id + '-' + fileObj.original.name ;
+              data.questionSet[i].audio = '/questionMedia/media-' + fileObj._id + '-' + fileObj.original.name ;
             }
 
       }
@@ -262,15 +264,11 @@ class AddTest {
 
   //đổi tab
   changeTab() {
-    //this.checkValidAnswer()
-    var check = this.checkValidAnswer();
-    if(this.myForm.$valid && check)
-      if (this.selectedTab === 1) {
-          this.selectedTab = 0;
-      }
-      else {
+    //this.checkValidAnswer();
+    if(this.myForm.$valid) {
+      this.showReview = 'visible';
           this.selectedTab ++;
-      }
+    }
   }
 
   //kiểm tra việc nhập câu hỏi
@@ -369,9 +367,11 @@ class AddTest {
  }
 
  //thêm đáp án chính xác
- insertCorrectAnswer(questionIndex, answer){
+ insertCorrectAnswer(event){
+   var answerIndex = parseInt(event.target.id.charAt(8));
+   var questionIndex = parseInt(event.target.id.charAt(6));
    //this.data.correctAnswer = answer
-   this.data.questionSet[questionIndex].correctAnswer = answer;
+   this.data.questionSet[questionIndex].correctAnswer = this.data.questionSet[questionIndex].answerSet[answerIndex];
  }
 
   //xóa đáp án
