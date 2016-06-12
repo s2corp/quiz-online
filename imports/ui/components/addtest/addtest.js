@@ -176,18 +176,18 @@ class AddTest {
                                 '</script>' +
 
                                 '<br>' +
-                                // '<form>' +
+                                '<form>' +
                                   '<div id="answer' + this.question + '" layout-gt-sm="column">' +
                                     '<div id=answer'+ this.question + '_' + this.answer + ' layout = "row" layout-align="left center">' +
                                       '<md-input-container class="md-block" flex-gt-sm>' +
                                             '<label>Câu trả lời 1</label>' +
                                             '<textarea ng-model="addtest.data.questionSet[' + this.question + '].answerSet[0]" md-maxlength="500" rows="5" md-select-on-focus></textarea>' +
                                       '</md-input-container>' +
-                                      '<input type="radio" id="radio_radio_' + this.question + '_' + this.answer + '" class="css-checkbox" name="gender" ng-click="addtest.insertCorrectAnswer($event)"><label class="css-label" for="radio_radio_' + this.question + '_' + this.answer + '"></label>' +
+                                      '<input type="radio" id="radio_' + this.question + '_' + this.answer + '" class="css-checkbox" name="gender" ng-click="addtest.insertCorrectAnswer($event)"><label class="css-label" for="radio_' + this.question + '_' + this.answer + '"></label>' +
                                       '<button id="#answer' + this.question + '_' + this.answer + '" class="deleteAns" ng-click="addtest.removeAnswer($event)">X</button>' +
                                     '</div>' +
                                   '</div>' +
-                                // '</form>' +
+                                '</form>' +
                                 '<md-input-container class="md-block" flex-gt-sm>' +
                                   '<label>Điểm số</label>' +
                                   '<input ng-model="addtest.data.questionSet[' + this.question + '].score" style="width: 120px;" type="number" step="0.25">' +
