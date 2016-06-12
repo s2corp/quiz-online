@@ -44,7 +44,7 @@
 
         <!-- Gửi mail -->
         <div layout="row" layout-align="center center">
-          <md-button class="md-raised md-primary" style="background-color: #ff8a00; width: 50%; padding: 7px;" ng-click="sendMail.sendMail()" aria-label="login" ng-disabled="register.registerForm.$invalid()">
+          <md-button class="md-raised md-primary" style="background-color: #ff8a00; width: 50%; padding: 7px;" ng-click="sendMail.sendMail()" aria-label="login" ng-disabled="sendMail.visibility == 'hidden'">
             <strong>
               GửI MAIL
             </strong>
