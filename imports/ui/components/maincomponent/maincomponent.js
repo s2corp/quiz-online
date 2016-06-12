@@ -103,8 +103,8 @@ function run($rootScope, $state) {
         alert('bạn cần đăng nhập trước khi thực hiện thao tác này');
         $state.go('login');
       }
-      //if (error === 'JOB_REQUIRED')
-        //alert('bạn cần có tài khoản giáo viên để có thể thực hiện thao tác này')
+      if (error === 'JOB_REQUIRED')
+        alert('bạn cần có tài khoản giáo viên để có thể thực hiện thao tác này')
       if (error === 'VERTIFICATE_REQUIRED')
         alert('một mail chứng thực đã được gửi đến email của bạn, đề nghị xác thực email trước khi thực hiện thao tác này');
       if(error === 123)
