@@ -10,6 +10,7 @@ Meteor.subscribe('responsive')
 class SendMail{
 
   constructor(){
+    this.visibility = 'visible';
     this.mail = {
       userId: '',
       mailAddress: '',
@@ -22,6 +23,7 @@ class SendMail{
   }
 
   sendMail(){
+    this.visibility = 'hidden';
     Responsive.insert(this.mail);
   }
 }
