@@ -243,9 +243,12 @@ class AddTest {
 
        if(file) {
 
+
           if(file.type.substring(0, 5) === 'image') {
-            var fileObj = await this.insertMedia(file)
-            data.questionSet[i].image = '/questionMedia/media-' + fileObj._id + '-' + fileObj.original.name ;
+            var fileObj = await this.insertMedia(file);
+            console.log(fileObj);
+
+            data.questionSet[i].image = '/questionMedia/' + fileObj._id + '-' + fileObj.original.name ;
           } else {
               var fileObj = await this.insertMedia(file)
               data.questionSet[i].audio = '/questionMedia/media-' + fileObj._id + '-' + fileObj.original.name ;
