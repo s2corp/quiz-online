@@ -13,7 +13,10 @@ class ProfileExam {
     this.stateParams = $stateParams;
     this.helpers({
       exam(){
-        var data = Examination.find({"userId":Meteor.userId()});
+        var data = Examination.find({"userId":Meteor.userId()}, {
+         sort: {
+           date: -1
+         }});
         return data;
       }
     });

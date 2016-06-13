@@ -7,13 +7,13 @@ import { Medias } from '../../../api/media';
 import './addtest.html';
 
 class AddTest {
-  constructor($scope, $reactive, $compile, $sce) {
+  constructor($scope, $reactive, $compile, $sce,$location) {
     'ngInject';
 
     $reactive(this).attach($scope);
     this.subscribe("question");
     this.subscribe("images");
-
+    this.location = $location;
     //mã câu hỏi sinh tự động
     this.code = (Math.floor(Math.random()*99999) + 10000).toString();
 
@@ -142,35 +142,45 @@ class AddTest {
                                 '<div layout="column">' +
                                     '<img id="photo_' + this.question + '" style="width:80%" class="media" src="">' +
                                     '<audio id="audio_' + this.question + '" controls class="media" style="visibility: hidden;" src=""></audio>' +
+                                    '<p id="mediaError_' + this.question + '" class="error" role="alert" style="color: red; display: none;">' +
+                                        'file media phải có kích thước nhỏ hơn 2 Megabyte' +
+                                    '</p>' +
                                 '</div>' +
                                 '<script>' +
                                   // Upload hình ảnh
                                   'document.getElementById("media_question_' + this.question + '").onchange = function () {' +
                                     'var reader = new FileReader();' +
-
-                                      //console.log(this.files[0].type.substring(0, 6))
-                                    'if(this.files[0].type.substring(0, 5) === "image") {' +
-                                      'document.getElementById("audio_' + this.question + '").src = "";' +
-                                      'reader.onload = function (e) {' +
-                                        // get loaded data and render thumbnail.
-                                        'document.getElementById("photo_' + this.question + '").src = e.target.result;' +
-                                      '};' +
-
-
-                                        // read the image file as a data URL.
-                                      'if(this.files[0])' +
-                                        'reader.readAsDataURL(this.files[0]);' +
-                                      'document.getElementById("audio_' + this.question + '").style.visibility = "hidden";' +
+                                    'if(this.files[0].size > 2097152) {' +
+                                      'document.getElementById("mediaError_' + this.question + '").style.display = "inline";' +
+                                      'document.getElementById("addQues").disabled = true;' +
+                                      'document.getElementById("finish").disabled = true;' +
                                     '}' +
                                     'else {' +
-                                      'document.getElementById("photo_' + this.question + '").src = "";' +
-                                      'var sound = document.getElementById("audio_' + this.question + '");' +
-                                      'reader.onload = (function(audio) {return function(e) {audio.src = e.target.result;};})(sound);' +
+                                      'document.getElementById("mediaError_' + this.question + '").style.display = "none";' +
+                                      'document.getElementById("addQues").disabled = false;' +
+                                      'document.getElementById("finish").disabled = false;' +
+                                      'if(this.files[0].type.substring(0, 5) === "image") {' +
+                                        'document.getElementById("audio_0").src = "";' +
+                                        'reader.onload = function (e) {' +
+                                          // get loaded data and render thumbnail.
+                                          'document.getElementById("photo_' + this.question + '").src = e.target.result;' +
+                                        '};' +
 
-                                      // read the audio file as a data URL.
-                                      'if(this.files[0])' +
-                                        'reader.readAsDataURL(this.files[0]);' +
-                                      'document.getElementById("audio_' + this.question + '").style.visibility = "visible";' +
+                                          // read the image file as a data URL.
+                                        'if(this.files[0])' +
+                                          'reader.readAsDataURL(this.files[0]);' +
+                                        'document.getElementById("audio_' + this.question + '").style.visibility = "hidden";' +
+                                      '}' +
+                                      'else {' +
+                                        'document.getElementById("photo_0").src = "";' +
+                                        'var sound = document.getElementById("audio_' + this.question + '");' +
+                                        'reader.onload = (function(audio) {return function(e) {audio.src = e.target.result;};})(sound);' +
+
+                                        // read the audio file as a data URL.
+                                        'if(this.files[0])' +
+                                          'reader.readAsDataURL(this.files[0]);' +
+                                        'document.getElementById("audio_' + this.question + '").style.visibility = "visible";' +
+                                      '}' +
                                     '}' +
                                   '};' +
                                 '</script>' +
@@ -243,12 +253,15 @@ class AddTest {
 
        if(file) {
 
+
           if(file.type.substring(0, 5) === 'image') {
-            var fileObj = await this.insertMedia(file)
-            data.questionSet[i].image = 'questionMedia/media-' + fileObj._id + '-' + fileObj.original.name ;
+            var fileObj = await this.insertMedia(file);
+            console.log(fileObj);
+            data.questionSet[i].image ='public/questionMedia/' + fileObj.collectionName + '-' + fileObj._id + '-' + fileObj.original.name ;
+            console.log(data.questionSet[i].image);
           } else {
               var fileObj = await this.insertMedia(file)
-              data.questionSet[i].audio = 'questionMedia/media-' + fileObj._id + '-' + fileObj.original.name ;
+              data.questionSet[i].audio ='public/questionMedia/' + fileObj.collectionName + '-' + fileObj._id + '-' + fileObj.original.name ;
             }
 
       }
@@ -309,6 +322,7 @@ class AddTest {
  }
 
  insertMedia (file) {
+   console.log('file content', file);
   return new Promise(function (resolve, reject) {
     Medias.insert(file, function (err, fileObj) {
       if(err) {
@@ -411,14 +425,14 @@ class AddTest {
 
     for(i = 0; i < imageArray.length; i++) {
       console.log(imageArray[i].src.substring(0, 50));
-      if(imageArray[i].src !== 'http://localhost:3000/') {
+      if(imageArray[i].src !== 'http://quiz.s2corp.vn/default') {
           document.getElementById("reviewImage_" + i).src = imageArray[i].src;
       }
     }
 
     for(i = 0; i < audioArray.length; i++) {
       console.log(audioArray[i].src.substring(0, 50));
-      if(audioArray[i].src !== 'http://localhost:3000/') {
+      if(audioArray[i].src !== 'http://quiz.s2corp.vn/default') {
           document.getElementById("reviewAudio_" + i).src = audioArray[i].src;
       }
     }

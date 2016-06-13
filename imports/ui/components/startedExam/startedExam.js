@@ -16,6 +16,7 @@ class StartedExam {
     this.subscribe('question');
     this.subscribe("examination");
     this.score=0;
+    this.readonly=true;
     this.selectedIndex = 0 ;//hien ra cau hoi thu i
     this.isend = true;//kiem tra het cau hoi chua
     //note
@@ -26,7 +27,7 @@ class StartedExam {
     this.selectedRow = null;
     this.lengthquestion = 0;
     this.total =1;
-    document.getElementById('scored').innerHTML ="Điểm: 0.";
+    document.getElementById('scored').innerHTML ="Điểm: 0";
     var exam =  Examination.findOne({_id:$stateParams.exam_id});
     console.log(exam);
     if(exam !== null)
@@ -59,7 +60,7 @@ class StartedExam {
           var timeRunning =parseInt(Session.get("stoprun"));
           mi =parseInt(timeRunning / 60);
           sec = timeRunning % 60;
-         document.getElementById('time').innerHTML = "Thời gian: "+mi+":"+sec;
+         document.getElementById('time').innerHTML = mi+":"+sec;
         }
       },1000);
     });
@@ -91,13 +92,18 @@ class StartedExam {
   });
   }
 
+  randomQues(){
+      var x=Math.floor((Math.random() * 2) + 1);
+      console.log(x);
+      return x;
+  }
 
   changeTime(time)
   {
     var mi,sec;
     mi =parseInt(time / 60);
     sec = time % 60;
-   document.getElementById('time').innerHTML = "Thời gian: "+mi+":"+sec;
+   document.getElementById('time').innerHTML = mi+":"+sec;
  }
   //hien ra cau hoi thu index
   setClickedRow(index)
@@ -116,7 +122,7 @@ class StartedExam {
       }
       if(result){
         //console.log(result);
-        document.getElementById('scored').innerHTML ="Điểm:"+ result+".";
+        document.getElementById('scored').innerHTML ="Điểm:"+ result;
         Session.set("scored", result);
       }
     });

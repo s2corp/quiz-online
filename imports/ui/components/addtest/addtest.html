@@ -82,36 +82,46 @@
                 <div layout="column">
                   <img id="photo_0" style="width:80%" class="media" src="">
                   <audio id="audio_0" controls class="media" style="visibility: hidden;" src=""></audio>
-
+                  <p id="mediaError_0" class="error" role="alert" style="color: red; display: none;">
+                      file media phải có kích thước nhỏ hơn 2 Megabyte
+                  </p>
                 </div>
                 <script>
                   // Upload hình ảnh
                   document.getElementById("media_question_0").onchange = function () {
                     var reader = new FileReader();
-
-                      //console.log(this.files[0].type.substring(0, 6))
-                    if(this.files[0].type.substring(0, 5) === 'image') {
-                      document.getElementById("audio_0").src = '';
-                      reader.onload = function (e) {
-                        // get loaded data and render thumbnail.
-                        document.getElementById("photo_0").src = e.target.result;
-                      };
-
-
-                        // read the image file as a data URL.
-                      if(this.files[0])
-                        reader.readAsDataURL(this.files[0]);
-                      document.getElementById('audio_0').style.visibility = 'hidden';
+                    console.log(this.files[0]);
+                    if(this.files[0].size > 2097152) {
+                      document.getElementById("mediaError_0").style.display = 'inline';
+                      document.getElementById("addQues").disabled = true;
+                      document.getElementById("finish").disabled = true;
                     }
                     else {
-                      document.getElementById('photo_0').src = '';
-                      var sound = document.getElementById('audio_0');
-                      reader.onload = (function(audio) {return function(e) {audio.src = e.target.result;};})(sound);
+                      document.getElementById("mediaError_0").style.display = 'none';
+                      document.getElementById("addQues").disabled = false;
+                      document.getElementById("finish").disabled = false;
+                      if(this.files[0].type.substring(0, 5) === 'image') {
+                        document.getElementById("audio_0").src = '';
+                        reader.onload = function (e) {
+                          // get loaded data and render thumbnail.
+                          document.getElementById("photo_0").src = e.target.result;
+                        };
 
-                      // read the audio file as a data URL.
-                      if(this.files[0])
-                        reader.readAsDataURL(this.files[0]);
-                      document.getElementById('audio_0').style.visibility = 'visible';
+                          // read the image file as a data URL.
+                        if(this.files[0])
+                          reader.readAsDataURL(this.files[0]);
+                        document.getElementById('audio_0').style.visibility = 'hidden';
+                      }
+                      else {
+                        document.getElementById('photo_0').src = '';
+                        var sound = document.getElementById('audio_0');
+                        reader.onload = (function(audio) {return function(e) {audio.src = e.target.result;};})(sound);
+
+                        // read the audio file as a data URL.
+                        if(this.files[0])
+                          reader.readAsDataURL(this.files[0]);
+                        document.getElementById('audio_0').style.visibility = 'visible';
+                      }
                     }
                   };
                 </script>
@@ -135,8 +145,8 @@
                           <button id="#answer0_0" class="deleteAns" ng-click="addtest.removeAnswer($event)">X</button>
                         </div>
                   </div>
-                </form> 
 
+                </form>
                 <!--Điểm số của câu hỏi-->
                 <md-input-container class="md-block" flex-gt-sm>
                   <label>Điểm số</label>
@@ -164,8 +174,8 @@
         </form>
 
         <div layout="column" layout-align="center center">
-          <md-button class="md-raised md-primary" style="background-color: #ff8a00; width: 20%;" ng-click="addtest.appendQuestion()" aria-label="addAnswer">Thêm câu hỏi</md-button>
-          <md-button class="md-raised md-primary" style="background-color: #ff8a00; width: 20%;" ng-click="addtest.addTest()" aria-label="finish">Hoàn Thành</md-button>
+          <md-button id="addQues" class="md-raised md-primary" style="background-color: #ff8a00; width: 20%;" ng-click="addtest.appendQuestion()" aria-label="addAnswer">Thêm câu hỏi</md-button>
+          <md-button id="finish" class="md-raised md-primary" style="background-color: #ff8a00; width: 20%;" ng-click="addtest.addTest()" aria-label="finish">Hoàn Thành</md-button>
         </div>
       </md-tab>
 

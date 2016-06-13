@@ -13,7 +13,8 @@ class Statistics {
     this.subscribe("examination");
     this.subscribe("question");
     this.stateParams = $stateParams;
-    this.exam = $stateParams.exam_id  ;
+    this.exam_id = $stateParams.exam_id;
+    // google.charts.load('current', {'packages':['corechart']});//chi load mot lan trong maincomponents
     this.helpers({
       info: function(){
         Meteor.call("statis", $stateParams.exam_id, function(error, result){
@@ -25,10 +26,44 @@ class Statistics {
           }
         });
         var data= Session.get("statis");
-        console.log(data);
-        return data;
-      }
+        var arr = [];
+        var index = 0;
+        for(key in data)
+          {
+              arr[index]=data[key];
+              index++;
+          }
+          var easy = arr[0];
+          var normal = arr[1];
+          var hardly = arr[2];
+          this.drawPie(easy,normal,hardly);
+      },
+    exam(){
+      return Examination.findOne({_id:$stateParams.exam_id});
+
+    }
     });
+  }
+  drawPie(easy,normal,hardly){
+    // console.log(easy + " "+ normal + " " + hardly);
+
+    google.charts.setOnLoadCallback(drawChart);
+    function drawChart() {
+      var data = google.visualization.arrayToDataTable([
+        ['Kì thi', 'Tỷ lệ %'],
+        ['Dễ',     easy],
+        ['Trung bình',      normal],
+        ['Khó',  hardly]
+      ]);
+
+      var options = {
+        title: 'MỨC ĐỘ ĐỀ THI'
+      };
+
+      var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+
+      chart.draw(data, options);
+    }
   }
 }
 const name = "statistics";

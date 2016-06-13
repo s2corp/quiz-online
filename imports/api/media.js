@@ -1,5 +1,5 @@
 export const Medias = new FS.Collection("media", {
-  stores: [new FS.Store.FileSystem("media", {path: "../../../../../public/questionMedia"})]
+  stores: [new FS.Store.FileSystem("media", {path: "../../../../../public/media"})]
 });
 
 Medias.allow({

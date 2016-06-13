@@ -29,6 +29,8 @@ import './maincomponent.html';
 
 class Main{
   constructor(){
+     google.charts.load('current', {'packages':['corechart']});//onload pie
+
   }
 }
 

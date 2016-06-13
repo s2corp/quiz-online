@@ -1,16 +1,14 @@
-<md-content layout-padding layout-wrap>
+<md-content layout="column" id="profile" layout-padding layout-wrap>
   <div  ng-repeat="item in profileExam.exam">
-    <div layout="row" layout-padding layout-align="space-between end" >
-      <div layout="column" layout-align="space-bettween start">
+    <div layout="column" layout-padding >
         <p>
           Mã kì thi: {{item._id}}
         </p>
-        <span flex="10"></span>
-        <p>
+        <p >
           Tên kì thi: {{item.examName}}
         </p>
-      </div>
-      <div layout="row" layout-align="end">
+      <div layout="row" layout-align-md="end" layout-align-lg="end">
+        <md-button class="md-raised" href="/statistics/{{item._id}}">Xem tỷ lệ</md-button>
         <md-button class="md-raised" href="/scored/{{item._id}}">Kết quả</md-button>
         <md-button class="md-raised" href="/detailExam/{{item._id}}">Chỉnh sửa</md-button>
       </div>
