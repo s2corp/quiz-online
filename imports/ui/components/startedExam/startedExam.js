@@ -92,6 +92,11 @@ class StartedExam {
   });
   }
 
+  randomQues(){
+      var x=Math.floor((Math.random() * 2) + 1);
+      console.log(x);
+      return x;
+  }
 
   changeTime(time)
   {

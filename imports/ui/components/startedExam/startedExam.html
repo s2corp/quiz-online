@@ -18,7 +18,7 @@
   </div>
 
   <div id="question" layout="column" layout-padding>
-    <div layout="column" ng-repeat="q in startedExam.showquestion.questionSet" ng-show="$index == startedExam.selectedIndex" ng-init="vitri = $index">
+    <div layout="column" ng-repeat="q in startedExam.showquestion.questionSet " ng-show="$index == startedExam.selectedIndex" ng-init="vitri = $index">
         <div layout="column">
             <h4 style="color:rgb(16, 17, 16)">Câu {{$index +1}}. {{q.question}}</h4>
         </div>

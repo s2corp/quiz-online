@@ -248,6 +248,7 @@ class AddTest {
             var fileObj = await this.insertMedia(file);
             console.log(fileObj);
             data.questionSet[i].image ='http://'+this.location.host()+ '/images/' + fileObj.collectionName + '-' + fileObj._id + '-' + fileObj.original.name ;
+            console.log(data.questionSet[i].image);
           } else {
               var fileObj = await this.insertMedia(file)
               data.questionSet[i].audio ='http://'+this.location.host()+ '/images/' + fileObj.collectionName + '-' + fileObj._id + '-' + fileObj.original.name ;
