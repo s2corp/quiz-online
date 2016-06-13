@@ -7,13 +7,13 @@ import { Medias } from '../../../api/media';
 import './addtest.html';
 
 class AddTest {
-  constructor($scope, $reactive, $compile, $sce) {
+  constructor($scope, $reactive, $compile, $sce,$location) {
     'ngInject';
 
     $reactive(this).attach($scope);
     this.subscribe("question");
     this.subscribe("images");
-
+    this.location = $location;
     //mã câu hỏi sinh tự động
     this.code = (Math.floor(Math.random()*99999) + 10000).toString();
 
@@ -247,11 +247,10 @@ class AddTest {
           if(file.type.substring(0, 5) === 'image') {
             var fileObj = await this.insertMedia(file);
             console.log(fileObj);
-
-            data.questionSet[i].image = '/questionMedia/' + fileObj._id + '-' + fileObj.original.name ;
+            data.questionSet[i].image ='http://'+this.location.host()+ '/images/' + fileObj.collectionName + '-' + fileObj._id + '-' + fileObj.original.name ;
           } else {
               var fileObj = await this.insertMedia(file)
-              data.questionSet[i].audio = '/questionMedia/media-' + fileObj._id + '-' + fileObj.original.name ;
+              data.questionSet[i].audio ='http://'+this.location.host()+ '/images/' + fileObj.collectionName + '-' + fileObj._id + '-' + fileObj.original.name ;
             }
 
       }
@@ -312,6 +311,7 @@ class AddTest {
  }
 
  insertMedia (file) {
+   console.log('file content', file);
   return new Promise(function (resolve, reject) {
     Medias.insert(file, function (err, fileObj) {
       if(err) {

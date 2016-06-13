@@ -63,7 +63,8 @@ class Login {
             this.checkMail = () => {
 
             //Kiểm tra mail có hợp lệ hay không
-              var re = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.+-]+((\.edu+\.[a-zA-Z]{2,3})|(\.edu))$/;
+              //var re = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.+-]+((\.edu+\.[a-zA-Z]{2,3})|(\.edu))$/;
+              var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,3}))$/;
               if(!re.test(this.user.mail)){
                 this.errorMail = "địa chỉ mail không hợp lệ";
                 return false;

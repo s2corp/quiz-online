@@ -32,3 +32,4 @@ accounts-password
 chart:chart
 cfs:standard-packages
 cfs:filesystem
+cfs:gridfs
