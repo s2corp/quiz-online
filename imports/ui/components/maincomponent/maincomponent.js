@@ -20,11 +20,11 @@ import { name as PageNotFound } from '../pageNotFound/pageNotFound';
 import { name as Menu } from '../menu/menu';
 import { name as Auth } from '../auth/auth';
 import {name as profileExam} from '../profileExam/profileExam';
+import {name as profileQuestion} from '../profileQuestion/profileQuestion';
 import {name as detailExam} from '../detailExam/detailExam';
 import {name as tutorial} from '../tutorial/tutorial';
-import {name as statistics} from '../statistics/statistics';
-import {name as detailStatistics} from '../detailStatistics/detailStatistics';
-
+import {name as detailStatisticsQuestion} from '../detailStatisticsQuestion/detailStatisticsQuestion';
+import {name as statisticsQuestion} from '../statisticsQuestion/statisticsQuestion';
 import './maincomponent.html';
 
 class Main{
@@ -58,8 +58,9 @@ export default  angular.module(name, [
     tutorial,
     PageNotFound,
     Menu,
-    statistics,
-    detailStatistics
+    profileQuestion,
+    statisticsQuestion,
+    detailStatisticsQuestion
     ///ngMaterial
   ]
 )

@@ -3,6 +3,7 @@ import angularMeteor from 'angular-meteor';
 import uiRouter from 'angular-ui-router';
 import ngMaterial from 'angular-material';
 import { Question } from '../../../api/question';
+import { Questionstatistics } from '../../../api/questionstatistics';
 import { Medias } from '../../../api/media';
 import './addtest.html';
 
@@ -150,7 +151,7 @@ class AddTest {
                                   // Upload hình ảnh
                                   'document.getElementById("media_question_' + this.question + '").onchange = function () {' +
                                     'var reader = new FileReader();' +
-                                    'if(this.files[0].size > 2097152) {' +
+                                    'if(this.files[0].size > 10485760) {' +
                                       'document.getElementById("mediaError_' + this.question + '").style.display = "inline";' +
                                       'document.getElementById("addQues").disabled = true;' +
                                       'document.getElementById("finish").disabled = true;' +
@@ -232,6 +233,15 @@ class AddTest {
   //lưu bộ câu hỏi vào cơ sở dữ liẹu
   async buildTest()
   {
+    var quesStatis = {
+      _id: this.data._id,
+      userId: Meteor.userId(),
+      title: this.data.title,
+      ExamSet: [],
+      date:new Date()
+    };
+
+    Questionstatistics.insert(quesStatis);
 
     //thêm id của user đang đăng nhập
     if(Meteor.userId() != null)

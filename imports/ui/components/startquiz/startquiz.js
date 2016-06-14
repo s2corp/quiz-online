@@ -2,11 +2,14 @@ import angular from 'angular';
 import angularMeteor from 'angular-meteor';
 
 import './startquiz.html';
+
 import { Session } from 'meteor/session';
 import { Question } from '../../../api/question';
 import { Notification } from '../../../api/notificationdata';
 import { Examination } from '../../../api/examination';
-import { QuestionBankData } from '../../../api/questionbankdata'
+import { QuestionBankData } from '../../../api/questionbankdata';
+import { Questionstatistics } from '../../../api/questionstatistics';
+
 import { name as AddTest } from '../addtest/addtest.js';
 import { name as QuestionBank } from '../questionbank/questionbank.js';
 import { name as SendCodeButton } from '../sendCodeButton/sendCodeButton';
@@ -91,6 +94,14 @@ class StartQuiz{
       {
         this.data.questionSetId = Session.get('questionId');
       }
+
+      var statis = {
+        examId: this.data._id,
+        playercount:0,
+        questionSet: []
+      };
+
+
 
       if(Session.get('questionCount')){
         this.data.questionCount = Session.get('questionCount');

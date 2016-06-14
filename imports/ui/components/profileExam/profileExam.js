@@ -13,7 +13,7 @@ class ProfileExam {
     this.stateParams = $stateParams;
     this.helpers({
       exam(){
-        var data = Examination.find({"userId":Meteor.userId()}, {
+        var data = Examination.find({"questionSetId":this.questionid}, {
          sort: {
            date: -1
          }});
@@ -30,15 +30,9 @@ export default angular.module(name,[
 ])
 .component(name,{
   templateUrl:'imports/ui/components/profileExam/profileExam.html',
+  bindings:{
+    questionid:'='
+  },
   controllerAs: name,
   controller: ProfileExam
 })
-.config(config);
-function config($stateProvider){
-  'ngInject';
-  $stateProvider
-  .state('profileExam', {
-    url: '/profileExam',
-    template: '<profile-exam></profile-exam>'
-  })
-}

@@ -1,0 +1,10 @@
+<md-content id="mychart"  layout="column" layout-padding layout-align-md="center center" layout-align-lg="center center">
+  <div layout="column" layout-align="center center">
+    <h3 style="color:#ff8a00">Tiêu đề: {{statisticsQuestion.question.title}}</h3>
+  </div>
+    <div layout="column" id="piechart"  ></div>
+
+    <div layout="column" layout-align="center center">
+      <md-button class="md-raised" style="color:#ff8a00" href="/detailStatisticsQuestion/{{statisticsQuestion.question_id}}" >XEM CHI TIẾT</md-button>
+    </div>
+</md-content>

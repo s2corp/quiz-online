@@ -8,6 +8,7 @@ import { NotificationData } from '../imports/api/notificationdata';
 import { Examination } from '../imports/api/examination';
 import { Responsive } from '../imports/api/responsive';
 import { Question } from '../imports/api/question';
+import { Questionstatistics } from '../imports/api/questionstatistics';
 import { QuestionBankData } from '../imports/api/questionbankdata';
 process.env.MAIL_URL = 'smtp://sanghuynhnt95@gmail.com:123581321tuongmo@smtp.gmail.com:465/';
 
@@ -228,51 +229,132 @@ Meteor.methods({
   }
 });
 
-//thong ke chi tiet ki thi
   Meteor.methods({
-    detailstatis:function(id){
-      var contain=[];
-      var ob={};
-      var exam = Examination.findOne({_id:id});
-      var totaluser = exam.usersList.length;
-      var data= Question.findOne({_id:exam.questionSetId});
-      var total = data.questionSet.length;
-      for (var i = 0; i < total; i++) {
-        ob.question = data.questionSet[i].question;
-        ob.countCorrect = data.questionSet[i].countCorrect ;
-        ob.rate = data.questionSet[i].rate;
-        contain.push(ob);
-        ob ={};
-      }
-      return contain;
-    }
-  });
-
-  //thong ke ki thi dang bieu do
-  Meteor.methods({
-      statis:function(id){
+      statisQuestion:function(id){
         var ob = {};
+        var veryeasy=0;
         var easy = 0;
         var normal = 0;
         var hardly =0;
-        var exam = Examination.findOne({_id:id});
-        var totaluser = exam.usersList.length;
-        var data= Question.findOne({_id:exam.questionSetId});
-        var totalquestion = data.questionSet.length;
-        for (var i = 0; i < totalquestion; i++) {
-          var check = data.questionSet[i].rate;
-          if(check >= 0.6)
-            easy = easy + check;
-            else if (check >= 0.3 && check < 0.6) {
-              normal = normal + check;
+        var veryhardly =0;
+        var data = Questionstatistics.findOne({"_id":id});
+        var totalexam = data.ExamSet.length;
+        var totalquestion = data.ExamSet[0].questionSet.length;
+        var totaluser = 0;
+        var question='';
+        var countCorrect=0;
+        var indexquestion = 0;
+        var flag = true;
+        if(data !== null)
+        {
+          for(var i =0 ;i < totalexam;i++)
+            totaluser= totaluser + data.ExamSet[i].playercount;
+          var i =0;
+             question='';
+             countCorrect=0;
+            for(var j=0;j < data.ExamSet[i].questionSet.length;j++)
+            {
+              question = data.ExamSet[i].questionSet[j].question;
+              countCorrect = data.ExamSet[i].questionSet[j].countCorrect;
+              var indexexam = i + 1;
+              while(indexexam < totalexam)
+              {
+                 indexquestion = 0;
+                 flag = true;
+                while (indexquestion < totalquestion && flag) {
+                  var questioncurrnent = data.ExamSet[indexexam].questionSet[indexquestion].question;
+                  if(questioncurrnent == question)
+                  {
+                      countCorrect =countCorrect+ data.ExamSet[indexexam].questionSet[indexquestion].countCorrect;
+                      flag = false;
+                  }
+                  else {
+                    indexquestion++;
+                  }
+                }
+                indexexam=indexexam+1;
+              }
+              var rate = countCorrect / totaluser;
+              if( rate >= 0.8)
+                veryhardly= veryhardly + 1;
+              else if ( rate >= 0.6) {
+                hardly= hardly + 1;
+              }
+              else if ( rate >= 0.4) {
+                normal= normal + 1;
+              }
+              else if (rate >= 0.2) {
+                easy= easy + 1;
+              }
+              else {
+                veryeasy= veryeasy + 1;
+              }
             }
-            else {
-              hardly = hardly + check;
-            }
+
         }
-        ob.easy = Math.round(easy * 100);
-        ob.normal = Math.round(normal * 100)
-        ob.hardly = Math.round(hardly *100);
+        ob.veryeasy = veryeasy;
+        ob.easy = easy;
+        ob.normal = normal;
+        ob.hardly =hardly ;
+        ob.veryhardly =veryhardly;
         return ob;
+    }
+  });
+
+  Meteor.methods({
+    detailstatisQuestion:function(id){
+      var contain=[];
+      var ob = {};
+      var veryeasy=0;
+      var easy = 0;
+      var normal = 0;
+      var hardly =0;
+      var veryhardly =0;
+      var data = Questionstatistics.findOne({"_id":id});
+      var totalexam = data.ExamSet.length;
+      var totalquestion = data.ExamSet[0].questionSet.length;
+      var totaluser = 0;
+      var question='';
+      var countCorrect=0;
+      var indexquestion = 0;
+      var flag = true;
+      if(data !== null)
+      {
+        for(var i =0 ;i < totalexam;i++)
+          totaluser= totaluser + data.ExamSet[i].playercount;
+        var i=0;
+           question='';
+           countCorrect=0;
+          for(var j=0;j < data.ExamSet[i].questionSet.length;j++)
+          {
+            question = data.ExamSet[i].questionSet[j].question;
+            countCorrect = data.ExamSet[i].questionSet[j].countCorrect;
+            var indexexam = i + 1;
+            while(indexexam < totalexam)
+            {
+               indexquestion = 0;
+               flag = true;
+              while (indexquestion < totalquestion && flag) {
+                var questioncurrnent = data.ExamSet[indexexam].questionSet[indexquestion].question;
+                if(questioncurrnent == question)
+                {
+                    countCorrect =countCorrect+ data.ExamSet[indexexam].questionSet[indexquestion].countCorrect;
+                    flag = false;
+                }
+                else {
+                  indexquestion++;
+                }
+              }
+              indexexam=indexexam+1;
+            }
+            var rate = countCorrect / totaluser;
+            ob.question = question;
+            ob.rate = rate;
+            contain.push(ob);
+            ob ={};
+
+          }
+      }
+      return contain;
     }
   });

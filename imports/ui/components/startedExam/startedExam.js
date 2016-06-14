@@ -4,6 +4,7 @@ import uiRouter from 'angular-ui-router';
 import  mdDataTable from 'angular-material-data-table';
 import {Question} from '../../../api/question';
 import {Examination} from '../../../api/examination';
+import {Questionstatistics} from '../../../api/questionstatistics';
 // goi duoi server
 import {Meteor} from 'meteor/meteor';
 import './startedExam.html';
@@ -15,6 +16,7 @@ class StartedExam {
     $reactive(this).attach($scope);
     this.subscribe('question');
     this.subscribe("examination");
+    this.subscribe("questionstatistics",);
     this.score=0;
     this.readonly=true;
     this.selectedIndex = 0 ;//hien ra cau hoi thu i
@@ -28,11 +30,12 @@ class StartedExam {
     this.lengthquestion = 0;
     this.total =1;
     document.getElementById('scored').innerHTML ="Điểm: 0";
-    var exam =  Examination.findOne({_id:$stateParams.exam_id});
-    console.log(exam);
-    if(exam !== null)
+    this.exam =  Examination.findOne({_id:$stateParams.exam_id});
+    this.dataquestion =  Question.findOne({_id:$stateParams.question_id});
+    console.log(this.exam);
+    if(this.exam !== null)
     {
-      var time = exam.time * 60 -1;
+      var time = this.exam.time  -1;
       Session.set("stoprun", time);
 
     }
@@ -40,18 +43,23 @@ class StartedExam {
         Session.set("stoprun", 60);
     }
     this.changeTime(Session.get("stoprun"))
+
+    var parent = this;
     //ham tu dong kiem tra thoi gian
     this.autorun(() =>{
-      this.isstop =setInterval(function(){
+      var isstop =setInterval(function(){
         Meteor.call("timeRunOut", Session.get("stoprun"), function(error, result){
           if(error){
             console.log("error", error);
           }
             Session.set("stoprun", result);
         });
+
         if(Session.get("stoprun") <= 0)
         {
-          Meteor.clearInterval(this.isstop);
+
+          parent.updateStatic();
+          clearInterval(isstop);
           this.stop();
          $state.go("scored-exam",{"exam_id":$stateParams.exam_id});
         }
@@ -92,10 +100,31 @@ class StartedExam {
   });
   }
 
-  randomQues(){
-      var x=Math.floor((Math.random() * 2) + 1);
-      console.log(x);
-      return x;
+  updateStatic()
+  {
+  //  console.log(this.exam);
+    console.log(this.dataquestion);
+
+    //console.log(this.ex);
+    if(this.exam.isTest === true)
+    {
+      var ob={
+        examId: this.exam_id,
+        playercount : this.exam.usersList.length,
+        questionSet:[]
+      };
+      for(var i=0;i<this.dataquestion.questionSet.length;i++)
+      {
+        var obques ={};
+        obques.question = this.dataquestion.questionSet[i].question;
+        obques.countCorrect = this.dataquestion.questionSet[i].countCorrect;
+        ob.questionSet.push(obques);
+      }
+      console.log(ob);
+      Questionstatistics.update({'_id':this.question_id}, {$push:{
+          ExamSet: ob
+      }});
+    }
   }
 
   changeTime(time)
@@ -132,7 +161,8 @@ class StartedExam {
         }
         else {
           this.isend = false;
-          Meteor.clearInterval(this.isstop);
+          clearInterval(this.isstop);
+          this.updateStatic();
           this.state.go('scored-exam',{"exam_id":this.exam_id});
         }
         this.selectedRow = null;

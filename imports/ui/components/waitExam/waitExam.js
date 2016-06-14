@@ -30,6 +30,7 @@ class WaitExam {
       changed: function (id, fields) {
         if(fields.started === true)
         {
+          
           Session.set("stopTime", 5);
           var stop = setInterval(function(){
             Meteor.call("timeRunOut", Session.get("stopTime"), function(error, result){
@@ -42,6 +43,7 @@ class WaitExam {
           Meteor.autorun(function(){
             if(Session.get("stopTime") < 0)
             {
+
               clearInterval(stop);
               document.getElementById('wait').innerHTML ="Kì thi đang diễn ra.";
             }
