@@ -17,7 +17,7 @@ class SendCode{
       usersOnline() {
         console.log(this.quizid);
 
-        return Meteor.users.find({ "status.online": true })
+        return Meteor.users.find({ "_id":  { $ne: Meteor.userId() }, "status.online": true })
       }
     });
   }
