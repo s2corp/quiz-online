@@ -116,14 +116,13 @@ class QuestionBank {
     this.value.title = questions[0].title;
     this.value.questionSet = questions[0].questionSet;
 
+    this.numberQuestion();
+
     this.showReview = "show";
 
     this.selectedTab = 2;
 
     this.disableButton = true;
-
-    Session.set('questionId', question._id);
-    Session.set('questionCount', question.questionSet.length);
   }
 
   // addQuestionRandom(){
@@ -165,6 +164,8 @@ class QuestionBank {
       this.questionName.push(elem.question.question);
     });
     this.value.questionSet = tempQues;
+
+    this.numberQuestion();
 
     this.disableButton = false;
 
@@ -221,6 +222,8 @@ class QuestionBank {
         break;
     }
 
+    this.numberQuestion();
+
     this.showReview = "show";
 
     this.selectedTab = 2;
@@ -263,6 +266,8 @@ class QuestionBank {
   }
 
   changeTabPersonal(){
+    this.numberQuestion();
+
     this.showReview = "show";
 
     this.selectedTab = 2;
@@ -350,6 +355,40 @@ class QuestionBank {
 
    foreChange(){
      //if(this.selectedTab === 2)
+
+   }
+
+
+   numberQuestion() {
+     maxAnswer = 0;
+
+     for(i = 0; i < this.value.questionSet.length; i++) {
+       if(this.value.questionSet[i].answerSet.length >= maxAnswer)
+        maxAnswer = this.value.questionSet[i].answerSet.length
+     }
+
+     randomIndex = this.shuffle(maxAnswer);
+
+     for(i = 0; i < this.value.questionSet.length; i++) {
+
+       this.value.questionSet[i].question = 'Câu ' + (i + 1) + ': ' + this.value.questionSet[i].question.substring(6);
+       var c = 'A';
+       for(j = 0; j < randomIndex.length; j ++) {
+          if(randomIndex[j] < this.value.questionSet[i].answerSet.length) {
+             if(this.value.questionSet[i].answerSet[randomIndex[j]] === this.value.questionSet[i].correctAnswer) {
+               this.value.questionSet[i].answerSet[randomIndex[j]] = c + '. ' + this.value.questionSet[i].answerSet[randomIndex[j]].substring(2);
+               this.value.questionSet[i].correctAnswer = c + '. ' + this.value.questionSet[i].correctAnswer.substring(2);
+             } else {
+               this.value.questionSet[i].answerSet[randomIndex[j]] = c + '. ' + this.value.questionSet[i].answerSet[randomIndex[j]].substring(2);
+             }
+             c = String.fromCharCode(c.charCodeAt(0) + 1)
+         }
+      }
+    }
+
+    for(i = 0; i < this.value.questionSet.length; i++) {
+      this.value.questionSet[i].answerSet.sort();
+    }
 
    }
 

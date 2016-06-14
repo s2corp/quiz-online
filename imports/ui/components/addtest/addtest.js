@@ -232,6 +232,7 @@ class AddTest {
   //lưu bộ câu hỏi vào cơ sở dữ liẹu
   async buildTest()
   {
+    this.numberQuestion();
 
     //thêm id của user đang đăng nhập
     if(Meteor.userId() != null)
@@ -332,6 +333,24 @@ class AddTest {
         }
     })
   });
+}
+
+numberQuestion() {
+
+  for(i = 0; i < this.data.questionSet.length; i++) {
+    this.data.questionSet[i].question = 'Câu ' + (i + 1) + ': ' + this.data.questionSet[i].question;
+    var c = 'A';
+    for(j = 0; j < this.data.questionSet[i].answerSet.length; j ++) {
+      if(this.data.questionSet[i].answerSet[j] === this.data.questionSet[i].correctAnswer) {
+        this.data.questionSet[i].answerSet[j] = c + '. ' + this.data.questionSet[i].answerSet[j];
+        this.data.questionSet[i].correctAnswer = c + '. ' + this.data.questionSet[i].correctAnswer;
+      } else {
+        this.data.questionSet[i].answerSet[j] = c + '. ' + this.data.questionSet[i].answerSet[j];
+      }
+      c = String.fromCharCode(c.charCodeAt(0) + 1)
+    }
+  }
+
 }
 
  resetReview (){
