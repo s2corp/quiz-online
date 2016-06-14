@@ -203,7 +203,7 @@ class AddTest {
                                   '<input ng-model="addtest.data.questionSet[' + this.question + '].score" style="width: 120px;" type="number" step="0.25">' +
                                 '</md-input-container>' +
                                 '<div layout="row" layout-align="left center" style="width: 40%;">' +
-                                  '<button id="#answer' + this.question + '" class="addAnswer" ng-click="addtest.appendAnswer($event)">Thêm câu trả lời</button>' +
+                                  '<button id="#answer' + this.question + '" class="addAnswer" ng-click="addtest.appendAnswer($event)">Thêm lựa chọn</button>' +
                                   '<span flex style="min-width: 3px;"></span>' +
 
                                   '<label class="file">' +
