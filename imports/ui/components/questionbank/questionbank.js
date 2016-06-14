@@ -341,6 +341,15 @@ class QuestionBank {
      }
    }
 
+   //sử dụng để sắp xếp questionSet tăng dần theo nội dung câu hỏi
+   compare(a,b) {
+     if (parseInt(a.question.substring(4, a.question.length - 1)) < parseInt(b.question.substring(4, b.question.length - 1)))
+      return -1;
+     if (parseInt(a.question.substring(4, a.question.length - 1)) > parseInt(b.question.substring(4, b.question.length - 1)))
+      return 1;
+    return 0;
+  }
+
    //lọc dữ liệu trùng lặp
    filterData(data){
     data.sort();
@@ -368,23 +377,26 @@ class QuestionBank {
      }
 
      randomIndex = this.shuffle(maxAnswer);
+     randomIndexQues = this.shuffle(this.value.questionSet.length);
 
      for(i = 0; i < this.value.questionSet.length; i++) {
-
-       this.value.questionSet[i].question = 'Câu ' + (i + 1) + ': ' + this.value.questionSet[i].question.substring(6);
+       var rand = randomIndexQues[i];
+       this.value.questionSet[rand].question = 'Câu ' + (i + 1) + ': ' + this.value.questionSet[rand].question.substring(6);
        var c = 'A';
        for(j = 0; j < randomIndex.length; j ++) {
-          if(randomIndex[j] < this.value.questionSet[i].answerSet.length) {
-             if(this.value.questionSet[i].answerSet[randomIndex[j]] === this.value.questionSet[i].correctAnswer) {
-               this.value.questionSet[i].answerSet[randomIndex[j]] = c + '. ' + this.value.questionSet[i].answerSet[randomIndex[j]].substring(2);
-               this.value.questionSet[i].correctAnswer = c + '. ' + this.value.questionSet[i].correctAnswer.substring(2);
+          if(randomIndex[j] < this.value.questionSet[rand].answerSet.length) {
+             if(this.value.questionSet[rand].answerSet[randomIndex[j]] === this.value.questionSet[rand].correctAnswer) {
+               this.value.questionSet[rand].answerSet[randomIndex[j]] = c + '. ' + this.value.questionSet[rand].answerSet[randomIndex[j]].substring(2);
+               this.value.questionSet[rand].correctAnswer = c + '. ' + this.value.questionSet[rand].correctAnswer.substring(2);
              } else {
-               this.value.questionSet[i].answerSet[randomIndex[j]] = c + '. ' + this.value.questionSet[i].answerSet[randomIndex[j]].substring(2);
+               this.value.questionSet[rand].answerSet[randomIndex[j]] = c + '. ' + this.value.questionSet[rand].answerSet[randomIndex[j]].substring(2);
              }
              c = String.fromCharCode(c.charCodeAt(0) + 1)
          }
       }
     }
+
+    this.value.questionSet.sort(this.compare);
 
     for(i = 0; i < this.value.questionSet.length; i++) {
       this.value.questionSet[i].answerSet.sort();
