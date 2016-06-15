@@ -132,6 +132,7 @@ class StartedExam {
   {
     this.total = this.total + 1;
     if(que !== null && data !==null && vitri !==null)
+    {
       Meteor.call("checkanswer",this.exam_id,Meteor.userId(),this.question_id,que,data,vitri , function(error, result){
         if(error){
           console.log("error", error);
@@ -142,7 +143,8 @@ class StartedExam {
           Session.set("scored", result);
         }
       });
-
+    }
+      
       this.updateStatic();
     //chuyen sang cau hoi tiep theo
         if (this.selectedIndex < (this.lengthquestion - 1)) {

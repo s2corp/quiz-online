@@ -204,7 +204,7 @@ class AddTest {
                                   '<input ng-model="addtest.data.questionSet[' + this.question + '].score" style="width: 120px;" type="number" step="0.25">' +
                                 '</md-input-container>' +
                                 '<div layout="row" layout-align="left center" style="width: 40%;">' +
-                                  '<button id="#answer' + this.question + '" class="addAnswer" ng-click="addtest.appendAnswer($event)">Thêm câu trả lời</button>' +
+                                  '<button id="#answer' + this.question + '" class="addAnswer" ng-click="addtest.appendAnswer($event)">Thêm lựa chọn</button>' +
                                   '<span flex style="min-width: 3px;"></span>' +
 
                                   '<label class="file">' +
@@ -242,6 +242,7 @@ class AddTest {
     };
 
     Questionstatistics.insert(quesStatis);
+    this.numberQuestion();
 
     //thêm id của user đang đăng nhập
     if(Meteor.userId() != null)
@@ -342,6 +343,24 @@ class AddTest {
         }
     })
   });
+}
+
+numberQuestion() {
+
+  for(i = 0; i < this.data.questionSet.length; i++) {
+    this.data.questionSet[i].question = 'Câu ' + (i + 1) + ': ' + this.data.questionSet[i].question;
+    var c = 'A';
+    for(j = 0; j < this.data.questionSet[i].answerSet.length; j ++) {
+      if(this.data.questionSet[i].answerSet[j] === this.data.questionSet[i].correctAnswer) {
+        this.data.questionSet[i].answerSet[j] = c + '. ' + this.data.questionSet[i].answerSet[j];
+        this.data.questionSet[i].correctAnswer = c + '. ' + this.data.questionSet[i].correctAnswer;
+      } else {
+        this.data.questionSet[i].answerSet[j] = c + '. ' + this.data.questionSet[i].answerSet[j];
+      }
+      c = String.fromCharCode(c.charCodeAt(0) + 1)
+    }
+  }
+
 }
 
  resetReview (){

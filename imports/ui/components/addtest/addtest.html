@@ -13,11 +13,11 @@
 
               <!-- Nhập tiêu đề câu hỏi -->
               <md-input-container class="md-block" flex-gt-sm style="width: 80%;">
-                      <label>Nhập tiêu đề câu hỏi</label>
+                      <label>Nhập tiêu đề bộ câu hỏi</label>
                       <input name="quesTitle" ng-model="addtest.data.title" required>
                       <br>
                       <p class="error" role="alert" ng-show="addtest.startForm.quesTitle.$error.required" style="color: red;">
-                         tiêu đề câu hỏi là bắt buộc
+                         Tiêu đề bộ câu hỏi là bắt buộc
                       </p>
               </md-input-container>
 
@@ -27,7 +27,7 @@
                       <input type="number" step="10" min="10" name="quesNumber" ng-model="addtest.questionCount" required>
                       <br>
                       <p class="error" role="alert" ng-show="addtest.startForm.quesNumber.$error.required" style="color: red;">
-                          số lượng câu hỏi là bắt buộc
+                          Số lượng câu hỏi là bắt buộc
                       </p>
               </md-input-container>
 
@@ -37,7 +37,7 @@
                       <input type="number" step="10" min="10" name="quesScore" ng-model="addtest.score" required>
                       <br>
                       <p class="error" role="alert" ng-show="addtest.startForm.quesScore.$error.required" style="color: red;">
-                          số lượng câu hỏi là bắt buộc
+                          Số lượng câu hỏi là bắt buộc
                       </p>
               </md-input-container>
 
@@ -55,11 +55,11 @@
           <md-content id="questionSet" class="md-padding">
             <h1 class="md-display-2">Thêm câu hỏi</h1>
               <p id="correctError" class="error" role="alert" style="color: red; display: none;">
-                  bạn cần chọn câu trả lời đúng cho mỗi câu hỏi
+                  Bạn cần chọn câu trả lời đúng cho mỗi câu hỏi
               </p>
               <br>
               <p id="answerError" class="error" role="alert" style="color: red; display: none;">
-                  bạn cần thêm ít nhất 2 câu trả lời cho mỗi câu hỏi
+                  Bạn cần thêm ít nhất 2 câu trả lời cho mỗi câu hỏi
               </p>
               <!-- Tiêu đề câu hỏi -->
               <md-input-container class="md-block" flex-gt-sm>
@@ -83,7 +83,7 @@
                   <img id="photo_0" style="width:80%" class="media" src="">
                   <audio id="audio_0" controls class="media" style="visibility: hidden;" src=""></audio>
                   <p id="mediaError_0" class="error" role="alert" style="color: red; display: none;">
-                      file media phải có kích thước nhỏ hơn 2 Megabyte
+                      File media phải có kích thước nhỏ hơn 2 Megabyte
                   </p>
                 </div>
                 <script>
@@ -156,7 +156,7 @@
                 <div layout="row" layout-align="left center" style="width: 40%;">
 
                   <!--Thêm câu trả lời-->
-                  <button id="#answer0" class="addAnswer" ng-click="addtest.appendAnswer($event)">Thêm câu trả lời</button>
+                  <button id="#answer0" class="addAnswer" ng-click="addtest.appendAnswer($event)">Thêm lựa chọn</button>
                   <span flex style="min-width: 3px;"></span>
 
                   <!--Thêm media-->

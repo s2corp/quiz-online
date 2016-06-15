@@ -23,14 +23,14 @@
                       <div id="{{ques.title + $index}}" style="display: none">
                         <div ng-repeat="q in ques.questionSet">
                           <div layout="row" layout-align="center">
-                            <md-button class="md-raised" style="height: 50%; width: 60%;" ng-click="questionbank.showhideQuestion(q.question)" aria-label="showQuestion">{{q.question + ' | ' + (q.rate * 100) + '%'}}</md-button>
+                            <md-button class="md-raised" style="height: 50%; width: 60%;" ng-click="questionbank.showhideQuestion(q.question + ques.date)" aria-label="showQuestion">{{q.question + ' | ' + (q.rate * 100) + '%'}}</md-button>
                             <!-- <md-button title="chọn câu hỏi" style="background-color: transparent" ng-click="questionbank.addSubQuestion(q)" aria-label="add"><md-icon style="color: #57b947" md-svg-icon="action:ic_check_circle_24px"></md-icon></md-button> -->
                             <md-checkbox ng-click="questionbank.addSubQuestion(q)">
                             </md-checkbox>
                           </div>
 
 
-                          <div id="{{ q.question }}" style="display:none;" layout="column" layout-align="center center">
+                          <div id="{{ q.question + ques.date }}" style="display:none;" layout="column" layout-align="center center">
                             <!-- Nội dung câu hỏi -->
                             <md-input-container id="a" class="md-block" flex-gt-sm style="width:80%; margin-left: 10%">
                               <label>Câu hỏi</label>

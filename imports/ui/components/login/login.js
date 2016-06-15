@@ -110,6 +110,7 @@ class Login {
           // handle error
       } else {
         this.$state.go('home');
+        this.showVertificateForm();
       }
     })
   }

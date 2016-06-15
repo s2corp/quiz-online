@@ -160,9 +160,10 @@ Meteor.methods({
   checkanswer:function(id,user,question_id,question,answer,index){
     var exam = Examination.findOne({_id:id});
     var totaluser = exam.usersList.length;
-    var tam = Question.findOne({$and:[{"_id":question_id}
+    var tam = Question.findOne({_id:question_id});
+    var chectcorrect = Question.findOne({$and:[{"_id":question_id}
       ,{"questionSet": { $elemMatch: { "question":question,"correctAnswer":answer}}}]});
-    if(tam !== null)
+    if(chectcorrect !== null)
     {
       var count = tam.questionSet[index].countCorrect + 1;
       var num = count / totaluser;
@@ -362,14 +363,13 @@ Meteor.methods({
 Meteor.methods({
   updateStaticQuestion:function(question_id,exam_id){
     var exam = Examination.findOne({_id:exam_id});
-
     var ob={
       examId: exam_id,
       playercount : exam.usersList.length,
       questionSet:[]
     };
     var dataquestion = Question.findOne({_id:question_id});
-
+    var originId = dataquestion.originId;
     for(var i=0;i<dataquestion.questionSet.length;i++)
     {
       var obques ={};
@@ -377,22 +377,18 @@ Meteor.methods({
       obques.countCorrect =dataquestion.questionSet[i].countCorrect;
       ob.questionSet.push(obques);
     }
-    var findexit = Questionstatistics.find({_id:question_id}).count();
-    console.log(findexit);
-
-
+    var findexit = Questionstatistics.find({_id:originId}).count();
     if(findexit > 0)
     {
-      var findexitexam = Questionstatistics.find({"_id":question_id,"ExamSet.examId":exam_id}).count();
-      console.log(findexitexam);
+      var findexitexam = Questionstatistics.find({"_id":originId,"ExamSet.examId":exam_id}).count();
        if(findexitexam > 0)
        {
-         Questionstatistics.update({"_id":question_id,"ExamSet":{$elemMatch:{"examId":exam_id}}},{$set:{
+         Questionstatistics.update({"_id":originId,"ExamSet":{$elemMatch:{"examId":exam_id}}},{$set:{
            "ExamSet.$.playercount":ob.playercount,"ExamSet.$.questionSet":ob.questionSet
          }});
        }
          else {
-           Questionstatistics.update({'_id':question_id}, {$push:{
+           Questionstatistics.update({'_id':originId}, {$push:{
                ExamSet: ob
            }});
          }

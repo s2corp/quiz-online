@@ -112,18 +112,20 @@ class QuestionBank {
 
   addQuestionPersonal(question){
     var questions = Question.find({'_id': question._id}).fetch();
-
+    if(questions[0].originId)
+      this.value.originId = questions[0].originId;
+    else
+      this.value.originI = question._id
     this.value.title = questions[0].title;
     this.value.questionSet = questions[0].questionSet;
+
+    this.numberQuestion();
 
     this.showReview = "show";
 
     this.selectedTab = 2;
 
     this.disableButton = true;
-
-    Session.set('questionId', question._id);
-    Session.set('questionCount', question.questionSet.length);
   }
 
   // addQuestionRandom(){
@@ -165,6 +167,8 @@ class QuestionBank {
       this.questionName.push(elem.question.question);
     });
     this.value.questionSet = tempQues;
+
+    this.numberQuestion();
 
     this.disableButton = false;
 
@@ -221,6 +225,8 @@ class QuestionBank {
         break;
     }
 
+    this.numberQuestion();
+
     this.showReview = "show";
 
     this.selectedTab = 2;
@@ -263,6 +269,8 @@ class QuestionBank {
   }
 
   changeTabPersonal(){
+    this.numberQuestion();
+
     this.showReview = "show";
 
     this.selectedTab = 2;
@@ -336,6 +344,15 @@ class QuestionBank {
      }
    }
 
+   //sử dụng để sắp xếp questionSet tăng dần theo nội dung câu hỏi
+   compare(a,b) {
+     if (parseInt(a.question.substring(4, a.question.length - 1)) < parseInt(b.question.substring(4, b.question.length - 1)))
+      return -1;
+     if (parseInt(a.question.substring(4, a.question.length - 1)) > parseInt(b.question.substring(4, b.question.length - 1)))
+      return 1;
+    return 0;
+  }
+
    //lọc dữ liệu trùng lặp
    filterData(data){
     data.sort();
@@ -350,6 +367,43 @@ class QuestionBank {
 
    foreChange(){
      //if(this.selectedTab === 2)
+
+   }
+
+
+   numberQuestion() {
+     maxAnswer = 0;
+
+     for(i = 0; i < this.value.questionSet.length; i++) {
+       if(this.value.questionSet[i].answerSet.length >= maxAnswer)
+        maxAnswer = this.value.questionSet[i].answerSet.length
+     }
+
+     randomIndex = this.shuffle(maxAnswer);
+     randomIndexQues = this.shuffle(this.value.questionSet.length);
+
+     for(i = 0; i < this.value.questionSet.length; i++) {
+       var rand = randomIndexQues[i];
+       this.value.questionSet[rand].question = 'Câu ' + (i + 1) + ': ' + this.value.questionSet[rand].question.substring(6);
+       var c = 'A';
+       for(j = 0; j < randomIndex.length; j ++) {
+          if(randomIndex[j] < this.value.questionSet[rand].answerSet.length) {
+             if(this.value.questionSet[rand].answerSet[randomIndex[j]] === this.value.questionSet[rand].correctAnswer) {
+               this.value.questionSet[rand].answerSet[randomIndex[j]] = c + '. ' + this.value.questionSet[rand].answerSet[randomIndex[j]].substring(2);
+               this.value.questionSet[rand].correctAnswer = c + '. ' + this.value.questionSet[rand].correctAnswer.substring(2);
+             } else {
+               this.value.questionSet[rand].answerSet[randomIndex[j]] = c + '. ' + this.value.questionSet[rand].answerSet[randomIndex[j]].substring(2);
+             }
+             c = String.fromCharCode(c.charCodeAt(0) + 1)
+         }
+      }
+    }
+
+    this.value.questionSet.sort(this.compare);
+
+    for(i = 0; i < this.value.questionSet.length; i++) {
+      this.value.questionSet[i].answerSet.sort();
+    }
 
    }
 
