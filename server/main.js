@@ -358,3 +358,44 @@ Meteor.methods({
       return contain;
     }
   });
+
+Meteor.methods({
+  updateStaticQuestion:function(question_id,exam_id){
+    var exam = Examination.findOne({_id:exam_id});
+
+    var ob={
+      examId: exam_id,
+      playercount : exam.usersList.length,
+      questionSet:[]
+    };
+    var dataquestion = Question.findOne({_id:question_id});
+
+    for(var i=0;i<dataquestion.questionSet.length;i++)
+    {
+      var obques ={};
+      obques.question =dataquestion.questionSet[i].question;
+      obques.countCorrect =dataquestion.questionSet[i].countCorrect;
+      ob.questionSet.push(obques);
+    }
+    var findexit = Questionstatistics.find({_id:question_id}).count();
+    console.log(findexit);
+
+
+    if(findexit > 0)
+    {
+      var findexitexam = Questionstatistics.find({"_id":question_id,"ExamSet.examId":exam_id}).count();
+      console.log(findexitexam);
+       if(findexitexam > 0)
+       {
+         Questionstatistics.update({"_id":question_id,"ExamSet":{$elemMatch:{"examId":exam_id}}},{$set:{
+           "ExamSet.$.playercount":ob.playercount,"ExamSet.$.questionSet":ob.questionSet
+         }});
+       }
+         else {
+           Questionstatistics.update({'_id':question_id}, {$push:{
+               ExamSet: ob
+           }});
+         }
+    }
+  }
+});

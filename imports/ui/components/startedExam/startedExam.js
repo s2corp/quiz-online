@@ -16,7 +16,7 @@ class StartedExam {
     $reactive(this).attach($scope);
     this.subscribe('question');
     this.subscribe("examination");
-    this.subscribe("questionstatistics",);
+    this.subscribe("questionstatistics");
     this.score=0;
     this.readonly=true;
     this.selectedIndex = 0 ;//hien ra cau hoi thu i
@@ -32,7 +32,6 @@ class StartedExam {
     document.getElementById('scored').innerHTML ="Điểm: 0";
     this.exam =  Examination.findOne({_id:$stateParams.exam_id});
     this.dataquestion =  Question.findOne({_id:$stateParams.question_id});
-    console.log(this.exam);
     if(this.exam !== null)
     {
       var time = this.exam.time  -1;
@@ -47,7 +46,7 @@ class StartedExam {
     var parent = this;
     //ham tu dong kiem tra thoi gian
     this.autorun(() =>{
-      var isstop =setInterval(function(){
+      this.isstop =setInterval(function(){
         Meteor.call("timeRunOut", Session.get("stoprun"), function(error, result){
           if(error){
             console.log("error", error);
@@ -59,7 +58,7 @@ class StartedExam {
         {
 
           parent.updateStatic();
-          clearInterval(isstop);
+          clearInterval(parent.isstop);
           this.stop();
          $state.go("scored-exam",{"exam_id":$stateParams.exam_id});
         }
@@ -102,28 +101,16 @@ class StartedExam {
 
   updateStatic()
   {
-  //  console.log(this.exam);
-    console.log(this.dataquestion);
-
-    //console.log(this.ex);
     if(this.exam.isTest === true)
     {
-      var ob={
-        examId: this.exam_id,
-        playercount : this.exam.usersList.length,
-        questionSet:[]
-      };
-      for(var i=0;i<this.dataquestion.questionSet.length;i++)
-      {
-        var obques ={};
-        obques.question = this.dataquestion.questionSet[i].question;
-        obques.countCorrect = this.dataquestion.questionSet[i].countCorrect;
-        ob.questionSet.push(obques);
-      }
-      console.log(ob);
-      Questionstatistics.update({'_id':this.question_id}, {$push:{
-          ExamSet: ob
-      }});
+      Meteor.call("updateStaticQuestion", this.question_id,this.exam_id, function(error, result){
+        if(error){
+          console.log("error", error);
+        }
+        if(result){
+
+        }
+      });
     }
   }
 
@@ -144,25 +131,27 @@ class StartedExam {
   checkanswer(que,data,vitri)
   {
     this.total = this.total + 1;
-    var userscored =
-    Meteor.call("checkanswer",this.exam_id,Meteor.userId(),this.question_id,que,data,vitri , function(error, result){
-      if(error){
-        console.log("error", error);
-      }
-      if(result){
-        //console.log(result);
-        document.getElementById('scored').innerHTML ="Điểm:"+ result;
-        Session.set("scored", result);
-      }
-    });
+    if(que !== null && data !==null && vitri !==null)
+      Meteor.call("checkanswer",this.exam_id,Meteor.userId(),this.question_id,que,data,vitri , function(error, result){
+        if(error){
+          console.log("error", error);
+        }
+        if(result){
+          //console.log(result);
+          document.getElementById('scored').innerHTML ="Điểm:"+ result;
+          Session.set("scored", result);
+        }
+      });
+
+      this.updateStatic();
     //chuyen sang cau hoi tiep theo
         if (this.selectedIndex < (this.lengthquestion - 1)) {
           this.selectedIndex = this.selectedIndex + 1;
         }
         else {
           this.isend = false;
+        //  this.updateStatic();
           clearInterval(this.isstop);
-          this.updateStatic();
           this.state.go('scored-exam',{"exam_id":this.exam_id});
         }
         this.selectedRow = null;

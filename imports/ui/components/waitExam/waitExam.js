@@ -30,7 +30,7 @@ class WaitExam {
       changed: function (id, fields) {
         if(fields.started === true)
         {
-          
+
           Session.set("stopTime", 5);
           var stop = setInterval(function(){
             Meteor.call("timeRunOut", Session.get("stopTime"), function(error, result){

@@ -34,7 +34,7 @@
         </div>
         <md-divider ng-show="q.image != '' && q.image" ></md-divider>
         <div layout="column" layout-padding>
-          <md-radio-group ng-model="data.group1" layout="column" >
+          <md-radio-group ng-model="data.group1" layout="column" ng-init="data.group1 = null" >
             <md-radio-button id="radi" ng-repeat="an in q.answerSet" ng-value="an" ng-class="{selected:$index == startedExam.selectedRow}" ng-click="startedExam.setClickedRow($index)">{{an}}</md-radio-button>
           </md-radio-group>
         </div>
