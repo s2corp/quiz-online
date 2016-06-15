@@ -7,8 +7,8 @@
       <h1>DANH SÁCH NGƯỜI CHƠI VÀ XẾP HẠNG</h1>
     </div>
   </div>
-  <div layout="column" layout-align="start" layout-margin layout-padding style="overflow-x:auto;">
-      <table>
+  <div layout="column" layout-padding style="overflow-x:auto;" layout-align="center">
+      <!-- <table>
         <tr>
           <th>Tên thí sinh</th>
           <th>Địa chỉ Email</th>
@@ -21,7 +21,46 @@
         <td>{{inf.scored}}</td>
         <td>{{$index+1}}</td>
         </tr>
+      </table> -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+      <md-table-container layout="column" layout-align="center center">
+      <table md-table md-row-select multiple ng-model="selected" md-progress="promise">
+        <thead md-head md-order="query.order" md-on-reorder="getDesserts">
+          <tr md-row>
+            <th md-column >Tên thí sinh</th>
+            <th md-column >Địa chỉ Email </th>
+            <th md-column >Điểm</th>
+            <th md-column >Vị thứ</th>
+          </tr>
+        </thead>
+        <tbody md-body>
+          <tr md-row md-select="dessert" md-select-id="name" md-auto-select ng-repeat="inf in scoredExam.infor | orderBy:'-scored' " >
+            <td md-cell>{{inf.name}}</td>
+            <td md-cell>{{inf.email}}</td>
+            <td md-cell>{{inf.scored}}</td>
+            <td md-cell>{{$index+1}}</td>
+          </tr>
+        </tbody>
       </table>
+    </md-table-container>
+
+
+
+
+
+
   </div>
   <div layout="row" layout-padding layout-align="end" >
      <md-button  class="md-raised md-primary" href="http://www.facebook.com/sharer.php?u=http://quiz.s2corp.vn/scored/{{scoredExam.exam_id}}" target="_blank">Chia sẻ Facebook</md-button>

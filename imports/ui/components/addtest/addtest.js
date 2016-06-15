@@ -263,14 +263,12 @@ class AddTest {
        var file = this.mediaElements[i].files[0];
 
        if(file) {
-
-
           if(file.type.substring(0, 5) === 'image') {
             var fileObj = await this.insertMedia(file);
             data.questionSet[i].image ='http://'+this.location.host()+ '/images/' + fileObj.collectionName + '-' + fileObj._id + '-' + fileObj.original.name ;
           } else {
             var fileObj = await this.insertMedia(file)
-              data.questionSet[i].audio ='http://'+this.location.host()+ '/audio/' + fileObj.collectionName + '-' + fileObj._id + '-' + fileObj.original.name ;
+              data.questionSet[i].audio ='http://'+this.location.host()+ '/images/' + fileObj.collectionName + '-' + fileObj._id + '-' + fileObj.original.name ;
             }
 
       }
