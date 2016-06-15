@@ -34,7 +34,7 @@ class StartedExam {
     this.dataquestion =  Question.findOne({_id:$stateParams.question_id});
     if(this.exam !== null)
     {
-      var time = this.exam.time  -1;
+      var time = this.exam.time * 60  -1;
       Session.set("stoprun", time);
 
     }
@@ -144,7 +144,7 @@ class StartedExam {
         }
       });
     }
-      
+
       this.updateStatic();
     //chuyen sang cau hoi tiep theo
         if (this.selectedIndex < (this.lengthquestion - 1)) {

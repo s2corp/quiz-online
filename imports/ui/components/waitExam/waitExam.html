@@ -21,7 +21,7 @@
           <tr ng-repeat="u in waitExam.userinfor"  >
             <td >{{$index+1}}</td>
             <td >{{u.profile.name}}</td>
-            <td >{{u.services.facebook.email}}</td>
+            <td >{{u.services.facebook.email}}{{u.services.google.email}}{{u.emails[0].address}}</td>
             <td >{{u.status.online ? "Online":"Offline"}}</td>
           </tr>
         </table>

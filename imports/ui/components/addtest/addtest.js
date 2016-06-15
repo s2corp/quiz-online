@@ -144,7 +144,7 @@ class AddTest {
                                     '<img id="photo_' + this.question + '" style="width:80%" class="media" src="">' +
                                     '<audio id="audio_' + this.question + '" controls class="media" style="visibility: hidden;" src=""></audio>' +
                                     '<p id="mediaError_' + this.question + '" class="error" role="alert" style="color: red; display: none;">' +
-                                        'file media phải có kích thước nhỏ hơn 2 Megabyte' +
+                                        'file media phải có kích thước nhỏ hơn 10 Megabyte' +
                                     '</p>' +
                                 '</div>' +
                                 '<script>' +
@@ -267,12 +267,10 @@ class AddTest {
 
           if(file.type.substring(0, 5) === 'image') {
             var fileObj = await this.insertMedia(file);
-            console.log(fileObj);
-            data.questionSet[i].image ='public/questionMedia/' + fileObj.collectionName + '-' + fileObj._id + '-' + fileObj.original.name ;
-            console.log(data.questionSet[i].image);
+            data.questionSet[i].image ='http://'+this.location.host()+ '/images/' + fileObj.collectionName + '-' + fileObj._id + '-' + fileObj.original.name ;
           } else {
-              var fileObj = await this.insertMedia(file)
-              data.questionSet[i].audio ='public/questionMedia/' + fileObj.collectionName + '-' + fileObj._id + '-' + fileObj.original.name ;
+            var fileObj = await this.insertMedia(file)
+              data.questionSet[i].audio ='http://'+this.location.host()+ '/audio/' + fileObj.collectionName + '-' + fileObj._id + '-' + fileObj.original.name ;
             }
 
       }

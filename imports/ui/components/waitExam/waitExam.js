@@ -31,7 +31,7 @@ class WaitExam {
         if(fields.started === true)
         {
 
-          Session.set("stopTime", 5);
+          Session.set("stopTime", 10);
           var stop = setInterval(function(){
             Meteor.call("timeRunOut", Session.get("stopTime"), function(error, result){
               if(error){
@@ -74,7 +74,6 @@ class WaitExam {
       Meteor.call("finduser",exam, function(error, result){
         if(error){
           throw new Meteor.Error(505, 'Error');
-          // console.log("error", error);
         }
         if(result){
           Session.set("profileUser", result);
