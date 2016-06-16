@@ -251,6 +251,8 @@ class AddTest {
     //thêm ngày
     this.data.date = new Date();
 
+    this.data.originId = this.data._id;
+
     //clean up data to remove $$hashkey
     var data = angular.copy(this.data);
     this.cleanupAngularObject(data);

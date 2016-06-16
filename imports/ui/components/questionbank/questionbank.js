@@ -112,10 +112,10 @@ class QuestionBank {
 
   addQuestionPersonal(question){
     var questions = Question.find({'_id': question._id}).fetch();
-    if(questions[0].originId)
+    //if(questions[0].originId)
       this.value.originId = questions[0].originId;
-    else
-      this.value.originI = question._id
+    //else
+      //this.value.originI = question._id
     this.value.title = questions[0].title;
     this.value.questionSet = questions[0].questionSet;
 
