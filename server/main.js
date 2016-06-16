@@ -234,7 +234,7 @@ Meteor.methods({
         var hardly =0;
         var veryhardly =0;
         var data = Questionstatistics.findOne({"_id":id});
-        if(data && data.ExamSet && data.ExamSet != null && data.ExamSet.length > 0)
+        if(data )
         {
         var totalexam = data.ExamSet.length;
         var totalquestion = data.ExamSet[0].questionSet.length;
@@ -307,7 +307,7 @@ Meteor.methods({
       var hardly =0;
       var veryhardly =0;
       var data = Questionstatistics.findOne({"_id":id});
-      if(data && data.ExamSet && data.ExamSet != null && data.ExamSet.length > 0)
+      if(data)
       {
       var totalexam = data.ExamSet.length;
       var totalquestion = data.ExamSet[0].questionSet.length;

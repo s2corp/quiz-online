@@ -2,10 +2,22 @@
   <div layout="column" layout-align="center center">
     <h3 style="color:#ff8a00">Tiêu đề: {{statisticsQuestion.question.title}}</h3>
   </div>
-    <div layout="column" id="piechart" ng-show="statisticsQuestion.flat === true"  ></div>
+    <div layout="column" id="piechart"  ></div>
     <div layout="column" layout-padding>
+      <p ng-show="statisticsQuestion.info.veryeasy === 0">
+        Tỷ lệ trả lời đúng câu hỏi cực dễ:  {{statisticsQuestion.info.veryeasy}}
+      </p>
       <p ng-show="statisticsQuestion.info.easy === 0">
-          {{statisticsQuestion.info.easy}}
+        Tỷ lệ trả lời đúng câu hỏi dễ: {{statisticsQuestion.info.easy}}
+      </p>
+      <p ng-show="statisticsQuestion.info.normal === 0">
+        Tỷ lệ trả lời đúng câu hỏi trung bình:  {{statisticsQuestion.info.normal}}
+      </p>
+      <p ng-show="statisticsQuestion.info.hardly === 0">
+        Tỷ lệ trả lời đúng câu hỏi khó:  {{statisticsQuestion.info.hardly}}
+      </p>
+      <p ng-show="statisticsQuestion.info.veryhardly === 0">
+        Tỷ lệ trả lời đúng câu hỏi cực khó:  {{statisticsQuestion.info.veryhardly}}
       </p>
     </div>
     <div layout="row" layout-align="space-around center">

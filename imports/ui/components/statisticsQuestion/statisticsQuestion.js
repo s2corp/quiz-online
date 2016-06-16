@@ -16,11 +16,6 @@ class StatisticsQuestion {
     // google.charts.load('current', {'packages':['corechart']});//chi load mot lan trong maincomponents
     this.helpers({
       info: function(){
-        var veryeasy =null;
-        var easy =null ;
-        var normal =null ;
-        var hardly = null;
-        var veryhardly =null;
         Meteor.call("statisQuestion", $stateParams.question_id, function(error, result){
           if(error){
             throw new Meteor.Error(505, 'Error');
@@ -37,17 +32,17 @@ class StatisticsQuestion {
               arr[index]=data[key];
               index++;
           }
-           veryeasy = arr[0];
-           easy = 0;
-           normal = arr[2];
-           hardly = arr[3];
-           veryhardly = arr[4];
+          var veryeasy = arr[0];
+          var easy = arr[1];
+          var normal = arr[2];
+          var hardly = arr[3];
+          var veryhardly = arr[4];
 
-          if((veryeasy !==0 && veryeasy) || (easy !==0 && easy) || (normal !==0 && normal ) || (hardly !==0 && hardly) || (veryhardly !==0 && veryhardly))
+          if((veryeasy !==0 && veryeasy!==null) || (easy !==0 && easy!==null) || (normal !==0 && normal!=null ) || (hardly !==0 && hardly!=null) || (veryhardly !==0 && veryhardly!=null))
           {
             this.flat = true;
+          }
            this.drawPie(veryeasy,easy,normal,hardly,veryhardly);
-           }
         return data;
       },
     question(){
