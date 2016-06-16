@@ -163,7 +163,7 @@ Meteor.methods({
     var tam = Question.findOne({_id:question_id});
     var chectcorrect = Question.findOne({$and:[{"_id":question_id}
       ,{"questionSet": { $elemMatch: { "question":question,"correctAnswer":answer}}}]});
-    if(chectcorrect !== null)
+    if(chectcorrect)
     {
       var count = tam.questionSet[index].countCorrect + 1;
       var num = count / totaluser;

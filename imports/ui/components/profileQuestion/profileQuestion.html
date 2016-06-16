@@ -2,7 +2,7 @@
   <div  ng-repeat="item in profileQuestion.exam track by $index">
     <div layout="row" layout-padding >
       <md-button class="md-raised" href="/statisticsQuestion/{{item._id}}">Xem tỷ lệ bộ đề</md-button>
-          <md-button class="md-raised" ng-click="profileQuestion.showExam($index)">{{item.title}}</md-button>
+      <md-button layout="column" layout-align="center center" class="md-raised" ng-click="profileQuestion.showExam($index)">{{item.title}}</md-button>
     </div>
     <profile-exam id="{{$index}}" style="display:none" questionid=item._id></profile-exam>
     <md-divider></md-divider>

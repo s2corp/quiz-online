@@ -121,7 +121,7 @@ class Login {
         if (err) {
           this.error = err;
         } else {
-          this.$state.go('parties');
+          this.$state.go('home');
         }
       })
     );
