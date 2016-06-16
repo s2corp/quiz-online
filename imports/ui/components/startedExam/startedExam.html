@@ -18,7 +18,7 @@
   </div>
 
   <div id="question" layout="column" layout-padding>
-    <div layout="column" ng-repeat="q in startedExam.showquestion.questionSet " ng-show="$index == startedExam.selectedIndex" ng-init="vitri = $index">
+    <div layout="column" ng-repeat="q in startedExam.showquestion.questionSet " ng-show="$index == startedExam.selectedIndex" ng-init="vitri = $index;correct=q.correctAnswer">
         <div layout="column">
             <h4 style="color:rgb(16, 17, 16)">Câu {{$index +1}}. {{q.question}}</h4>
         </div>
@@ -40,7 +40,7 @@
         </div>
         <md-divider></md-divider>
          <div layout="row" layout-padding layout-align="end" >
-          <md-button class="md-raised md-warn" ng-click="startedExam.checkanswer(q.question,data.group1,vitri)" aria-label="next">TIẾP THEO</md-button>
+          <md-button class="md-raised md-warn" ng-click="startedExam.checkanswer(q.question,correct,data.group1,vitri)" aria-label="next">TIẾP THEO</md-button>
         </div>
     </div>
 

@@ -35,7 +35,7 @@ class WaitExam {
           var stop = setInterval(function(){
             Meteor.call("timeRunOut", Session.get("stopTime"), function(error, result){
               if(error){
-                console.log("error", error);
+                throw new Meteor.Error(505, 'Error');
               }
                 Session.set("stopTime", result);
             });

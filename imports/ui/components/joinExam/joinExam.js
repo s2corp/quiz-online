@@ -18,34 +18,27 @@ class JoinExam {
   }
 
   loginExam(zipcode){
-    if(Meteor.userId() === null || zipcode == null)
-    {
-        this.state.go("home");
-    }
-        else {
-          //console.log(zipcode);
-           queryExam = Examination.findOne({_id:zipcode});
-          if(queryExam.isTest === true)
-          {
-            var val  = Examination.find({$and:[{"_id":zipcode},{"started":false}]},{fields:{'questionSetId':1,"_id":0}}).count();
-            if(val > 0){
-              this.updateUserExam(zipcode);
-              this.state.go("waitExam",{'exam_id':zipcode});
-            }
-            else {
-              this.state.go("home");
-            }
-          }
-          else {
-            this.updateUserExam(zipcode);
-            var checkown = Question.find({"_id":queryExam.questionSetId,"userId":Meteor.userId()}).count();
-              if(checkown > 0)
-                this.state.go("scored-exam",{"exam_id":zipcode});
-                else {
-                  this.state.go("startedExam",{'exam_id':zipcode,'question_id':queryExam.questionSetId});
-                }
-          }
-        }
+    queryExam = Examination.findOne({_id:zipcode});
+   if(queryExam.isTest === true)
+   {
+     var val  = Examination.find({$and:[{"_id":zipcode},{"started":false}]},{fields:{'questionSetId':1,"_id":0}}).count();
+     if(val > 0){
+       this.updateUserExam(zipcode);
+       this.state.go("waitExam",{'exam_id':zipcode});
+     }
+     else {
+       this.state.go("home");
+     }
+   }
+   else {
+     this.updateUserExam(zipcode);
+     var checkown = Question.find({"_id":queryExam.questionSetId,"userId":Meteor.userId()}).count();
+       if(checkown > 0)
+         this.state.go("scored-exam",{"exam_id":zipcode});
+         else {
+           this.state.go("startedExam",{'exam_id':zipcode,'question_id':queryExam.questionSetId});
+         }
+   }
   }
 
   updateUserExam(zipcode)

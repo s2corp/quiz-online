@@ -128,10 +128,10 @@ class StartedExam {
   }
 
 
-  checkanswer(que,data,vitri)
+  checkanswer(que,correct,data,vitri)
   {
     this.total = this.total + 1;
-    if(que !== null && data !==null && vitri !==null)
+    if(que !== null && data !==null && vitri !==null && correct === data)
     {
       Meteor.call("checkanswer",this.exam_id,Meteor.userId(),this.question_id,que,data,vitri , function(error, result){
         if(error){
@@ -143,9 +143,8 @@ class StartedExam {
           Session.set("scored", result);
         }
       });
-    }
-
       this.updateStatic();
+    }
     //chuyen sang cau hoi tiep theo
         if (this.selectedIndex < (this.lengthquestion - 1)) {
           this.selectedIndex = this.selectedIndex + 1;
@@ -182,7 +181,7 @@ function config($stateProvider){
       resolve: {
         currentUser($q){
           if(Meteor.userId() === null){
-            return $q.reject();
+            return $q.reject('AUTH_REQUIRED');
           }else {
             return $q.resolve();
           }

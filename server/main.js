@@ -161,10 +161,6 @@ Meteor.methods({
     var exam = Examination.findOne({_id:id});
     var totaluser = exam.usersList.length;
     var tam = Question.findOne({_id:question_id});
-    var chectcorrect = Question.findOne({$and:[{"_id":question_id}
-      ,{"questionSet": { $elemMatch: { "question":question,"correctAnswer":answer}}}]});
-    if(chectcorrect)
-    {
       var count = tam.questionSet[index].countCorrect + 1;
       var num = count / totaluser;
       var val =parseFloat(num.toFixed(3));
@@ -174,7 +170,6 @@ Meteor.methods({
       Question.update({_id:question_id,"questionSet.question":question}, {$inc:{
         "questionSet.$.countCorrect":1},$set:{"questionSet.$.rate":val
     }});
-    }
 
     var score = 0;
     var val = Examination.findOne({$and:[{"_id":id},{"usersList.userId":user}]});
@@ -239,6 +234,8 @@ Meteor.methods({
         var hardly =0;
         var veryhardly =0;
         var data = Questionstatistics.findOne({"_id":id});
+        if(data && data.ExamSet && data.ExamSet != null && data.ExamSet.length > 0)
+        {
         var totalexam = data.ExamSet.length;
         var totalquestion = data.ExamSet[0].questionSet.length;
         var totaluser = 0;
@@ -246,8 +243,6 @@ Meteor.methods({
         var countCorrect=0;
         var indexquestion = 0;
         var flag = true;
-        if(data !== null)
-        {
           for(var i =0 ;i < totalexam;i++)
             totaluser= totaluser + data.ExamSet[i].playercount;
           var i =0;
@@ -312,6 +307,8 @@ Meteor.methods({
       var hardly =0;
       var veryhardly =0;
       var data = Questionstatistics.findOne({"_id":id});
+      if(data && data.ExamSet && data.ExamSet != null && data.ExamSet.length > 0)
+      {
       var totalexam = data.ExamSet.length;
       var totalquestion = data.ExamSet[0].questionSet.length;
       var totaluser = 0;
@@ -319,8 +316,6 @@ Meteor.methods({
       var countCorrect=0;
       var indexquestion = 0;
       var flag = true;
-      if(data !== null)
-      {
         for(var i =0 ;i < totalexam;i++)
           totaluser= totaluser + data.ExamSet[i].playercount;
         var i=0;

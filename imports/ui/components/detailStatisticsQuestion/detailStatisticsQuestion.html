@@ -3,7 +3,7 @@
         <md-tab label="Mức độ rất dễ">
           <md-content class="md-padding">
             <div layout="column" layout-align="center center">
-              <h3>{{question.question.title}}</h3>
+              <h3>{{detailStatisticsQuestion.question.title}}</h3>
             </div>
             <div ng-repeat="item in detailStatisticsQuestion.info">
               <div ng-show="item.rate >= 0.8" layout="row" layout-padding layout-align="space-between end">
@@ -11,7 +11,7 @@
                  {{item.question}}
                 </p>
                 <p>
-                  Tỷ lệ: {{item.rate}}
+                  Tỷ lệ trả lời đúng: {{item.rate}}
                 </p>
               </div>
               <md-divider ng-show="item.rate >= 0.8" ng-if="!$last"></md-divider>
@@ -21,7 +21,7 @@
         <md-tab label="Mức độ dễ">
           <md-content class="md-padding">
             <div layout="column" layout-align="center center">
-              <h3>{{question.question.title}}</h3>
+              <h3>{{detailStatisticsQuestion.question.title}}</h3>
             </div>
             <div ng-repeat="item in detailStatisticsQuestion.info">
               <div ng-show="item.rate >= 0.6 && item.rate <0.8" layout="row" layout-padding layout-align="space-between end">
@@ -29,7 +29,7 @@
                   Câu {{$index+1}}: {{item.question}}
                 </p>
                 <p>
-                  Tỷ lệ: {{item.rate}}
+                  Tỷ lệ trả lời đúng: {{item.rate}}
                 </p>
               </div>
               <md-divider ng-show="item.rate >= 0.6 && item.rate <0.8" ng-if="!$last"></md-divider>
@@ -47,7 +47,7 @@
                     Câu {{$index+1}}: {{item.question}}
                 </p>
                 <p>
-                    Tỷ lệ: {{item.rate}}
+                    Tỷ lệ trả lời đúng: {{item.rate}}
                 </p>
               </div>
               <md-divider ng-show="item.rate >= 0.4 && item.rate <0.6" ng-if="!$last"></md-divider>
@@ -57,7 +57,7 @@
         <md-tab label="Mức độ khó">
           <md-content class="md-padding">
             <div layout="column" layout-align="center center">
-              <h3>{{detailStatisticsQuestion.exam.examName}}</h3>
+              <h3>{{detailStatisticsQuestion.question.title}}</h3>
             </div>
             <div ng-repeat="item in detailStatisticsQuestion.info">
               <div ng-show="item.rate >= 0.2 && item.rate <0.4" layout="row" layout-padding layout-align="space-between center">
@@ -65,7 +65,7 @@
                     Câu {{$index+1}}: {{item.question}}
                 </p>
                 <p>
-                    Tỷ lệ: {{item.rate}}
+                    Tỷ lệ trả lời đúng: {{item.rate}}
                 </p>
               </div>
               <md-divider ng-show="item.rate >= 0.2 && item.rate <0.4" ng-if="!$last"></md-divider>
@@ -75,7 +75,7 @@
         <md-tab label="Mức độ rất khó">
           <md-content class="md-padding">
             <div layout="column" layout-align="center center">
-              <h3>{{detailStatisticsQuestion.exam.examName}}</h3>
+              <h3>{{detailStatisticsQuestion.question.title}}</h3>
             </div>
             <div ng-repeat="item in detailStatisticsQuestion.info">
               <div ng-show="item.rate < 0.2" layout="row" layout-padding layout-align="space-between center">
@@ -83,7 +83,7 @@
                     Câu {{$index+1}}: {{item.question}}
                 </p>
                 <p>
-                    Tỷ lệ: {{item.rate}}
+                    Tỷ lệ trả lời đúng: {{item.rate}}
                 </p>
               </div>
               <md-divider ng-show="item.rate < 0.2" ng-if="!$last"></md-divider>

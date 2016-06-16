@@ -19,10 +19,9 @@ class ScoredExam {
       infor()
       {
         var tam1 = Examination.findOne({"_id":$stateParams.exam_id});
-        console.log(tam1);
         Meteor.call("scoredUserInf",tam1, function(error, result){
           if(error){
-            console.log("error", error);
+              throw new Meteor.Error(505, 'Error');
           }
           if(result){
             Session.set("scoredUser", result);
