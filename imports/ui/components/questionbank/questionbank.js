@@ -4,6 +4,7 @@ import angularMeteor from 'angular-meteor';
 import './questionbank.html';
 import { Question } from '../../../api/question'
 import { QuestionBankData } from '../../../api/questionbankdata'
+import { Questionstatistics } from '../../../api/questionstatistics'
 
 class QuestionBank {
   constructor($scope, $reactive){
@@ -57,7 +58,8 @@ class QuestionBank {
       title: 'câu hỏi cộng đồng',
       questionSet: [],
       date: new Date(),
-      userId: Meteor.userId()
+      originId: '',
+      userId: Meteor.userId(),
     }
 
     //xóa dữ liệu trong questionId
@@ -112,10 +114,10 @@ class QuestionBank {
 
   addQuestionPersonal(question){
     var questions = Question.find({'_id': question._id}).fetch();
-    //if(questions[0].originId)
+    if(questions[0].originId)
       this.value.originId = questions[0].originId;
-    //else
-      //this.value.originI = question._id
+    else
+      this.value.originId = question._id
     this.value.title = questions[0].title;
     this.value.questionSet = questions[0].questionSet;
 
@@ -234,7 +236,18 @@ class QuestionBank {
   }
 
   buildTest(){
+    if(this.value.originId === '') {
+      this.value.originId = this.value._id;
+      var quesStatis = {
+        _id: this.value._id,
+        userId: Meteor.userId(),
+        title: this.value.title,
+        ExamSet: [],
+        date:new Date()
+      };
 
+      Questionstatistics.insert(quesStatis);
+    }
     //insert phần tử vào bảng Question
     var data = angular.copy(this.value);
     this.cleanupAngularObject(data);

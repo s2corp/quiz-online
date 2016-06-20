@@ -26,7 +26,7 @@
             <div ng-repeat="item in detailStatisticsQuestion.info">
               <div ng-show="item.rate >= 0.6 && item.rate <0.8" layout="row" layout-padding layout-align="space-between end">
                 <p >
-                  Câu {{$index+1}}: {{item.question}}
+                  {{item.question}}
                 </p>
                 <p>
                   Tỷ lệ trả lời đúng: {{item.rate}}
@@ -44,7 +44,7 @@
             <div ng-repeat="item in detailStatisticsQuestion.info">
               <div ng-show="item.rate >= 0.4 && item.rate <0.6" layout="row" layout-padding layout-align="space-between center">
                 <p>
-                    Câu {{$index+1}}: {{item.question}}
+                    {{item.question}}
                 </p>
                 <p>
                     Tỷ lệ trả lời đúng: {{item.rate}}
@@ -62,7 +62,7 @@
             <div ng-repeat="item in detailStatisticsQuestion.info">
               <div ng-show="item.rate >= 0.2 && item.rate <0.4" layout="row" layout-padding layout-align="space-between center">
                 <p>
-                    Câu {{$index+1}}: {{item.question}}
+                    {{item.question}}
                 </p>
                 <p>
                     Tỷ lệ trả lời đúng: {{item.rate}}
@@ -80,7 +80,7 @@
             <div ng-repeat="item in detailStatisticsQuestion.info">
               <div ng-show="item.rate < 0.2" layout="row" layout-padding layout-align="space-between center">
                 <p>
-                    Câu {{$index+1}}: {{item.question}}
+                    {{item.question}}
                 </p>
                 <p>
                     Tỷ lệ trả lời đúng: {{item.rate}}

@@ -130,6 +130,10 @@ class StartedExam {
 
   checkanswer(que,correct,data,vitri)
   {
+    if(document.getElementById('soundIndex') !== null) {
+      document.getElementById('soundIndex').pause();
+      document.getElementById('soundIndex').currentTime=0;
+    }
     this.total = this.total + 1;
     if(que !== null && data !==null && vitri !==null && correct === data)
     {

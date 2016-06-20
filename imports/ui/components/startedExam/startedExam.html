@@ -20,11 +20,11 @@
   <div id="question" layout="column" layout-padding>
     <div layout="column" ng-repeat="q in startedExam.showquestion.questionSet " ng-show="$index == startedExam.selectedIndex" ng-init="vitri = $index;correct=q.correctAnswer">
         <div layout="column">
-            <h4 style="color:rgb(16, 17, 16)">Câu {{$index +1}}. {{q.question}}</h4>
+            <h4 style="color:rgb(16, 17, 16)">{{q.question}}</h4>
         </div>
         <md-divider></md-divider>
         <div layout="row" layout-padding layout-align="center center">
-          <audio controls autoplay ng-show="q.audio != '' && q.audio">
+          <audio id="soundIndex" controls ng-show="q.audio != '' && q.audio">
             <source src={{q.audio}}>
           </audio>
         </div>
@@ -40,7 +40,7 @@
         </div>
         <md-divider></md-divider>
          <div layout="row" layout-padding layout-align="end" >
-          <md-button class="md-raised md-warn" ng-click="startedExam.checkanswer(q.question,correct,data.group1,vitri)" aria-label="next">TIẾP THEO</md-button>
+          <md-button class="md-raised md-warn"  ng-click="startedExam.checkanswer(q.question,correct,data.group1,vitri)" aria-label="next">TIẾP THEO</md-button>
         </div>
     </div>
 

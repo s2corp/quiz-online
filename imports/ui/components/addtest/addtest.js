@@ -80,6 +80,7 @@ class AddTest {
     this.reviewMedia();
     this.showReview = "show";
     this.selectedTab = 2;
+    this.numberQuestion();
   }
 
   //thêm đáp án
@@ -242,7 +243,7 @@ class AddTest {
     };
 
     Questionstatistics.insert(quesStatis);
-    this.numberQuestion();
+
 
     //thêm id của user đang đăng nhập
     if(Meteor.userId() != null)

@@ -237,6 +237,83 @@ Meteor.methods({
         if(data )
         {
         var totalexam = data.ExamSet.length;
+        if(totalexam > 0)
+        {
+          var totalquestion = data.ExamSet[0].questionSet.length;
+          var totaluser = 0;
+          var question='';
+          var countCorrect=0;
+          var indexquestion = 0;
+          var flag = true;
+            for(var i =0 ;i < totalexam;i++)
+              totaluser= totaluser + data.ExamSet[i].playercount;
+            var i =0;
+               question='';
+               countCorrect=0;
+              for(var j=0;j < data.ExamSet[i].questionSet.length;j++)
+              {
+                question = data.ExamSet[i].questionSet[j].question;
+                countCorrect = data.ExamSet[i].questionSet[j].countCorrect;
+                var indexexam = i + 1;
+                while(indexexam < totalexam)
+                {
+                   indexquestion = 0;
+                   flag = true;
+                  while (indexquestion < totalquestion && flag) {
+                    var questioncurrnent = data.ExamSet[indexexam].questionSet[indexquestion].question;
+                    if(questioncurrnent == question)
+                    {
+                        countCorrect =countCorrect+ data.ExamSet[indexexam].questionSet[indexquestion].countCorrect;
+                        flag = false;
+                    }
+                    else {
+                      indexquestion++;
+                    }
+                  }
+                  indexexam=indexexam+1;
+                }
+                var rate = countCorrect / totaluser;
+                if( rate >= 0.8)
+                  veryhardly= veryhardly + 1;
+                else if ( rate >= 0.6) {
+                  hardly= hardly + 1;
+                }
+                else if ( rate >= 0.4) {
+                  normal= normal + 1;
+                }
+                else if (rate >= 0.2) {
+                  easy= easy + 1;
+                }
+                else {
+                  veryeasy= veryeasy + 1;
+                }
+              }
+        }
+        }
+        ob.veryeasy = veryeasy;
+        ob.easy = easy;
+        ob.normal = normal;
+        ob.hardly =hardly ;
+        ob.veryhardly =veryhardly;
+        return ob;
+    }
+  });
+
+  Meteor.methods({
+    detailstatisQuestion:function(id){
+      var contain=[];
+      var ob = {};
+      var veryeasy=0;
+      var easy = 0;
+      var normal = 0;
+      var hardly =0;
+      var veryhardly =0;
+      var data = Questionstatistics.findOne({"_id":id});
+      if(data)
+      {
+      var totalexam = data.ExamSet.length;
+      if(totalexam > 0 )
+      {
         var totalquestion = data.ExamSet[0].questionSet.length;
         var totaluser = 0;
         var question='';
@@ -245,7 +322,7 @@ Meteor.methods({
         var flag = true;
           for(var i =0 ;i < totalexam;i++)
             totaluser= totaluser + data.ExamSet[i].playercount;
-          var i =0;
+          var i=0;
              question='';
              countCorrect=0;
             for(var j=0;j < data.ExamSet[i].questionSet.length;j++)
@@ -271,85 +348,14 @@ Meteor.methods({
                 indexexam=indexexam+1;
               }
               var rate = countCorrect / totaluser;
-              if( rate >= 0.8)
-                veryhardly= veryhardly + 1;
-              else if ( rate >= 0.6) {
-                hardly= hardly + 1;
-              }
-              else if ( rate >= 0.4) {
-                normal= normal + 1;
-              }
-              else if (rate >= 0.2) {
-                easy= easy + 1;
-              }
-              else {
-                veryeasy= veryeasy + 1;
-              }
+              ob.question = question;
+              ob.rate = rate;
+              contain.push(ob);
+              ob ={};
+
             }
+      }
 
-        }
-        ob.veryeasy = veryeasy;
-        ob.easy = easy;
-        ob.normal = normal;
-        ob.hardly =hardly ;
-        ob.veryhardly =veryhardly;
-        return ob;
-    }
-  });
-
-  Meteor.methods({
-    detailstatisQuestion:function(id){
-      var contain=[];
-      var ob = {};
-      var veryeasy=0;
-      var easy = 0;
-      var normal = 0;
-      var hardly =0;
-      var veryhardly =0;
-      var data = Questionstatistics.findOne({"_id":id});
-      if(data)
-      {
-      var totalexam = data.ExamSet.length;
-      var totalquestion = data.ExamSet[0].questionSet.length;
-      var totaluser = 0;
-      var question='';
-      var countCorrect=0;
-      var indexquestion = 0;
-      var flag = true;
-        for(var i =0 ;i < totalexam;i++)
-          totaluser= totaluser + data.ExamSet[i].playercount;
-        var i=0;
-           question='';
-           countCorrect=0;
-          for(var j=0;j < data.ExamSet[i].questionSet.length;j++)
-          {
-            question = data.ExamSet[i].questionSet[j].question;
-            countCorrect = data.ExamSet[i].questionSet[j].countCorrect;
-            var indexexam = i + 1;
-            while(indexexam < totalexam)
-            {
-               indexquestion = 0;
-               flag = true;
-              while (indexquestion < totalquestion && flag) {
-                var questioncurrnent = data.ExamSet[indexexam].questionSet[indexquestion].question;
-                if(questioncurrnent == question)
-                {
-                    countCorrect =countCorrect+ data.ExamSet[indexexam].questionSet[indexquestion].countCorrect;
-                    flag = false;
-                }
-                else {
-                  indexquestion++;
-                }
-              }
-              indexexam=indexexam+1;
-            }
-            var rate = countCorrect / totaluser;
-            ob.question = question;
-            ob.rate = rate;
-            contain.push(ob);
-            ob ={};
-
-          }
       }
       return contain;
     }
